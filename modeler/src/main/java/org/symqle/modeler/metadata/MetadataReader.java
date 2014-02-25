@@ -103,6 +103,22 @@ public class MetadataReader implements ModelReader {
                 rs.close();
             }
         }
+        for (String tableName: tableNames) {
+            final ResultSet rs = metaData.getPrimaryKeys(null, null, tableName);
+            final List<DatabaseObjectModel> accumulator = new ArrayList<>();
+            try {
+                while (rs.next()) {
+                    final DatabaseObjectModel pkColumn = new PropertyHolder(readResultSetRow(rs));
+                    accumulator.add(pkColumn);
+                }
+                if (!accumulator.isEmpty()) {
+                    metadataModel.addPrimaryKey(accumulator);
+                }
+            } finally {
+                rs.close();
+            }
+        }
+
         return metadataModel;
     }
 

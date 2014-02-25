@@ -39,6 +39,7 @@ public class TransformerTest extends TestCase {
 
         for (TableSqlModel table : transformed.getTables()) {
                 System.out.println("Table: " + table.getProperties().get("JAVA_NAME") + "[" +table.getProperties().get("TABLE_TYPE") +"]");
+            System.out.println("Primary key: " + table.getPrimaryKey());
                 for (ColumnSqlModel columnSqlModel: table.getColumns()) {
                     System.out.println("    " + columnSqlModel.getProperties().get("JAVA_NAME") + ":" + columnSqlModel.getProperties().get("TYPE_NAME") + " (nullability: "+columnSqlModel.getProperties().get("NULLABLE") +")" + "(size: " + columnSqlModel.getProperties().get("COLUMN_SIZE") +")");
                 }

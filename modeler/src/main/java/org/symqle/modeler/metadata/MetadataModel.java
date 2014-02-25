@@ -143,13 +143,12 @@ public class MetadataModel implements SchemaSqlModel {
         foreignKeysByTable.put(tableName, new ArrayList<ForeignKeyModel>());
     }
 
-
     void addForeignKey(final List<DatabaseObjectModel> accumulator) {
         addForeignKey(accumulator, Collections.<String, String>emptyMap());
     }
 
-    void addPrimaryKey(DatabaseObjectModel objectModel) {
-        final PrimaryKeyModel key = new PrimaryKeyModel(objectModel);
+    void addPrimaryKey(final List<DatabaseObjectModel> accumulator) {
+        final PrimaryKeyModel key = new PrimaryKeyModel(accumulator);
         final String tableName = key.getProperties().get("TABLE_NAME");
         primaryKeysByTable.put(tableName, key);
     }
@@ -183,27 +182,27 @@ public class MetadataModel implements SchemaSqlModel {
         return new ArrayList<TableSqlModel>(tables.values());
     }
 
-    private class PrimaryKeyModel extends PropertyHolder implements PrimaryKeySqlModel {
+    private class PrimaryKeyModel implements PrimaryKeySqlModel {
 
-        private PrimaryKeyModel(final DatabaseObjectModel other) {
-            super(other);
+        List<DatabaseObjectModel> columns = new ArrayList<>();
+
+        private PrimaryKeyModel(final List<DatabaseObjectModel> accumulator) {
+            columns.addAll(accumulator);
         }
 
         @Override
         public TableSqlModel getTable() {
-            return getProperties().get("TABLE_NAME");
+            return tables.get(columns.get(0).getProperties().get("TABLE_NAME"));
         }
 
         @Override
-        public TableSqlModel getReferencedTable() {
-            // TODO implement
-            throw new RuntimeException("Not implemented");
+        public Map<String, String> getProperties() {
+            return Collections.emptyMap();
         }
 
         @Override
         public List<DatabaseObjectModel> getColumns() {
-            // TODO implement
-            throw new RuntimeException("Not implemented");
+            return Collections.unmodifiableList(columns);
         }
     }
 }
