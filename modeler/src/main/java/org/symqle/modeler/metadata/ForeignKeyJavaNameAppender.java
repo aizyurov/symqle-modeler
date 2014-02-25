@@ -7,6 +7,7 @@ import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
 import org.symqle.modeler.utils.StringUtils;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -20,6 +21,8 @@ public class ForeignKeyJavaNameAppender extends AbstractTransformer {
 
     private String singleColumnKey = "FKCOLUMN_NAME";
     private String multiColumnKey = "PKTABLE_NAME";
+
+    private final List<String> FK_SUFFIXES = Arrays.asList("ID", "FK");
 
     @Override
     public SchemaSqlModel transform(final SchemaSqlModel source) {
@@ -41,14 +44,26 @@ public class ForeignKeyJavaNameAppender extends AbstractTransformer {
                 final String sqlName = fk.getProperties().get(key);
                 final Map<String, String> properties = new HashMap<>();
                 final String camelCaseName = StringUtils.camelize(sqlName);
+                String suggestedName = camelCaseName + "Ref";
+                for (String suffix : FK_SUFFIXES) {
+                    if (camelCaseName.toUpperCase().endsWith(suffix) && camelCaseName.length() > suffix.length()) {
+                        suggestedName = camelCaseName.substring(0, camelCaseName.length() - suffix.length());
+                        break;
+                    }
+                }
                 for (int i=0; !properties.containsKey("JAVA_NAME"); i++) {
-                    final String candidate = i==0 ? camelCaseName : camelCaseName + i;
+                    final String candidate = i==0 ? suggestedName : suggestedName + i;
                     if (!usedNames.contains(candidate)) {
                         properties.put("JAVA_NAME", candidate);
                         properties.put("GETTER_NAME", "get" + StringUtils.firstToUpper(candidate));
                         usedNames.add(candidate);
                     }
                 }
+                boolean notNullable = true;
+                for (DatabaseObjectModel fkColumn: fk.getColumns()) {
+                    notNullable &= "0".equals(fkColumn.getProperties().get("NULLABLE"));
+                }
+                properties.put("NOT_NULLABLE", String.valueOf(notNullable));
                 model.addForeignKey(fkColumns, properties);
             }
         }

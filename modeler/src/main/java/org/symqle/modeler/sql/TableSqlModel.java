@@ -21,4 +21,6 @@ public interface TableSqlModel extends DatabaseObjectModel {
      */
     List<ForeignKeySqlModel> getForeignKeys();
 
+    PrimaryKeySqlModel getPrimaryKey();
+
 }

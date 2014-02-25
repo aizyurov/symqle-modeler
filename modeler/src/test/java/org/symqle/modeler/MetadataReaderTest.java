@@ -16,7 +16,7 @@ public class MetadataReaderTest extends TestCase {
     public void testSymqleTestDatabase() throws Exception {
         final MetadataReader reader = new MetadataReader();
         reader.setDriverClassName("com.mysql.jdbc.Driver");
-        reader.setDatabaseUrl("jdbc:mysql://localhost:3306/simqle");
+        reader.setDatabaseUrl("jdbc:mysql://localhost:3306/jtrac");
         reader.setUser("simqle");
         reader.setPassword("simqle");
 
@@ -33,7 +33,7 @@ public class MetadataReaderTest extends TestCase {
                     for (ColumnPair pair : fk.getMapping()) {
                         System.out.print(pair.getFirst().getProperties().get("COLUMN_NAME") + "->" + pair.getSecond().getProperties().get("TABLE_NAME") + "." + pair.getSecond().getProperties().get("COLUMN_NAME") +" ");
                     }
-                    System.out.println();
+                    System.out.println(" NOT_NULLABLE:" + fk.getProperties().get("NOT_NULLABLE"));
                 }
             }
     }

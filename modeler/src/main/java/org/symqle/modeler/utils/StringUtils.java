@@ -9,11 +9,12 @@ public final class StringUtils {
         StringBuilder stringBuilder = new StringBuilder();
         boolean nextToUpper = false;
         for (char c: source.toCharArray()) {
-            if (!Character.isJavaIdentifierPart(c)) {
+            if (!Character.isLetterOrDigit(c)) {
                 nextToUpper = true;
                 // do not append to builder
             } else {
                 stringBuilder.append(nextToUpper ? Character.toUpperCase(c) : Character.toLowerCase(c));
+                nextToUpper = false;
             }
         }
         return stringBuilder.toString();

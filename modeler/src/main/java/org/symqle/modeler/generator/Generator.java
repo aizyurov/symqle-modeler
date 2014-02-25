@@ -4,6 +4,7 @@ import org.symqle.modeler.metadata.ModelReader;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.transformer.Transformer;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class Generator {
     private List<Transformer> transformers;
     private CodeWriter codeWriter;
 
-    public void generate() throws SQLException, ReflectiveOperationException {
+    public void generate() throws IOException, SQLException, ReflectiveOperationException {
         SchemaSqlModel model = modelReader.readModel();
         for (Transformer transformer : transformers) {
             model = transformer.transform(model);

@@ -4,6 +4,7 @@ import org.symqle.modeler.sql.ColumnPair;
 import org.symqle.modeler.sql.ColumnSqlModel;
 import org.symqle.modeler.sql.DatabaseObjectModel;
 import org.symqle.modeler.sql.ForeignKeySqlModel;
+import org.symqle.modeler.sql.PrimaryKeySqlModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
 
@@ -28,6 +29,8 @@ public class MetadataModel implements SchemaSqlModel {
 
     final Map<String, List<ForeignKeyModel>> foreignKeysByTable = new HashMap<>();
 
+    final Map<String, PrimaryKeyModel> primaryKeysByTable =  new HashMap<>();
+
     private class TableModel extends PropertyHolder implements TableSqlModel {
 
         private TableModel(final DatabaseObjectModel model) {
@@ -48,6 +51,10 @@ public class MetadataModel implements SchemaSqlModel {
             return new ArrayList<ForeignKeySqlModel>(foreignKeysByTable.get(getName()));
         }
 
+        @Override
+        public PrimaryKeySqlModel getPrimaryKey() {
+            return primaryKeysByTable.get(getName());
+        }
     }
 
     private class ForeignKeyModel implements ForeignKeySqlModel {
@@ -141,6 +148,12 @@ public class MetadataModel implements SchemaSqlModel {
         addForeignKey(accumulator, Collections.<String, String>emptyMap());
     }
 
+    void addPrimaryKey(DatabaseObjectModel objectModel) {
+        final PrimaryKeyModel key = new PrimaryKeyModel(objectModel);
+        final String tableName = key.getProperties().get("TABLE_NAME");
+        primaryKeysByTable.put(tableName, key);
+    }
+
     void addForeignKey(final List<DatabaseObjectModel> accumulator, final Map<String, String> extraProperties) {
         final ForeignKeyModel foreignKeyModel = new ForeignKeyModel(accumulator, extraProperties);
         final List<ForeignKeyModel> tableForeignKeys = foreignKeysByTable.get(foreignKeyModel.getProperties().get("FKTABLE_NAME"));
@@ -168,5 +181,29 @@ public class MetadataModel implements SchemaSqlModel {
     @Override
     public List<TableSqlModel> getTables() {
         return new ArrayList<TableSqlModel>(tables.values());
+    }
+
+    private class PrimaryKeyModel extends PropertyHolder implements PrimaryKeySqlModel {
+
+        private PrimaryKeyModel(final DatabaseObjectModel other) {
+            super(other);
+        }
+
+        @Override
+        public TableSqlModel getTable() {
+            return getProperties().get("TABLE_NAME");
+        }
+
+        @Override
+        public TableSqlModel getReferencedTable() {
+            // TODO implement
+            throw new RuntimeException("Not implemented");
+        }
+
+        @Override
+        public List<DatabaseObjectModel> getColumns() {
+            // TODO implement
+            throw new RuntimeException("Not implemented");
+        }
     }
 }

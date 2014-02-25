@@ -17,9 +17,12 @@
     </bean>
     
     <bean id="codeWriter" class="org.symqle.modeler.generator.FreeMarkerCodeWriter">
-        
+        <property name="backendPackageName" value="org.symqle.sample.backend"/>
+        <property name="clientPackageName" value="org.symqle.sample.client"/>
+        <property name="generatedPrimaryKeys" value="false"/>
+        <property name="outputDirectory" value="target/sample/src"/>
     </bean>
-    
+
     <bean id="metadataReader" class="org.symqle.modeler.metadata.MetadataReader">
         <property name="databaseUrl" value="${symqle.modeler.jdbc.url}"/>
         <property name="driverClassName" value="${symqle.modeler.jdbc.driver}"/>
@@ -34,8 +37,16 @@
                     <property name="property" value="TABLE_TYPE"/>
                     <property name="pattern" value="ALIAS"/>
                     <property name="matchOutcome" value="DENY"/>
-
                 </bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="propertyPlaceholderConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>file:${user.home}/.symqle/modeler.properties</value>
             </list>
         </property>
     </bean>
