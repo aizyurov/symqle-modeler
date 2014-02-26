@@ -59,6 +59,9 @@ public class PlainKeysTableTest extends TestCase {
         generate("freemarker/PlainKeysDto.ftl", "Dto");
     }
 
+    public void testAllTypesDao() throws Exception {
+        generate("freemarker/PlainKeysDao.ftl", "Dao");
+    }
     private void generate(final String templateName, final String suffix) throws Exception {
         final String url = "jdbc:derby:memory:symqle";
         initDatabase(url, "PlainKeysTable.sql");

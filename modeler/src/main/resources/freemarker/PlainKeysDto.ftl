@@ -29,7 +29,7 @@ public class ${className} {
     private <#if isPrimaryKey(column, model) >final </#if>${columnTypeMapping["${column.properties.DATA_TYPE}"]} ${column.properties.JAVA_NAME};
   </#list>
 
-   public ${model.properties.JAVA_NAME}(<#if model.primaryKey??><#list model.primaryKey.columns as column>final ${columnTypeMapping["${column.properties.DATA_TYPE}"]} ${column.properties.JAVA_NAME}</#list></#if>) {
+   public ${model.properties.JAVA_NAME}(<#if model.primaryKey??><#list model.primaryKey.columns as column>final ${columnTypeMapping["${column.properties.DATA_TYPE}"]} ${column.properties.JAVA_NAME}<#if column_has_next>,</#list></#if>) {
       <#if model.primaryKey??>
           <#list model.primaryKey.columns as column>
             this.${column.properties.JAVA_NAME} = ${column.properties.JAVA_NAME};
