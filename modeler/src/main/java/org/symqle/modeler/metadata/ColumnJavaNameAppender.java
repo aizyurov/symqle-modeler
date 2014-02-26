@@ -39,6 +39,7 @@ public class ColumnJavaNameAppender extends AbstractTransformer {
             }
         }
 
+        copyPrimaryKeys(source, model);
         copyForeignKeys(source, model);
 
         return model;

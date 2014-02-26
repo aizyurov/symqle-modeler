@@ -2,6 +2,7 @@ package org.symqle.modeler.metadata;
 
 import org.symqle.modeler.sql.ColumnSqlModel;
 import org.symqle.modeler.sql.ForeignKeySqlModel;
+import org.symqle.modeler.sql.PrimaryKeySqlModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
 import org.symqle.modeler.transformer.Transformer;
@@ -22,7 +23,7 @@ public abstract class AbstractTransformer implements Transformer {
     protected void copyForeignKeys(final SchemaSqlModel source, final MetadataModel target) {
         for (TableSqlModel table: source.getTables()) {
             for (ForeignKeySqlModel fk: table.getForeignKeys()) {
-                target.addForeignKey(fk.getColumns());
+                target.addForeignKey(fk.getColumnProperties());
             }
         }
     }
@@ -31,6 +32,15 @@ public abstract class AbstractTransformer implements Transformer {
         for (TableSqlModel table: source.getTables()) {
             for (ColumnSqlModel column: table.getColumns()) {
                 model.addColumn(column);
+            }
+        }
+    }
+
+    protected void copyPrimaryKeys(final SchemaSqlModel source, final MetadataModel target) {
+        for (TableSqlModel table: source.getTables()) {
+            final PrimaryKeySqlModel primaryKey = table.getPrimaryKey();
+            if (primaryKey != null) {
+                target.addPrimaryKey(primaryKey.getColumnProperties());
             }
         }
     }

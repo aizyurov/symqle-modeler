@@ -1,12 +1,15 @@
 package org.symqle.modeler;
 
 import junit.framework.TestCase;
+import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.symqle.modeler.metadata.MetadataReader;
 import org.symqle.modeler.sql.ColumnPair;
 import org.symqle.modeler.sql.ColumnSqlModel;
 import org.symqle.modeler.sql.ForeignKeySqlModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
+
+import javax.sql.DataSource;
 
 /**
  * @author lvovich
@@ -15,10 +18,14 @@ public class MetadataReaderTest extends TestCase {
 
     public void testSymqleTestDatabase() throws Exception {
         final MetadataReader reader = new MetadataReader();
-        reader.setDriverClassName("com.mysql.jdbc.Driver");
-        reader.setDatabaseUrl("jdbc:mysql://localhost:3306/jtrac");
-        reader.setUser("simqle");
-        reader.setPassword("simqle");
+        final DataSource dataSource = new SingleConnectionDataSource(
+                "com.mysql.jdbc.Driver",
+                "jdbc:mysql://localhost:3306/jtrac",
+                "simqle",
+                "simqle",
+                false);
+
+        reader.setDataSource(dataSource);
 
         final SchemaSqlModel model = reader.readModel();
 

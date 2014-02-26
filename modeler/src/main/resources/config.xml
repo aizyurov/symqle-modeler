@@ -4,7 +4,7 @@
 <beans default-lazy-init="true" default-autowire="no">
     
     <bean id="generator" class="org.symqle.modeler.generator.Generator">
-        <property name="codeWriter" ref="codeWriter"/>
+        <property name="codeWriter" ref="${symqle.modeler.code.writer}"/>
         <property name="modelReader" ref="metadataReader"/>
         <property name="transformers">
             <list>
@@ -16,18 +16,59 @@
         </property>
     </bean>
     
-    <bean id="codeWriter" class="org.symqle.modeler.generator.FreeMarkerCodeWriter">
-        <property name="backendPackageName" value="org.symqle.sample.backend"/>
-        <property name="clientPackageName" value="org.symqle.sample.client"/>
-        <property name="generatedPrimaryKeys" value="false"/>
-        <property name="outputDirectory" value="target/sample/src"/>
+    <bean id="freeMarkerPlainKeysWriter" class="org.symqle.modeler.generator.CodeWriter">
+        <property name="packageNames">
+            <map>
+                <entry key="model" value="${symqle.modeler.model.package}"/>
+                <entry key="model" value="${symqle.modeler.dto.package}"/>
+                <entry key="model" value="${symqle.modeler.dao.package}"/>
+            </map>
+        </property>
+        <property name="outputDirectory" value="${symqle.modeler.generated.classes.dir}"/>
+        <property name="packageWriters">
+            <list>
+                <ref bean="freeMarkerPlainKeysTableWriter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="freeMarkerPlainKeysTableWriter" class="org.symqle.modeler.generator.PackageWriter">
+        <property name="packageKey" value="model"/>
+        <property name="classWriter">
+            <bean class="org.symqle.modeler.generator.FreeMarkerClassWriter">
+                <property name="templateName" value="freemarker/PlainKeysTable.ftl"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="freeMarkerPlainKeysDtoWriter" class="org.symqle.modeler.generator.PackageWriter">
+        <property name="packageKey" value="dto"/>
+        <property name="classWriter">
+            <bean class="org.symqle.modeler.generator.FreeMarkerClassWriter">
+                <property name="templateName" value="freemarker/PlainKeysDto.ftl"/>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="freeMarkerPlainKeysSelectorWriter" class="org.symqle.modeler.generator.PackageWriter">
+        <property name="packageKey" value="dao"/>
+        <property name="classWriter">
+            <bean class="org.symqle.modeler.generator.FreeMarkerClassWriter">
+                <property name="templateName" value="freemarker/PlainKeysSelector.ftl"/>
+            </bean>
+        </property>
     </bean>
 
     <bean id="metadataReader" class="org.symqle.modeler.metadata.MetadataReader">
-        <property name="databaseUrl" value="${symqle.modeler.jdbc.url}"/>
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.SingleConnectionDataSource">
+        <property name="url" value="${symqle.modeler.jdbc.url}"/>
         <property name="driverClassName" value="${symqle.modeler.jdbc.driver}"/>
-        <property name="user" value="${symqle.modeler.jdbc.user}"/>
+        <property name="username" value="${symqle.modeler.jdbc.user}"/>
         <property name="password" value="${symqle.modeler.jdbc.password}"/>
+        <property name="suppressClose" value="false"/>
     </bean>
     
     <bean name="sieve" class="org.symqle.modeler.metadata.Sieve">
@@ -46,9 +87,12 @@
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
+                <value>default.modeler.properties</value>
                 <value>file:${user.home}/.symqle/modeler.properties</value>
             </list>
         </property>
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
     </bean>
 
 </beans>

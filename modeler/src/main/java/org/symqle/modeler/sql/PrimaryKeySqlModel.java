@@ -14,6 +14,7 @@ public interface PrimaryKeySqlModel extends DatabaseObjectModel {
      * @return
      */
     TableSqlModel getTable();
-    List<DatabaseObjectModel> getColumns();
+    List<DatabaseObjectModel> getColumnProperties();
+    List<ColumnSqlModel> getColumns();
 
 }

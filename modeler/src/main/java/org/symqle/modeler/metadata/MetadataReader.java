@@ -3,9 +3,9 @@ package org.symqle.modeler.metadata;
 import org.symqle.modeler.sql.DatabaseObjectModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-import java.sql.Driver;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -14,46 +14,24 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
 /**
  * @author lvovich
  */
 public class MetadataReader implements ModelReader {
-    private String driverClassName;
-    private String databaseUrl;
-    private String user;
-    private String password;
 
-    public void setDriverClassName(final String driverClassName) {
-        this.driverClassName = driverClassName;
-    }
+    private DataSource dataSource;
 
-    public void setDatabaseUrl(final String databaseUrl) {
-        this.databaseUrl = databaseUrl;
-    }
-
-    public void setUser(final String user) {
-        this.user = user;
-    }
-
-    public void setPassword(final String password) {
-        this.password = password;
+    public void setDataSource(final DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
     public SchemaSqlModel readModel() throws SQLException, ReflectiveOperationException {
-        Driver driver = (Driver) Class.forName(driverClassName).newInstance();
-        final Properties info = new Properties();
-        info.setProperty("user", user);
-        info.setProperty("password", password);
-        final Connection connection = driver.connect(databaseUrl, info);
-        try {
+        try (Connection connection = dataSource.getConnection()) {
             DatabaseMetaData metaData = connection.getMetaData();
             return readMetadata(metaData);
-        } finally {
-            connection.close();
         }
     }
 

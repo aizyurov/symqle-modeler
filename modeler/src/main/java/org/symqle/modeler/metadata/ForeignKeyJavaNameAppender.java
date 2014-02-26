@@ -30,6 +30,7 @@ public class ForeignKeyJavaNameAppender extends AbstractTransformer {
 
         copyTables(source, model);
         copyColumns(source, model);
+        copyPrimaryKeys(source, model);
 
         for (TableSqlModel table: source.getTables()) {
             final Set<String> usedNames = new HashSet<>();
@@ -39,7 +40,7 @@ public class ForeignKeyJavaNameAppender extends AbstractTransformer {
             }
 
             for (ForeignKeySqlModel fk: table.getForeignKeys()) {
-                final List<DatabaseObjectModel> fkColumns = fk.getColumns();
+                final List<DatabaseObjectModel> fkColumns = fk.getColumnProperties();
                 final String key = fkColumns.size() > 1 ? multiColumnKey : singleColumnKey;
                 final String sqlName = fk.getProperties().get(key);
                 final Map<String, String> properties = new HashMap<>();
@@ -60,7 +61,7 @@ public class ForeignKeyJavaNameAppender extends AbstractTransformer {
                     }
                 }
                 boolean notNullable = true;
-                for (DatabaseObjectModel fkColumn: fk.getColumns()) {
+                for (DatabaseObjectModel fkColumn: fk.getColumnProperties()) {
                     notNullable &= "0".equals(fkColumn.getProperties().get("NULLABLE"));
                 }
                 properties.put("NOT_NULLABLE", String.valueOf(notNullable));

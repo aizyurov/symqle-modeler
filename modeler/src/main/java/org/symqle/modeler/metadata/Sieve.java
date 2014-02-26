@@ -3,6 +3,7 @@ package org.symqle.modeler.metadata;
 import org.symqle.modeler.sql.ColumnSqlModel;
 import org.symqle.modeler.sql.DatabaseObjectModel;
 import org.symqle.modeler.sql.ForeignKeySqlModel;
+import org.symqle.modeler.sql.PrimaryKeySqlModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
 import org.symqle.modeler.transformer.Filter;
@@ -59,8 +60,12 @@ public class Sieve implements Transformer {
         for (TableSqlModel table : acceptedTables) {
             for (ForeignKeySqlModel foreignKey: table.getForeignKeys()) {
                 if (accept(foreignKey, foreignKeyFilters)) {
-                    model.addForeignKey(foreignKey.getColumns());
+                    model.addForeignKey(foreignKey.getColumnProperties());
                 }
+            }
+            final PrimaryKeySqlModel pk = table.getPrimaryKey();
+            if (pk != null) {
+                model.addPrimaryKey(pk.getColumnProperties());
             }
         }
 
@@ -79,6 +84,6 @@ public class Sieve implements Transformer {
                     return false;
             }
         }
-        return false;
+        return true;
     }
 }

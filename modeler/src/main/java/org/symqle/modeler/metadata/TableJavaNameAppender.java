@@ -34,6 +34,7 @@ public class TableJavaNameAppender extends  AbstractTransformer {
 
         copyColumns(source, model);
         copyForeignKeys(source, model);
+        copyPrimaryKeys(source, model);
 
         return model;
     }

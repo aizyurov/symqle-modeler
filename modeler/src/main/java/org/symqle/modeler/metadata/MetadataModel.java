@@ -73,7 +73,7 @@ public class MetadataModel implements SchemaSqlModel {
 
 
         @Override
-        public List<DatabaseObjectModel> getColumns() {
+        public List<DatabaseObjectModel> getColumnProperties() {
             return new ArrayList<>(fkColumns);
         }
 
@@ -108,6 +108,7 @@ public class MetadataModel implements SchemaSqlModel {
             properties.putAll(extraProperties);
             return properties;
         }
+
     }
 
 
@@ -153,6 +154,8 @@ public class MetadataModel implements SchemaSqlModel {
         primaryKeysByTable.put(tableName, key);
     }
 
+
+
     void addForeignKey(final List<DatabaseObjectModel> accumulator, final Map<String, String> extraProperties) {
         final ForeignKeyModel foreignKeyModel = new ForeignKeyModel(accumulator, extraProperties);
         final List<ForeignKeyModel> tableForeignKeys = foreignKeysByTable.get(foreignKeyModel.getProperties().get("FKTABLE_NAME"));
@@ -197,12 +200,30 @@ public class MetadataModel implements SchemaSqlModel {
 
         @Override
         public Map<String, String> getProperties() {
-            return Collections.emptyMap();
+            final Map<String, String> props = new HashMap<>(columns.get(0).getProperties());
+            props.remove("COLUMN_NAME");
+            props.remove("KEY_SEQ");
+            return props;
         }
 
         @Override
-        public List<DatabaseObjectModel> getColumns() {
+        public List<DatabaseObjectModel> getColumnProperties() {
             return Collections.unmodifiableList(columns);
+        }
+
+        @Override
+        public List<ColumnSqlModel> getColumns() {
+            final List<ColumnSqlModel> result = new ArrayList<>();
+            for (DatabaseObjectModel column : columns) {
+                final ColumnModel columnModel = columnsByTable.get(column.getProperties().get("TABLE_NAME"))
+                        .get(column.getProperties().get("COLUMN_NAME"));
+                if (columnModel == null) {
+                    throw new IllegalStateException("column not found: " + column.getProperties().get("TABLE_NAME") +"." + column.getProperties().get("COLUMN_NAME"));
+                } else {
+                    result.add(columnModel);
+                }
+            }
+            return result;
         }
     }
 }
