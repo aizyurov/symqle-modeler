@@ -63,7 +63,7 @@ public class PlainKeysTableTest extends TestCase {
         generate("freemarker/PlainKeysDao.ftl", "Dao");
     }
     private void generate(final String templateName, final String suffix) throws Exception {
-        final String url = "jdbc:derby:memory:symqle";
+        final String url = "jdbc:derby:memory:symqle"+suffix;
         initDatabase(url, "PlainKeysTable.sql");
         final DataSource dataSource = new SingleConnectionDataSource(url, false);
         final MetadataReader reader = new MetadataReader();
@@ -79,8 +79,8 @@ public class PlainKeysTableTest extends TestCase {
         packageDir.mkdirs();
         final Map<String, String> packageNames = new HashMap<>();
         packageNames.put("model", "org.symqle.model");
-        packageNames.put("dto", "org.symqle.dto");
-        packageNames.put("dao", "org.symqle.dao");
+        packageNames.put("dto", "org.symqle.model");
+        packageNames.put("dao", "org.symqle.model");
         final FreeMarkerClassWriter writer = new FreeMarkerClassWriter();
         writer.setTemplateName(templateName);
         writer.setSuffix(suffix);

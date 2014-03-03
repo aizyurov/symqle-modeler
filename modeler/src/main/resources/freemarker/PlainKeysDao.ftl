@@ -15,7 +15,8 @@
 package ${packages["${package}"]};
 
 import org.symqle.sql.Mappers;
-// DOTO import Dto and SmartSelector
+import org.symqle.sql.SmartSelector;
+import ${packages["dto"]}.${model.properties.JAVA_NAME}Dto;
 <#list requiredImport?keys as importKey>
   <#list model.columns as column>
       <#assign javaType>${columnTypeMapping["${column.properties.DATA_TYPE}"]}</#assign>
@@ -33,14 +34,15 @@ public class ${className} extends SmartSelector<${model.properties.JAVA_NAME}Dto
       this.table = table;
   }
 
-  public ${model.properties.JAVA_NAME}Dto create() {
+  public ${model.properties.JAVA_NAME}Dto create() throws SQLException {
       final ${model.properties.JAVA_NAME}Dto dto =
-          new ${model.properties.JAVA_NAME}Dto(<#if model.primaryKey??><#list model.primaryKey.columns as column>get(table.${column.properties.JAVA_NAME}())<#if column_has_next>,</#if></#list></#if>;
+          new ${model.properties.JAVA_NAME}Dto(<#if model.primaryKey??><#list model.primaryKey.columns as column>get(table.${column.properties.JAVA_NAME}())<#if column_has_next>,</#if></#list></#if>);
 <#list model.columns as column>
           <#if ! isPrimaryKey(column, model) >
-          dto.set${column.properties.JAVA_NAME?cap_first}(get(table.${column.properties.JAVA_NAME}());
+          dto.set${column.properties.JAVA_NAME?cap_first}(get(table.${column.properties.JAVA_NAME}()));
           </#if>
 </#list>
+  return dto;
   }
 }
 
