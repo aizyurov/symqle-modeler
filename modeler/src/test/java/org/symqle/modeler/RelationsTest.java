@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * @author lvovich
  */
-public class PlainKeysTableTest extends TestCase {
+public class RelationsTest extends TestCase {
 
     private final List<Transformer> transformers = Arrays.<Transformer>asList(createSieve(), new TableJavaNameAppender(), new ColumnJavaNameAppender(), new ForeignKeyJavaNameAppender());
 
@@ -51,25 +51,13 @@ public class PlainKeysTableTest extends TestCase {
         return sieve;
     }
 
-    public void testAllTypesTable() throws Exception {
+    public void testRelations() throws Exception {
         generate("freemarker/PlainKeysTable.ftl", "");
-    }
-
-    public void testAllTypesDto() throws Exception {
-        generate("freemarker/PlainKeysDto.ftl", "Dto");
-    }
-
-    public void testAllTypesSmartSelector() throws Exception {
-        generate("freemarker/PlainKeysSmartSelector.ftl", "SmartSelector");
-    }
-
-    public void testAllTypesSelector() throws Exception {
-        generate("freemarker/PlainKeysSelector.ftl", "Selector");
     }
 
     private void generate(final String templateName, final String suffix) throws Exception {
         final String url = "jdbc:derby:memory:symqle"+suffix;
-        initDatabase(url, "PlainKeysTable.sql");
+        initDatabase(url, "relations.sql");
         final DataSource dataSource = new SingleConnectionDataSource(url, false);
         final MetadataReader reader = new MetadataReader();
         reader.setDataSource(dataSource);
