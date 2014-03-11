@@ -45,7 +45,7 @@ public class ForeignKeyJavaNameAppender extends AbstractTransformer {
                 final String sqlName = fk.getProperties().get(key);
                 final Map<String, String> properties = new HashMap<>();
                 final String camelCaseName = StringUtils.camelize(sqlName);
-                String suggestedName = camelCaseName + "Ref";
+                String suggestedName = fkColumns.size() > 1 ? camelCaseName : camelCaseName + "Ref";
                 for (String suffix : FK_SUFFIXES) {
                     if (camelCaseName.toUpperCase().endsWith(suffix) && camelCaseName.length() > suffix.length()) {
                         suggestedName = camelCaseName.substring(0, camelCaseName.length() - suffix.length());
