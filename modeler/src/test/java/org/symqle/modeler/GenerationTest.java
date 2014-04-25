@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * @author lvovich
  */
-public class RelationsTest extends DatabaseTestCase {
+public class GenerationTest extends DatabaseTestBase {
 
     @Override
     public void setUp() throws Exception {
@@ -39,6 +39,17 @@ public class RelationsTest extends DatabaseTestCase {
             if (file.isFile()) {
                 file.delete();
             }
+        }
+    }
+
+
+
+    // generated code is different due to different data types in model
+    // cannont use same expected code for all DBs, run for Apache Derby only
+    @Override
+    protected void runTest() throws Throwable {
+        if ("Apache Derby".equals(getDatabaseName())) {
+            super.runTest();
         }
     }
 

@@ -1,6 +1,7 @@
 package org.symqle.modeler.metadata;
 
 import org.symqle.modeler.sql.ColumnSqlModel;
+import org.symqle.modeler.sql.PrimaryKeySqlModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
 import org.symqle.modeler.utils.StringUtils;
@@ -64,8 +65,9 @@ public class ColumnTransformer extends AbstractTransformer {
     }
 
     private boolean mustGenerateKey(final ColumnSqlModel column) {
-        return column.getOwner().getPrimaryKey().getColumns().contains(column)
-                && column.getProperties().get("IS_AUTOINCREMENT").equals("YES");
+        final PrimaryKeySqlModel primaryKey = column.getOwner().getPrimaryKey();
+        return primaryKey != null && primaryKey.getColumns().contains(column)
+                && "YES".equals(column.getProperties().get("IS_AUTOINCREMENT"));
     }
 
 }

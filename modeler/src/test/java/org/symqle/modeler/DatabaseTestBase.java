@@ -17,12 +17,20 @@ import java.util.Properties;
 /**
  * @author lvovich
  */
-public class DatabaseTestCase extends TestCase {
+public class DatabaseTestBase extends TestCase {
 
     private final static DataSource dataSource = createDataSource();
 
     protected DataSource getDataSource() throws Exception {
         return dataSource;
+    }
+
+    public String getDatabaseName() {
+        try {
+            return getDatabaseName(dataSource);
+        } catch (SQLException e) {
+            throw new RuntimeException("Internal error", e);
+        }
     }
 
     private static DataSource createDataSource() {
@@ -43,7 +51,7 @@ public class DatabaseTestCase extends TestCase {
                         properties.getProperty("symqle.jdbc.url"),
                         properties.getProperty("symqle.jdbc.user"),
                         properties.getProperty("symqle.jdbc.password"),
-                        false);
+                        true);
                 final String databaseName = getDatabaseName(initDataSource);
                 String resource = databaseName + "DbSetup.sql";
                 initDatabase(initDataSource, resource);
@@ -67,7 +75,7 @@ public class DatabaseTestCase extends TestCase {
     private static void initDatabase(final DataSource dataSource, String resource) throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             final BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(DatabaseTestCase.class.getClassLoader().getResourceAsStream(resource)));
+                    new InputStreamReader(DatabaseTestBase.class.getClassLoader().getResourceAsStream(resource)));
             try {
                 final StringBuilder builder = new StringBuilder();
                     for (String line = reader.readLine(); line != null; line = reader.readLine()) {

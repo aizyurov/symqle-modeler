@@ -1,39 +1,55 @@
 package org.symqle.modeler;
 
-import junit.framework.TestCase;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.symqle.modeler.metadata.ColumnTransformer;
 import org.symqle.modeler.metadata.ForeignKeyTransformer;
+import org.symqle.modeler.metadata.GeneratedFkTransformer;
 import org.symqle.modeler.metadata.MetadataReader;
+import org.symqle.modeler.metadata.Sieve;
 import org.symqle.modeler.metadata.TableTransformer;
-import org.symqle.modeler.sql.ColumnPair;
 import org.symqle.modeler.sql.ColumnSqlModel;
 import org.symqle.modeler.sql.DatabaseObjectModel;
-import org.symqle.modeler.sql.ForeignKeySqlModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
+import org.symqle.modeler.transformer.Filter;
+import org.symqle.modeler.transformer.FilterOutcome;
+import org.symqle.modeler.transformer.RegexpFilter;
 import org.symqle.modeler.transformer.Transformer;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author lvovich
  */
-public class TransformerTest extends TestCase {
+public class TransformerTest extends DatabaseTestBase {
 
-    private final List<Transformer> transformers = Arrays.<Transformer>asList(new TableTransformer(), new ColumnTransformer(), new ForeignKeyTransformer());
+    private final List<Transformer> transformers = Arrays.<Transformer>asList(createSieve(), new TableTransformer(),
+            new ColumnTransformer(), new GeneratedFkTransformer(), new ForeignKeyTransformer());
 
-    public void testSymqleTestDatabase() throws Exception {
+    private final Sieve createSieve() {
+        final Sieve sieve = new Sieve();
+        final RegexpFilter regexpFilter = new RegexpFilter();
+        regexpFilter.setPattern("SYS.*");
+        regexpFilter.setMatchOutcome(FilterOutcome.DENY);
+        regexpFilter.setProperty("TABLE_NAME");
+        final Filter acceptOthers = new Filter() {
+            @Override
+            public FilterOutcome decide(final DatabaseObjectModel subject) {
+                return FilterOutcome.ACCEPT;
+            }
+        };
+        sieve.setTableFilters(Arrays.asList((Filter)regexpFilter, acceptOthers));
+        return sieve;
+    }
+
+
+    public void testTransformers() throws Exception {
         final MetadataReader reader = new MetadataReader();
-        final DataSource dataSource = new SingleConnectionDataSource(
-                "com.mysql.jdbc.Driver",
-                "jdbc:mysql://localhost:3306/jtrac",
-                "simqle",
-                "simqle",
-                false);
+        final DataSource dataSource = getDataSource();
 
         reader.setDataSource(dataSource);
 
@@ -45,27 +61,37 @@ public class TransformerTest extends TestCase {
             transformed = transformer.transform(transformed);
         }
 
+        final Map<String, TableSqlModel> tableMap = new TreeMap<>();
         for (TableSqlModel table : transformed.getTables()) {
-                System.out.println("Table: " + table.getProperties().get("JAVA_NAME") + "[" +table.getProperties().get("TABLE_TYPE") +"]");
+            final String name = table.getProperties().get("TABLE_NAME").toUpperCase();
+            assertNull(name, tableMap.put(name, table));
+        }
+        assertTrue(tableMap.keySet().toString(), tableMap.keySet().containsAll(Arrays.asList("ALL_TYPES", "DEPARTMENT", "DETAIL", "EMPLOYEE", "MASTER")));
+        final TableSqlModel allTypes = tableMap.get("ALL_TYPES");
+        assertEquals("AllTypes", allTypes.getProperties().get("JAVA_NAME"));
 
-            final List<DatabaseObjectModel> pkColumns = table.getPrimaryKey().getColumnProperties();
-            List<String> columnNames = new ArrayList<>();
-            for (DatabaseObjectModel column : pkColumns) {
-                columnNames.add(column.getProperties().get("COLUMN_NAME"));
-            }
-            System.out.println("Primary key: " + table.getPrimaryKey().getProperties().get("PK_NAME") + columnNames);
-                for (ColumnSqlModel columnSqlModel: table.getColumns()) {
-                    System.out.println("    " + columnSqlModel.getProperties().get("JAVA_NAME") + ":" + columnSqlModel.getProperties().get("TYPE_NAME") + " (nullability: "+columnSqlModel.getProperties().get("NULLABLE") +")" + "(size: " + columnSqlModel.getProperties().get("COLUMN_SIZE") +")");
-                }
+        final ColumnSqlModel tVarchar = getColumnByName(allTypes, "T_VARCHAR");
+        assertEquals("String", tVarchar.getProperties().get("JAVA_CLASS"));
+        assertEquals("Mappers.STRING", tVarchar.getProperties().get("COLUMN_MAPPER"));
 
-                for (ForeignKeySqlModel fk : table.getForeignKeys()) {
-                    System.out.print("fk:" + fk.getProperties().get("JAVA_NAME") + " = ");
-                    for (ColumnPair pair : fk.getMapping()) {
-                        System.out.print(pair.getFirst().getProperties().get("JAVA_NAME") + "->" + pair.getSecond().getProperties().get("TABLE_NAME") + "." + pair.getSecond().getProperties().get("JAVA_NAME") +" ");
-                    }
-                    System.out.println(" NOT_NULLABLE:" + fk.getProperties().get("NOT_NULLABLE"));
-                }
-            }
+        final TableSqlModel employee = tableMap.get("EMPLOYEE");
+        final ColumnSqlModel empId = getColumnByName(employee, "EMP_ID");
+        assertEquals("EmployeeId", empId.getProperties().get("JAVA_CLASS"));
+        assertEquals("EmployeeId.MAPPER", empId.getProperties().get("COLUMN_MAPPER"));
+        assertEquals("EmployeeId", empId.getProperties().get("GENERATED_KEY"));
+        final ColumnSqlModel deptId = getColumnByName(employee, "DEPT_ID");
+        assertEquals("DepartmentId", deptId.getProperties().get("JAVA_CLASS"));
+        assertEquals("DepartmentId.MAPPER", deptId.getProperties().get("COLUMN_MAPPER"));
+        assertEquals("DepartmentId", deptId.getProperties().get("GENERATED_KEY"));
+
+    }
+
+    private ColumnSqlModel getColumnByName(final TableSqlModel allTypes, final String columnName) {
+        final Map<String, ColumnSqlModel> columnMap = new HashMap<>();
+        for (ColumnSqlModel column : allTypes.getColumns()) {
+            columnMap.put(column.getProperties().get("COLUMN_NAME").toUpperCase(), column);
+        }
+        return columnMap.get(columnName);
     }
 
 }
