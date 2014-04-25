@@ -1,16 +1,7 @@
 <#ftl strip_whitespace="true">
-/* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
+<#include "Definitions.ftl"/>
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
 
-<#function isPrimaryKey column table>
-  ${table.properties.JAVA_NAME}.${column.properties.JAVA_NAME}
-  <#if ! table.primaryKey?? ><#return false></#if>
-  <#list table.primaryKey.columns as pk>
-      <#if pk.properties.JAVA_NAME == column.properties.JAVA_NAME>
-        <#return true>
-      </#if>
-  </#list>
-  <#return false>
-</#function>
 package ${packages["${package}"]};
 
 <#list model.externalClassFqn as requiredImport>
@@ -22,7 +13,7 @@ import ${packages["symqle.modeler.dto.package"]}.${key};
 
 public class ${className} {
   <#list model.columns as column>
-    private <#if isPrimaryKey(column, model) >final </#if>${column.properties.JAVA_CLASS} ${column.properties.JAVA_NAME};
+    private <#if isPrimaryKey(column) >final </#if>${column.properties.JAVA_CLASS} ${column.properties.JAVA_NAME};
   </#list>
 
    public ${className}(<#if model.primaryKey??><#list model.primaryKey.columns as column>final ${column.properties.JAVA_CLASS} ${column.properties.JAVA_NAME}<#if column_has_next>,</#if></#list></#if>) {
@@ -37,7 +28,7 @@ public class ${className} {
   public ${column.properties.JAVA_CLASS} get${column.properties.JAVA_NAME?cap_first}() {
     return ${column.properties.JAVA_NAME};
   }
-  <#if ! isPrimaryKey(column, model)>
+  <#if ! isPrimaryKey(column)>
   public void set${column.properties.JAVA_NAME?cap_first}(final ${column.properties.JAVA_CLASS} ${column.properties.JAVA_NAME}) {
     this.${column.properties.JAVA_NAME} = ${column.properties.JAVA_NAME};
   }

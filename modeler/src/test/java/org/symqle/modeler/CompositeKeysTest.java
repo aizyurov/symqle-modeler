@@ -52,7 +52,7 @@ public class CompositeKeysTest extends TestCase {
     }
 
     public void testRelations() throws Exception {
-        generate("freemarker/PlainKeysTable.ftl", "");
+        generate("freemarker/Table.ftl", "");
     }
 
     private void generate(final String templateName, final String suffix) throws Exception {

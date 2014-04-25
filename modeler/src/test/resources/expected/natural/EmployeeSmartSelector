@@ -1,0 +1,38 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.sql.SmartSelector;
+import org.symqle.model.EmployeeDto;
+import org.symqle.model.Employee;
+
+import java.sql.SQLException;
+
+/**
+ * Selects {@link org.symqle.model.EmployeeDto} from {@link org.symqle.model.Employee}.
+ */
+public class EmployeeSmartSelector extends SmartSelector<EmployeeDto> {
+
+  private final Employee table;
+
+  /**
+   * Constructs EmployeeSmartSelector for given table.
+   * @param table instance of Employee to select from.
+   */
+  public EmployeeSmartSelector(final Employee table) {
+      this.table = table;
+  }
+
+  protected final EmployeeDto create() throws SQLException {
+      final EmployeeDto dto = new EmployeeDto(get(table.empId()));
+      dto.setFirstName(get(table.firstName()));
+      dto.setLastName(get(table.lastName()));
+      dto.setTitle(get(table.title()));
+      dto.setHireDate(get(table.hireDate()));
+      dto.setIsRetired(get(table.isRetired()));
+      dto.setSalary(get(table.salary()));
+      dto.setDeptId(get(table.deptId()));
+      return dto;
+  }
+}
+

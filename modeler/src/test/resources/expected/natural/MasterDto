@@ -1,0 +1,30 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+
+public class MasterDto {
+    private final Integer major;
+    private final Long minor;
+    private String name;
+
+   public MasterDto(final Integer major,final Long minor) {
+            this.major = major;
+            this.minor = minor;
+   }
+
+  public Integer getMajor() {
+    return major;
+  }
+  public Long getMinor() {
+    return minor;
+  }
+  public String getName() {
+    return name;
+  }
+  public void setName(final String name) {
+    this.name = name;
+  }
+
+}
+

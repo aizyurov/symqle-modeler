@@ -1,0 +1,46 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.jdbc.Engine;
+import org.symqle.jdbc.GeneratedKeys;
+import org.symqle.jdbc.Option;
+import org.symqle.jdbc.PreparedUpdate;
+import org.symqle.sql.SetClauseList;
+import org.symqle.model.DetailDto;
+
+import java.sql.SQLException;
+import java.util.Arrays;
+
+public class DetailSaver {
+
+    private final Engine engine;
+    private final Option[] options;
+
+    public DetailSaver(final Engine engine, final Option[] options) {
+        this.engine = engine;
+        this.options = Arrays.copyOf(options, options.length);
+    }
+
+    public Integer save(final DetailDto dto) throws SQLException {
+        final Detail table = new Detail();
+        final SetClauseList setList = table.masterMajor().set(dto.getMasterMajor())
+                                .also(table.masterMinor().set(dto.getMasterMinor()))
+                                .also(table.name().set(dto.getName()));
+      final Integer id = dto.getId();
+      if (id == null) {
+          final Integer newId = generateId();
+          final SetClauseList setListWithId = setList.also(table.id().set(newId));
+          table.insert(setListWithId).compileUpdate(engine, options).execute();
+          return newId;
+      } else {
+          final int affectedRows = table.update(setList).where(table.id().eq(id)).compileUpdate(engine, options).execute();
+          return affectedRows == 1 ? id : null;
+      }
+    }
+      private Long generateId() {
+          throw new IllegalStateException("Not implemented");
+      }
+}
+
+

@@ -1,0 +1,37 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.sql.Selector;
+import org.symqle.common.RowMapper;
+import org.symqle.common.Row;
+import org.symqle.model.MasterDto;
+import org.symqle.model.Master;
+import java.sql.SQLException;
+
+/**
+ * Selects {@link org.symqle.model.MasterDto} from {@link org.symqle.model.Master}.
+ */
+public class MasterSelector extends Selector<MasterDto> {
+
+  private final RowMapper<Integer> majorMapper;
+  private final RowMapper<Long> minorMapper;
+  private final RowMapper<String> nameMapper;
+
+  /**
+   * Constructs MasterSelector for given table.
+   * @param table instance of Master to select from.
+   */
+  public MasterSelector(final Master table) {
+      majorMapper = map(table.major());
+      minorMapper = map(table.minor());
+      nameMapper = map(table.name());
+  }
+
+  protected final MasterDto create(final Row row) throws SQLException {
+      final MasterDto dto = new MasterDto(majorMapper.extract(row),minorMapper.extract(row));
+      dto.setName(nameMapper.extract(row));
+      return dto;
+  }
+}
+

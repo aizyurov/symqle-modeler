@@ -1,0 +1,54 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.sql.Selector;
+import org.symqle.common.RowMapper;
+import org.symqle.common.Row;
+import org.symqle.model.EmployeeDto;
+import org.symqle.model.Employee;
+import java.sql.SQLException;
+import java.sql.Date;
+
+/**
+ * Selects {@link org.symqle.model.EmployeeDto} from {@link org.symqle.model.Employee}.
+ */
+public class EmployeeSelector extends Selector<EmployeeDto> {
+
+  private final RowMapper<Integer> empIdMapper;
+  private final RowMapper<String> firstNameMapper;
+  private final RowMapper<String> lastNameMapper;
+  private final RowMapper<String> titleMapper;
+  private final RowMapper<Date> hireDateMapper;
+  private final RowMapper<Boolean> isRetiredMapper;
+  private final RowMapper<Double> salaryMapper;
+  private final RowMapper<Integer> deptIdMapper;
+
+  /**
+   * Constructs EmployeeSelector for given table.
+   * @param table instance of Employee to select from.
+   */
+  public EmployeeSelector(final Employee table) {
+      empIdMapper = map(table.empId());
+      firstNameMapper = map(table.firstName());
+      lastNameMapper = map(table.lastName());
+      titleMapper = map(table.title());
+      hireDateMapper = map(table.hireDate());
+      isRetiredMapper = map(table.isRetired());
+      salaryMapper = map(table.salary());
+      deptIdMapper = map(table.deptId());
+  }
+
+  protected final EmployeeDto create(final Row row) throws SQLException {
+      final EmployeeDto dto = new EmployeeDto(empIdMapper.extract(row));
+      dto.setFirstName(firstNameMapper.extract(row));
+      dto.setLastName(lastNameMapper.extract(row));
+      dto.setTitle(titleMapper.extract(row));
+      dto.setHireDate(hireDateMapper.extract(row));
+      dto.setIsRetired(isRetiredMapper.extract(row));
+      dto.setSalary(salaryMapper.extract(row));
+      dto.setDeptId(deptIdMapper.extract(row));
+      return dto;
+  }
+}
+

@@ -3,7 +3,7 @@
 
 package ${packages["${package}"]};
 
-<#include "PlainKeysDefinitions.ftl"/>
+<#include "Definitions.ftl"/>
 import org.symqle.sql.${tableTypeMapping["${model.properties.TABLE_TYPE}"]};
 import org.symqle.common.Mappers;
 import org.symqle.sql.Column;

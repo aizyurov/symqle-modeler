@@ -1,0 +1,79 @@
+/* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
+
+package org.symqle.model;
+
+import org.symqle.sql.Table;
+import org.symqle.common.Mappers;
+import org.symqle.sql.Column;
+import org.symqle.common.OnDemand;
+
+/**
+ * TABLE DETAIL
+ * 
+ */
+public class Detail extends Table {
+
+   public String getTableName() {
+       return "DETAIL";
+   }
+
+    /**
+     * ID.
+     * INTEGER(10, 0) NOT NULL
+     * 
+     * @return ID
+     */
+    public Column<Integer> id() {
+        return defineColumn(Mappers.INTEGER, "ID");
+    }
+
+    /**
+     * MASTER_MAJOR.
+     * INTEGER(10, 0)
+     * 
+     * @return MASTER_MAJOR
+     */
+    public Column<Integer> masterMajor() {
+        return defineColumn(Mappers.INTEGER, "MASTER_MAJOR");
+    }
+
+    /**
+     * MASTER_MINOR.
+     * BIGINT(19, 0)
+     * 
+     * @return MASTER_MINOR
+     */
+    public Column<Long> masterMinor() {
+        return defineColumn(Mappers.LONG, "MASTER_MINOR");
+    }
+
+    /**
+     * NAME.
+     * VARCHAR(30)
+     * 
+     * @return NAME
+     */
+    public Column<String> name() {
+        return defineColumn(Mappers.STRING, "NAME");
+    }
+
+
+    private OnDemand<Master> master = new OnDemand<Master>() {
+        @Override
+        public Master construct() {
+            Master other = new Master();
+            leftJoin(other, masterMajor().eq(other.major()).and(masterMinor().eq(other.minor())));
+            return other;
+        }
+    };
+
+    /**
+     * Auto-join to Master by {@link #masterMajor()}, {@link #masterMinor()}
+     * FOREIGN KEY MASTER_FK (MASTER_MAJOR, MASTER_MINOR) REFERENCES MASTER (MAJOR, MINOR)
+     * @return joined Master.
+     */
+    public Master master() {
+        return master.get();
+    }
+}
+

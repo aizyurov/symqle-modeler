@@ -1,8 +1,9 @@
 package org.symqle.modeler;
 
-import junit.framework.TestCase;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
+import org.apache.commons.io.IOUtils;
 import org.symqle.modeler.generator.FreeMarkerClassWriter;
+import org.symqle.modeler.generator.GeneratedKeyWriter;
+import org.symqle.modeler.generator.SaverWriter;
 import org.symqle.modeler.metadata.ColumnTransformer;
 import org.symqle.modeler.metadata.ForeignKeyTransformer;
 import org.symqle.modeler.metadata.GeneratedFkTransformer;
@@ -18,12 +19,9 @@ import org.symqle.modeler.transformer.RegexpFilter;
 import org.symqle.modeler.transformer.Transformer;
 
 import javax.sql.DataSource;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -32,14 +30,27 @@ import java.util.Map;
 /**
  * @author lvovich
  */
-public class RelationsTest extends TestCase {
+public class RelationsTest extends DatabaseTestCase {
+
+    @Override
+    public void setUp() throws Exception {
+        packageDir.mkdirs();
+        for (File file: packageDir.listFiles()) {
+            if (file.isFile()) {
+                file.delete();
+            }
+        }
+    }
 
     private ColumnTransformer makeColumnTransformer(boolean naturalKeys) {
         final ColumnTransformer columnTransformer = new ColumnTransformer();
         columnTransformer.setNaturalKeys(naturalKeys);
         return columnTransformer;
     }
-    private final List<Transformer> transformers = Arrays.<Transformer>asList(createSieve(), new TableTransformer(),
+    private final List<Transformer> naturalKeyTransformers = Arrays.<Transformer>asList(createSieve(), new TableTransformer(),
+            makeColumnTransformer(true), new GeneratedFkTransformer(), new ForeignKeyTransformer());
+
+    private final List<Transformer> generatedKeyTransformers = Arrays.<Transformer>asList(createSieve(), new TableTransformer(),
             makeColumnTransformer(false), new GeneratedFkTransformer(), new ForeignKeyTransformer());
 
     private final Sieve createSieve() {
@@ -58,19 +69,104 @@ public class RelationsTest extends TestCase {
         return sieve;
     }
 
-    public void testRelations() throws Exception {
-        generate("freemarker/PlainKeysTable.ftl", "");
-        generate("freemarker/PlainKeysDto.ftl", "Dto");
-        generate("freemarker/GeneratedKey.ftl", "Id");
-        generate("freemarker/PlainKeysSelector.ftl", "Selector");
-        generate("freemarker/PlainKeysSmartSelector.ftl", "SmartSelector");
-        generate("freemarker/Saver.ftl", "Saver");
+    public void testTableNaturalKeys() throws Exception {
+        generate(naturalKeyTransformers, "freemarker/Table.ftl", "", new FreeMarkerClassWriter());
+        assertMatchesExpected("expected/natural", "AllTypes");
+        assertMatchesExpected("expected/natural", "Department");
+        assertMatchesExpected("expected/natural", "Detail");
     }
 
-    private void generate(final String templateName, final String suffix) throws Exception {
-        final String url = "jdbc:derby:memory:symqle"+suffix;
-        initDatabase(url, "relations.sql");
-        final DataSource dataSource = new SingleConnectionDataSource(url, false);
+    public void testTableGeneratedKeys() throws Exception {
+        generate(generatedKeyTransformers, "freemarker/Table.ftl", "", new FreeMarkerClassWriter());
+        assertMatchesExpected("expected/generated", "AllTypes");
+        assertMatchesExpected("expected/generated", "Department");
+        assertMatchesExpected("expected/generated", "Detail");
+    }
+
+    public void testNoGeneratedIds() throws Exception {
+        generate(naturalKeyTransformers, "freemarker/GeneratedKey.ftl", "Id", new GeneratedKeyWriter());
+        assertEquals(0, packageDir.listFiles().length);
+    }
+
+    public void testGeneratedKeys() throws Exception {
+        generate(generatedKeyTransformers, "freemarker/GeneratedKey.ftl", "Id", new GeneratedKeyWriter());
+        assertFalse("MasterId", new File(packageDir, "MasterId.java").exists());
+        assertFalse("DetailId", new File(packageDir, "DetailId.java").exists());
+        assertFalse("AllTypesId", new File(packageDir, "AllTypesId.java").exists());
+        assertMatchesExpected("expected/generated", "DepartmentId");
+        assertMatchesExpected("expected/generated", "EmployeeId");
+    }
+
+    public void testDtoNaturalKeys() throws Exception {
+        generate(naturalKeyTransformers, "freemarker/Dto.ftl", "Dto", new FreeMarkerClassWriter());
+        assertMatchesExpected("expected/natural", "AllTypesDto");
+        assertMatchesExpected("expected/natural", "DepartmentDto");
+        assertMatchesExpected("expected/natural", "MasterDto");
+        assertMatchesExpected("expected/natural", "DetailDto");
+    }
+
+    public void testDtoGeneratedKeys() throws Exception {
+        generate(generatedKeyTransformers, "freemarker/Dto.ftl", "Dto", new FreeMarkerClassWriter());
+        assertMatchesExpected("expected/generated", "AllTypesDto");
+        assertMatchesExpected("expected/generated", "DepartmentDto");
+        assertMatchesExpected("expected/generated", "MasterDto");
+        assertMatchesExpected("expected/generated", "DetailDto");
+    }
+
+    public void testSelectorNaturalKeys() throws Exception {
+        generate(naturalKeyTransformers, "freemarker/Selector.ftl", "Selector", new FreeMarkerClassWriter());
+        assertMatchesExpected("expected/natural", "AllTypesSelector");
+        assertMatchesExpected("expected/natural", "DepartmentSelector");
+        assertMatchesExpected("expected/natural", "MasterSelector");
+        assertMatchesExpected("expected/natural", "DetailSelector");
+    }
+
+    public void testSelectorGeneratedKeys() throws Exception {
+        generate(generatedKeyTransformers, "freemarker/Selector.ftl", "Selector", new FreeMarkerClassWriter());
+        assertMatchesExpected("expected/generated", "AllTypesSelector");
+        assertMatchesExpected("expected/generated", "DepartmentSelector");
+        assertMatchesExpected("expected/generated", "MasterSelector");
+        assertMatchesExpected("expected/generated", "DetailSelector");
+    }
+
+    public void testSmartSelectorNaturalKeys() throws Exception {
+        generate(naturalKeyTransformers, "freemarker/SmartSelector.ftl", "SmartSelector", new FreeMarkerClassWriter());
+        assertMatchesExpected("expected/natural", "AllTypesSmartSelector");
+        assertMatchesExpected("expected/natural", "DepartmentSmartSelector");
+        assertMatchesExpected("expected/natural", "MasterSmartSelector");
+        assertMatchesExpected("expected/natural", "DetailSmartSelector");
+    }
+
+    public void testSmartSelectorGeneratedKeys() throws Exception {
+        generate(generatedKeyTransformers, "freemarker/SmartSelector.ftl", "SmartSelector", new FreeMarkerClassWriter());
+        assertMatchesExpected("expected/generated", "AllTypesSmartSelector");
+        assertMatchesExpected("expected/generated", "DepartmentSmartSelector");
+        assertMatchesExpected("expected/generated", "MasterSmartSelector");
+        assertMatchesExpected("expected/generated", "DetailSmartSelector");
+    }
+
+    public void testSaverNaturalKeys() throws Exception {
+        generate(naturalKeyTransformers, "freemarker/Saver.ftl", "Saver", new SaverWriter());
+        // no Saver for table with composite key
+        assertFalse("MasterSaver", new File(packageDir, "MasterSaver.java").exists());
+        assertMatchesExpected("expected/natural", "AllTypesSaver");
+        assertMatchesExpected("expected/natural", "DepartmentSaver");
+        assertMatchesExpected("expected/natural", "DetailSaver");
+    }
+
+    public void testSaverGeneratedKeys() throws Exception {
+        generate(generatedKeyTransformers, "freemarker/Saver.ftl", "Saver", new SaverWriter());
+        // no Saver for table with composite key
+        assertFalse("MasterSaver", new File(packageDir, "MasterSaver.java").exists());
+        assertMatchesExpected("expected/generated", "AllTypesSaver");
+        assertMatchesExpected("expected/generated", "DepartmentSaver");
+        assertMatchesExpected("expected/generated", "DetailSaver");
+    }
+
+    private final File packageDir = new File("target/test-generation/org/symqle/model");
+
+    private void generate(final List<Transformer> transformers, final String templateName, final String suffix, final FreeMarkerClassWriter writer) throws Exception {
+        final DataSource dataSource = getDataSource();
         final MetadataReader reader = new MetadataReader();
         reader.setDataSource(dataSource);
 
@@ -80,13 +176,10 @@ public class RelationsTest extends TestCase {
         for (Transformer transformer : transformers) {
             transformed = transformer.transform(transformed);
         }
-        final File packageDir = new File("target/test-generation/org/symqle/model");
-        packageDir.mkdirs();
         final Map<String, String> packageNames = new HashMap<>();
         packageNames.put("symqle.modeler.model.package", "org.symqle.model");
         packageNames.put("symqle.modeler.dto.package", "org.symqle.model");
         packageNames.put("symqle.modeler.dao.package", "org.symqle.model");
-        final FreeMarkerClassWriter writer = new FreeMarkerClassWriter();
         writer.setTemplateName(templateName);
         writer.setSuffix(suffix);
         for (TableSqlModel table : transformed.getTables()) {
@@ -94,48 +187,16 @@ public class RelationsTest extends TestCase {
         }
     }
 
-    protected void initDatabase(final String url, String resource) throws Exception {
-        final DataSource dataSource = new SingleConnectionDataSource(url+";create=true", false);
-        try (Connection connection = dataSource.getConnection()) {
-            final BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(getClass().getClassLoader().getResourceAsStream(resource)));
-            try {
-                final StringBuilder builder = new StringBuilder();
-                    for (String line = reader.readLine(); line != null; line = reader.readLine()) {
-                        if (line.trim().equals("")) {
-                            final String sql = builder.toString();
-                            builder.setLength(0);
-                            if (sql.trim().length()>0) {
-                                System.out.println(sql);
-                                final PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                                try {
-                                    preparedStatement.executeUpdate();
-                                } catch (SQLException e) {
-                                    e.printStackTrace();
-                                    throw e;
-                                }
-                                preparedStatement.close();
-                            }
-                        } else {
-                            builder.append(" ").append(line);
-                        }
-                    }
-                final String sql = builder.toString();
-                if (sql.trim().length()>0) {
-                    System.out.println(sql);
-                    final PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                    try {
-                        preparedStatement.executeUpdate();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                        throw e;
-                    }
-                    preparedStatement.close();
-                }
-            } finally {
-                reader.close();
-            }
+    private void assertMatchesExpected(final String resourceDir, final String fileName) throws Exception {
+        final String expected;
+        final String actual;
+        try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(resourceDir + "/" + fileName)) {
+             expected = IOUtils.toString(resourceAsStream);
         }
+        try (InputStream inputStream = new FileInputStream(new File(packageDir, fileName+".java"))) {
+            actual = IOUtils.toString(inputStream);
+        }
+        assertEquals(expected, actual);
     }
 
 }

@@ -1,0 +1,117 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.sql.Selector;
+import org.symqle.common.RowMapper;
+import org.symqle.common.Row;
+import org.symqle.model.AllTypesDto;
+import org.symqle.model.AllTypes;
+import java.sql.SQLException;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+
+/**
+ * Selects {@link org.symqle.model.AllTypesDto} from {@link org.symqle.model.AllTypes}.
+ */
+public class AllTypesSelector extends Selector<AllTypesDto> {
+
+  private final RowMapper<Long> tBitMapper;
+  private final RowMapper<Short> tTinyintMapper;
+  private final RowMapper<Short> tSmallintMapper;
+  private final RowMapper<Integer> tMediumintMapper;
+  private final RowMapper<Integer> tIntegerMapper;
+  private final RowMapper<Long> tBigintMapper;
+  private final RowMapper<Float> tFloatMapper;
+  private final RowMapper<Float> tRealMapper;
+  private final RowMapper<Double> tDoubleMapper;
+  private final RowMapper<BigDecimal> tNumericMapper;
+  private final RowMapper<BigDecimal> tDecimalMapper;
+  private final RowMapper<String> tCharMapper;
+  private final RowMapper<String> tVarcharMapper;
+  private final RowMapper<String> tLongvarcharMapper;
+  private final RowMapper<Date> tDateMapper;
+  private final RowMapper<Time> tTimeMapper;
+  private final RowMapper<Timestamp> tTimestampMapper;
+  private final RowMapper<Timestamp> tDatetimeMapper;
+  private final RowMapper<byte[]> tBinaryMapper;
+  private final RowMapper<byte[]> tVarbinaryMapper;
+  private final RowMapper<byte[]> tLongvarbinaryMapper;
+  private final RowMapper<byte[]> tBlobMapper;
+  private final RowMapper<String> tClobMapper;
+  private final RowMapper<Boolean> tBooleanMapper;
+  private final RowMapper<String> tNcharMapper;
+  private final RowMapper<String> tNvarcharMapper;
+  private final RowMapper<String> tLongnvarcharMapper;
+  private final RowMapper<String> tNclobMapper;
+
+  /**
+   * Constructs AllTypesSelector for given table.
+   * @param table instance of AllTypes to select from.
+   */
+  public AllTypesSelector(final AllTypes table) {
+      tBitMapper = map(table.tBit());
+      tTinyintMapper = map(table.tTinyint());
+      tSmallintMapper = map(table.tSmallint());
+      tMediumintMapper = map(table.tMediumint());
+      tIntegerMapper = map(table.tInteger());
+      tBigintMapper = map(table.tBigint());
+      tFloatMapper = map(table.tFloat());
+      tRealMapper = map(table.tReal());
+      tDoubleMapper = map(table.tDouble());
+      tNumericMapper = map(table.tNumeric());
+      tDecimalMapper = map(table.tDecimal());
+      tCharMapper = map(table.tChar());
+      tVarcharMapper = map(table.tVarchar());
+      tLongvarcharMapper = map(table.tLongvarchar());
+      tDateMapper = map(table.tDate());
+      tTimeMapper = map(table.tTime());
+      tTimestampMapper = map(table.tTimestamp());
+      tDatetimeMapper = map(table.tDatetime());
+      tBinaryMapper = map(table.tBinary());
+      tVarbinaryMapper = map(table.tVarbinary());
+      tLongvarbinaryMapper = map(table.tLongvarbinary());
+      tBlobMapper = map(table.tBlob());
+      tClobMapper = map(table.tClob());
+      tBooleanMapper = map(table.tBoolean());
+      tNcharMapper = map(table.tNchar());
+      tNvarcharMapper = map(table.tNvarchar());
+      tLongnvarcharMapper = map(table.tLongnvarchar());
+      tNclobMapper = map(table.tNclob());
+  }
+
+  protected final AllTypesDto create(final Row row) throws SQLException {
+      final AllTypesDto dto = new AllTypesDto(tBitMapper.extract(row));
+      dto.setTTinyint(tTinyintMapper.extract(row));
+      dto.setTSmallint(tSmallintMapper.extract(row));
+      dto.setTMediumint(tMediumintMapper.extract(row));
+      dto.setTInteger(tIntegerMapper.extract(row));
+      dto.setTBigint(tBigintMapper.extract(row));
+      dto.setTFloat(tFloatMapper.extract(row));
+      dto.setTReal(tRealMapper.extract(row));
+      dto.setTDouble(tDoubleMapper.extract(row));
+      dto.setTNumeric(tNumericMapper.extract(row));
+      dto.setTDecimal(tDecimalMapper.extract(row));
+      dto.setTChar(tCharMapper.extract(row));
+      dto.setTVarchar(tVarcharMapper.extract(row));
+      dto.setTLongvarchar(tLongvarcharMapper.extract(row));
+      dto.setTDate(tDateMapper.extract(row));
+      dto.setTTime(tTimeMapper.extract(row));
+      dto.setTTimestamp(tTimestampMapper.extract(row));
+      dto.setTDatetime(tDatetimeMapper.extract(row));
+      dto.setTBinary(tBinaryMapper.extract(row));
+      dto.setTVarbinary(tVarbinaryMapper.extract(row));
+      dto.setTLongvarbinary(tLongvarbinaryMapper.extract(row));
+      dto.setTBlob(tBlobMapper.extract(row));
+      dto.setTClob(tClobMapper.extract(row));
+      dto.setTBoolean(tBooleanMapper.extract(row));
+      dto.setTNchar(tNcharMapper.extract(row));
+      dto.setTNvarchar(tNvarcharMapper.extract(row));
+      dto.setTLongnvarchar(tLongnvarcharMapper.extract(row));
+      dto.setTNclob(tNclobMapper.extract(row));
+      return dto;
+  }
+}
+

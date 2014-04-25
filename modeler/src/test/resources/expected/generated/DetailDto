@@ -1,0 +1,41 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+
+public class DetailDto {
+    private final Integer id;
+    private Integer masterMajor;
+    private Long masterMinor;
+    private String name;
+
+   public DetailDto(final Integer id) {
+            this.id = id;
+   }
+
+  public Integer getId() {
+    return id;
+  }
+  public Integer getMasterMajor() {
+    return masterMajor;
+  }
+  public void setMasterMajor(final Integer masterMajor) {
+    this.masterMajor = masterMajor;
+  }
+
+  public Long getMasterMinor() {
+    return masterMinor;
+  }
+  public void setMasterMinor(final Long masterMinor) {
+    this.masterMinor = masterMinor;
+  }
+
+  public String getName() {
+    return name;
+  }
+  public void setName(final String name) {
+    this.name = name;
+  }
+
+}
+

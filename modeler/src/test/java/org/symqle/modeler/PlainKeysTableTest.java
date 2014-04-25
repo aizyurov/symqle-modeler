@@ -53,19 +53,19 @@ public class PlainKeysTableTest extends TestCase {
     }
 
     public void testAllTypesTable() throws Exception {
-        generate("freemarker/PlainKeysTable.ftl", "");
+        generate("freemarker/Table.ftl", "");
     }
 
     public void testAllTypesDto() throws Exception {
-        generate("freemarker/PlainKeysDto.ftl", "Dto");
+        generate("freemarker/Dto.ftl", "Dto");
     }
 
     public void testAllTypesSmartSelector() throws Exception {
-        generate("freemarker/PlainKeysSmartSelector.ftl", "SmartSelector");
+        generate("freemarker/SmartSelector.ftl", "SmartSelector");
     }
 
     public void testAllTypesSelector() throws Exception {
-        generate("freemarker/PlainKeysSelector.ftl", "Selector");
+        generate("freemarker/Selector.ftl", "Selector");
     }
 
     private void generate(final String templateName, final String suffix) throws Exception {

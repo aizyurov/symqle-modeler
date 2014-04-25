@@ -1,0 +1,237 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+
+public class AllTypesDto {
+    private final Long tBit;
+    private Short tTinyint;
+    private Short tSmallint;
+    private Integer tMediumint;
+    private Integer tInteger;
+    private Long tBigint;
+    private Float tFloat;
+    private Float tReal;
+    private Double tDouble;
+    private BigDecimal tNumeric;
+    private BigDecimal tDecimal;
+    private String tChar;
+    private String tVarchar;
+    private String tLongvarchar;
+    private Date tDate;
+    private Time tTime;
+    private Timestamp tTimestamp;
+    private Timestamp tDatetime;
+    private byte[] tBinary;
+    private byte[] tVarbinary;
+    private byte[] tLongvarbinary;
+    private byte[] tBlob;
+    private String tClob;
+    private Boolean tBoolean;
+    private String tNchar;
+    private String tNvarchar;
+    private String tLongnvarchar;
+    private String tNclob;
+
+   public AllTypesDto(final Long tBit) {
+            this.tBit = tBit;
+   }
+
+  public Long getTBit() {
+    return tBit;
+  }
+  public Short getTTinyint() {
+    return tTinyint;
+  }
+  public void setTTinyint(final Short tTinyint) {
+    this.tTinyint = tTinyint;
+  }
+
+  public Short getTSmallint() {
+    return tSmallint;
+  }
+  public void setTSmallint(final Short tSmallint) {
+    this.tSmallint = tSmallint;
+  }
+
+  public Integer getTMediumint() {
+    return tMediumint;
+  }
+  public void setTMediumint(final Integer tMediumint) {
+    this.tMediumint = tMediumint;
+  }
+
+  public Integer getTInteger() {
+    return tInteger;
+  }
+  public void setTInteger(final Integer tInteger) {
+    this.tInteger = tInteger;
+  }
+
+  public Long getTBigint() {
+    return tBigint;
+  }
+  public void setTBigint(final Long tBigint) {
+    this.tBigint = tBigint;
+  }
+
+  public Float getTFloat() {
+    return tFloat;
+  }
+  public void setTFloat(final Float tFloat) {
+    this.tFloat = tFloat;
+  }
+
+  public Float getTReal() {
+    return tReal;
+  }
+  public void setTReal(final Float tReal) {
+    this.tReal = tReal;
+  }
+
+  public Double getTDouble() {
+    return tDouble;
+  }
+  public void setTDouble(final Double tDouble) {
+    this.tDouble = tDouble;
+  }
+
+  public BigDecimal getTNumeric() {
+    return tNumeric;
+  }
+  public void setTNumeric(final BigDecimal tNumeric) {
+    this.tNumeric = tNumeric;
+  }
+
+  public BigDecimal getTDecimal() {
+    return tDecimal;
+  }
+  public void setTDecimal(final BigDecimal tDecimal) {
+    this.tDecimal = tDecimal;
+  }
+
+  public String getTChar() {
+    return tChar;
+  }
+  public void setTChar(final String tChar) {
+    this.tChar = tChar;
+  }
+
+  public String getTVarchar() {
+    return tVarchar;
+  }
+  public void setTVarchar(final String tVarchar) {
+    this.tVarchar = tVarchar;
+  }
+
+  public String getTLongvarchar() {
+    return tLongvarchar;
+  }
+  public void setTLongvarchar(final String tLongvarchar) {
+    this.tLongvarchar = tLongvarchar;
+  }
+
+  public Date getTDate() {
+    return tDate;
+  }
+  public void setTDate(final Date tDate) {
+    this.tDate = tDate;
+  }
+
+  public Time getTTime() {
+    return tTime;
+  }
+  public void setTTime(final Time tTime) {
+    this.tTime = tTime;
+  }
+
+  public Timestamp getTTimestamp() {
+    return tTimestamp;
+  }
+  public void setTTimestamp(final Timestamp tTimestamp) {
+    this.tTimestamp = tTimestamp;
+  }
+
+  public Timestamp getTDatetime() {
+    return tDatetime;
+  }
+  public void setTDatetime(final Timestamp tDatetime) {
+    this.tDatetime = tDatetime;
+  }
+
+  public byte[] getTBinary() {
+    return tBinary;
+  }
+  public void setTBinary(final byte[] tBinary) {
+    this.tBinary = tBinary;
+  }
+
+  public byte[] getTVarbinary() {
+    return tVarbinary;
+  }
+  public void setTVarbinary(final byte[] tVarbinary) {
+    this.tVarbinary = tVarbinary;
+  }
+
+  public byte[] getTLongvarbinary() {
+    return tLongvarbinary;
+  }
+  public void setTLongvarbinary(final byte[] tLongvarbinary) {
+    this.tLongvarbinary = tLongvarbinary;
+  }
+
+  public byte[] getTBlob() {
+    return tBlob;
+  }
+  public void setTBlob(final byte[] tBlob) {
+    this.tBlob = tBlob;
+  }
+
+  public String getTClob() {
+    return tClob;
+  }
+  public void setTClob(final String tClob) {
+    this.tClob = tClob;
+  }
+
+  public Boolean getTBoolean() {
+    return tBoolean;
+  }
+  public void setTBoolean(final Boolean tBoolean) {
+    this.tBoolean = tBoolean;
+  }
+
+  public String getTNchar() {
+    return tNchar;
+  }
+  public void setTNchar(final String tNchar) {
+    this.tNchar = tNchar;
+  }
+
+  public String getTNvarchar() {
+    return tNvarchar;
+  }
+  public void setTNvarchar(final String tNvarchar) {
+    this.tNvarchar = tNvarchar;
+  }
+
+  public String getTLongnvarchar() {
+    return tLongnvarchar;
+  }
+  public void setTLongnvarchar(final String tLongnvarchar) {
+    this.tLongnvarchar = tLongnvarchar;
+  }
+
+  public String getTNclob() {
+    return tNclob;
+  }
+  public void setTNclob(final String tNclob) {
+    this.tNclob = tNclob;
+  }
+
+}
+

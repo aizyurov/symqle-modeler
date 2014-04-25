@@ -1,0 +1,74 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.jdbc.Engine;
+import org.symqle.jdbc.GeneratedKeys;
+import org.symqle.jdbc.Option;
+import org.symqle.jdbc.PreparedUpdate;
+import org.symqle.sql.SetClauseList;
+import org.symqle.model.AllTypesDto;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+
+import java.sql.SQLException;
+import java.util.Arrays;
+
+public class AllTypesSaver {
+
+    private final Engine engine;
+    private final Option[] options;
+
+    public AllTypesSaver(final Engine engine, final Option[] options) {
+        this.engine = engine;
+        this.options = Arrays.copyOf(options, options.length);
+    }
+
+    public Long save(final AllTypesDto dto) throws SQLException {
+        final AllTypes table = new AllTypes();
+        final SetClauseList setList = table.tTinyint().set(dto.getTTinyint())
+                                .also(table.tSmallint().set(dto.getTSmallint()))
+                                .also(table.tMediumint().set(dto.getTMediumint()))
+                                .also(table.tInteger().set(dto.getTInteger()))
+                                .also(table.tBigint().set(dto.getTBigint()))
+                                .also(table.tFloat().set(dto.getTFloat()))
+                                .also(table.tReal().set(dto.getTReal()))
+                                .also(table.tDouble().set(dto.getTDouble()))
+                                .also(table.tNumeric().set(dto.getTNumeric()))
+                                .also(table.tDecimal().set(dto.getTDecimal()))
+                                .also(table.tChar().set(dto.getTChar()))
+                                .also(table.tVarchar().set(dto.getTVarchar()))
+                                .also(table.tLongvarchar().set(dto.getTLongvarchar()))
+                                .also(table.tDate().set(dto.getTDate()))
+                                .also(table.tTime().set(dto.getTTime()))
+                                .also(table.tTimestamp().set(dto.getTTimestamp()))
+                                .also(table.tDatetime().set(dto.getTDatetime()))
+                                .also(table.tBinary().set(dto.getTBinary()))
+                                .also(table.tVarbinary().set(dto.getTVarbinary()))
+                                .also(table.tLongvarbinary().set(dto.getTLongvarbinary()))
+                                .also(table.tBlob().set(dto.getTBlob()))
+                                .also(table.tClob().set(dto.getTClob()))
+                                .also(table.tBoolean().set(dto.getTBoolean()))
+                                .also(table.tNchar().set(dto.getTNchar()))
+                                .also(table.tNvarchar().set(dto.getTNvarchar()))
+                                .also(table.tLongnvarchar().set(dto.getTLongnvarchar()))
+                                .also(table.tNclob().set(dto.getTNclob()));
+      final Long id = dto.getTBit();
+      if (id == null) {
+          final Long newId = generateId();
+          final SetClauseList setListWithId = setList.also(table.tBit().set(newId));
+          table.insert(setListWithId).compileUpdate(engine, options).execute();
+          return newId;
+      } else {
+          final int affectedRows = table.update(setList).where(table.tBit().eq(id)).compileUpdate(engine, options).execute();
+          return affectedRows == 1 ? id : null;
+      }
+    }
+      private Long generateId() {
+          throw new IllegalStateException("Not implemented");
+      }
+}
+
+

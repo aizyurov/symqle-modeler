@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 /**
  * @author lvovich
  */
-public class MetadataReaderTest extends TestCase {
+public class MetadataReaderDebug extends TestCase {
 
     public void testSymqleTestDatabase() throws Exception {
         final MetadataReader reader = new MetadataReader();

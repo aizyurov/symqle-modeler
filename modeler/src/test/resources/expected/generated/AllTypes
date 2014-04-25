@@ -1,0 +1,305 @@
+/* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
+
+package org.symqle.model;
+
+import org.symqle.sql.Table;
+import org.symqle.common.Mappers;
+import org.symqle.sql.Column;
+import org.symqle.common.OnDemand;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+
+/**
+ * TABLE ALL_TYPES
+ * 
+ */
+public class AllTypes extends Table {
+
+   public String getTableName() {
+       return "ALL_TYPES";
+   }
+
+    /**
+     * T_BIT.
+     * BIGINT(19, 0) NOT NULL
+     * 
+     * @return T_BIT
+     */
+    public Column<Long> tBit() {
+        return defineColumn(Mappers.LONG, "T_BIT");
+    }
+
+    /**
+     * T_TINYINT.
+     * SMALLINT(5, 0)
+     * 
+     * @return T_TINYINT
+     */
+    public Column<Short> tTinyint() {
+        return defineColumn(Mappers.SHORT, "T_TINYINT");
+    }
+
+    /**
+     * T_SMALLINT.
+     * SMALLINT(5, 0)
+     * 
+     * @return T_SMALLINT
+     */
+    public Column<Short> tSmallint() {
+        return defineColumn(Mappers.SHORT, "T_SMALLINT");
+    }
+
+    /**
+     * T_MEDIUMINT.
+     * INTEGER(10, 0)
+     * 
+     * @return T_MEDIUMINT
+     */
+    public Column<Integer> tMediumint() {
+        return defineColumn(Mappers.INTEGER, "T_MEDIUMINT");
+    }
+
+    /**
+     * T_INTEGER.
+     * INTEGER(10, 0)
+     * 
+     * @return T_INTEGER
+     */
+    public Column<Integer> tInteger() {
+        return defineColumn(Mappers.INTEGER, "T_INTEGER");
+    }
+
+    /**
+     * T_BIGINT.
+     * BIGINT(19, 0)
+     * 
+     * @return T_BIGINT
+     */
+    public Column<Long> tBigint() {
+        return defineColumn(Mappers.LONG, "T_BIGINT");
+    }
+
+    /**
+     * T_FLOAT.
+     * REAL(23)
+     * 
+     * @return T_FLOAT
+     */
+    public Column<Float> tFloat() {
+        return defineColumn(Mappers.FLOAT, "T_FLOAT");
+    }
+
+    /**
+     * T_REAL.
+     * REAL(23)
+     * 
+     * @return T_REAL
+     */
+    public Column<Float> tReal() {
+        return defineColumn(Mappers.FLOAT, "T_REAL");
+    }
+
+    /**
+     * T_DOUBLE.
+     * DOUBLE(52)
+     * 
+     * @return T_DOUBLE
+     */
+    public Column<Double> tDouble() {
+        return defineColumn(Mappers.DOUBLE, "T_DOUBLE");
+    }
+
+    /**
+     * T_NUMERIC.
+     * NUMERIC(10, 3)
+     * 
+     * @return T_NUMERIC
+     */
+    public Column<BigDecimal> tNumeric() {
+        return defineColumn(Mappers.DECIMAL, "T_NUMERIC");
+    }
+
+    /**
+     * T_DECIMAL.
+     * DECIMAL(10, 3)
+     * 
+     * @return T_DECIMAL
+     */
+    public Column<BigDecimal> tDecimal() {
+        return defineColumn(Mappers.DECIMAL, "T_DECIMAL");
+    }
+
+    /**
+     * T_CHAR.
+     * CHAR(10)
+     * 
+     * @return T_CHAR
+     */
+    public Column<String> tChar() {
+        return defineColumn(Mappers.STRING, "T_CHAR");
+    }
+
+    /**
+     * T_VARCHAR.
+     * VARCHAR(20)
+     * 
+     * @return T_VARCHAR
+     */
+    public Column<String> tVarchar() {
+        return defineColumn(Mappers.STRING, "T_VARCHAR");
+    }
+
+    /**
+     * T_LONGVARCHAR.
+     * LONG VARCHAR(32700)
+     * 
+     * @return T_LONGVARCHAR
+     */
+    public Column<String> tLongvarchar() {
+        return defineColumn(Mappers.STRING, "T_LONGVARCHAR");
+    }
+
+    /**
+     * T_DATE.
+     * DATE(10, 0)
+     * 
+     * @return T_DATE
+     */
+    public Column<Date> tDate() {
+        return defineColumn(Mappers.DATE, "T_DATE");
+    }
+
+    /**
+     * T_TIME.
+     * TIME(8, 0)
+     * 
+     * @return T_TIME
+     */
+    public Column<Time> tTime() {
+        return defineColumn(Mappers.TIME, "T_TIME");
+    }
+
+    /**
+     * T_TIMESTAMP.
+     * TIMESTAMP(29, 9)
+     * 
+     * @return T_TIMESTAMP
+     */
+    public Column<Timestamp> tTimestamp() {
+        return defineColumn(Mappers.TIMESTAMP, "T_TIMESTAMP");
+    }
+
+    /**
+     * T_DATETIME.
+     * TIMESTAMP(29, 9)
+     * 
+     * @return T_DATETIME
+     */
+    public Column<Timestamp> tDatetime() {
+        return defineColumn(Mappers.TIMESTAMP, "T_DATETIME");
+    }
+
+    /**
+     * T_BINARY.
+     * CHAR () FOR BIT DATA(4)
+     * 
+     * @return T_BINARY
+     */
+    public Column<byte[]> tBinary() {
+        return defineColumn(Mappers.BYTES, "T_BINARY");
+    }
+
+    /**
+     * T_VARBINARY.
+     * VARCHAR () FOR BIT DATA(1000)
+     * 
+     * @return T_VARBINARY
+     */
+    public Column<byte[]> tVarbinary() {
+        return defineColumn(Mappers.BYTES, "T_VARBINARY");
+    }
+
+    /**
+     * T_LONGVARBINARY.
+     * LONG VARCHAR FOR BIT DATA(32700)
+     * 
+     * @return T_LONGVARBINARY
+     */
+    public Column<byte[]> tLongvarbinary() {
+        return defineColumn(Mappers.BYTES, "T_LONGVARBINARY");
+    }
+
+    /**
+     * T_BLOB.
+     * BLOB(2147483647)
+     * 
+     * @return T_BLOB
+     */
+    public Column<byte[]> tBlob() {
+        return defineColumn(Mappers.BYTES, "T_BLOB");
+    }
+
+    /**
+     * T_CLOB.
+     * CLOB(2147483647)
+     * 
+     * @return T_CLOB
+     */
+    public Column<String> tClob() {
+        return defineColumn(Mappers.STRING, "T_CLOB");
+    }
+
+    /**
+     * T_BOOLEAN.
+     * BOOLEAN(1)
+     * 
+     * @return T_BOOLEAN
+     */
+    public Column<Boolean> tBoolean() {
+        return defineColumn(Mappers.BOOLEAN, "T_BOOLEAN");
+    }
+
+    /**
+     * T_NCHAR.
+     * CHAR(10)
+     * 
+     * @return T_NCHAR
+     */
+    public Column<String> tNchar() {
+        return defineColumn(Mappers.STRING, "T_NCHAR");
+    }
+
+    /**
+     * T_NVARCHAR.
+     * VARCHAR(20)
+     * 
+     * @return T_NVARCHAR
+     */
+    public Column<String> tNvarchar() {
+        return defineColumn(Mappers.STRING, "T_NVARCHAR");
+    }
+
+    /**
+     * T_LONGNVARCHAR.
+     * LONG VARCHAR(32700)
+     * 
+     * @return T_LONGNVARCHAR
+     */
+    public Column<String> tLongnvarchar() {
+        return defineColumn(Mappers.STRING, "T_LONGNVARCHAR");
+    }
+
+    /**
+     * T_NCLOB.
+     * CLOB(2147483647)
+     * 
+     * @return T_NCLOB
+     */
+    public Column<String> tNclob() {
+        return defineColumn(Mappers.STRING, "T_NCLOB");
+    }
+
+}
+

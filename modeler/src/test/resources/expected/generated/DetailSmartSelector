@@ -1,0 +1,34 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.sql.SmartSelector;
+import org.symqle.model.DetailDto;
+import org.symqle.model.Detail;
+
+import java.sql.SQLException;
+
+/**
+ * Selects {@link org.symqle.model.DetailDto} from {@link org.symqle.model.Detail}.
+ */
+public class DetailSmartSelector extends SmartSelector<DetailDto> {
+
+  private final Detail table;
+
+  /**
+   * Constructs DetailSmartSelector for given table.
+   * @param table instance of Detail to select from.
+   */
+  public DetailSmartSelector(final Detail table) {
+      this.table = table;
+  }
+
+  protected final DetailDto create() throws SQLException {
+      final DetailDto dto = new DetailDto(get(table.id()));
+      dto.setMasterMajor(get(table.masterMajor()));
+      dto.setMasterMinor(get(table.masterMinor()));
+      dto.setName(get(table.name()));
+      return dto;
+  }
+}
+

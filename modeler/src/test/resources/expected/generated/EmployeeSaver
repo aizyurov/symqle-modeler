@@ -1,0 +1,49 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.jdbc.Engine;
+import org.symqle.jdbc.GeneratedKeys;
+import org.symqle.jdbc.Option;
+import org.symqle.jdbc.PreparedUpdate;
+import org.symqle.sql.SetClauseList;
+import org.symqle.model.EmployeeDto;
+import java.sql.Date;
+import org.symqle.model.DepartmentId;
+import org.symqle.model.EmployeeId;
+
+import java.sql.SQLException;
+import java.util.Arrays;
+
+public class EmployeeSaver {
+
+    private final Engine engine;
+    private final Option[] options;
+
+    public EmployeeSaver(final Engine engine, final Option[] options) {
+        this.engine = engine;
+        this.options = Arrays.copyOf(options, options.length);
+    }
+
+    public EmployeeId save(final EmployeeDto dto) throws SQLException {
+        final Employee table = new Employee();
+        final SetClauseList setList = table.firstName().set(dto.getFirstName())
+                                .also(table.lastName().set(dto.getLastName()))
+                                .also(table.title().set(dto.getTitle()))
+                                .also(table.hireDate().set(dto.getHireDate()))
+                                .also(table.isRetired().set(dto.getIsRetired()))
+                                .also(table.salary().set(dto.getSalary()))
+                                .also(table.deptId().set(dto.getDeptId()));
+      final EmployeeId id = dto.getEmpId();
+      if (id == null) {
+          final GeneratedKeys<EmployeeId> generatedKeys = GeneratedKeys.create(EmployeeId.MAPPER);
+          table.insert(setList).compileUpdate(generatedKeys, engine, options).execute();
+          return generatedKeys.first();
+      } else {
+          final int affectedRows = table.update(setList).where(table.empId().eq(id)).compileUpdate(engine, options).execute();
+          return affectedRows == 1 ? id : null;
+      }
+    }
+}
+
+

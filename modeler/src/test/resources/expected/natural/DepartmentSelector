@@ -1,0 +1,41 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.sql.Selector;
+import org.symqle.common.RowMapper;
+import org.symqle.common.Row;
+import org.symqle.model.DepartmentDto;
+import org.symqle.model.Department;
+import java.sql.SQLException;
+
+/**
+ * Selects {@link org.symqle.model.DepartmentDto} from {@link org.symqle.model.Department}.
+ */
+public class DepartmentSelector extends Selector<DepartmentDto> {
+
+  private final RowMapper<Integer> deptIdMapper;
+  private final RowMapper<String> deptNameMapper;
+  private final RowMapper<Integer> managerIdMapper;
+  private final RowMapper<Integer> parentDeptMapper;
+
+  /**
+   * Constructs DepartmentSelector for given table.
+   * @param table instance of Department to select from.
+   */
+  public DepartmentSelector(final Department table) {
+      deptIdMapper = map(table.deptId());
+      deptNameMapper = map(table.deptName());
+      managerIdMapper = map(table.managerId());
+      parentDeptMapper = map(table.parentDept());
+  }
+
+  protected final DepartmentDto create(final Row row) throws SQLException {
+      final DepartmentDto dto = new DepartmentDto(deptIdMapper.extract(row));
+      dto.setDeptName(deptNameMapper.extract(row));
+      dto.setManagerId(managerIdMapper.extract(row));
+      dto.setParentDept(parentDeptMapper.extract(row));
+      return dto;
+  }
+}
+

@@ -1,0 +1,97 @@
+/* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
+
+package org.symqle.model;
+
+import org.symqle.sql.Table;
+import org.symqle.common.Mappers;
+import org.symqle.sql.Column;
+import org.symqle.common.OnDemand;
+
+/**
+ * TABLE DEPARTMENT
+ * 
+ */
+public class Department extends Table {
+
+   public String getTableName() {
+       return "DEPARTMENT";
+   }
+
+    /**
+     * DEPT_ID.
+     * INTEGER(10, 0) NOT NULL DEFAULT GENERATED_BY_DEFAULT
+     * 
+     * @return DEPT_ID
+     */
+    public Column<Integer> deptId() {
+        return defineColumn(Mappers.INTEGER, "DEPT_ID");
+    }
+
+    /**
+     * DEPT_NAME.
+     * VARCHAR(100) NOT NULL
+     * 
+     * @return DEPT_NAME
+     */
+    public Column<String> deptName() {
+        return defineColumn(Mappers.STRING, "DEPT_NAME");
+    }
+
+    /**
+     * MANAGER_ID.
+     * INTEGER(10, 0)
+     * 
+     * @return MANAGER_ID
+     */
+    public Column<Integer> managerId() {
+        return defineColumn(Mappers.INTEGER, "MANAGER_ID");
+    }
+
+    /**
+     * PARENT_DEPT.
+     * INTEGER(10, 0)
+     * 
+     * @return PARENT_DEPT
+     */
+    public Column<Integer> parentDept() {
+        return defineColumn(Mappers.INTEGER, "PARENT_DEPT");
+    }
+
+
+    private OnDemand<Department> parentDeptRef = new OnDemand<Department>() {
+        @Override
+        public Department construct() {
+            Department other = new Department();
+            leftJoin(other, parentDept().eq(other.deptId()));
+            return other;
+        }
+    };
+
+    /**
+     * Auto-join to Department by {@link #parentDept()}
+     * FOREIGN KEY PARENT_FK (PARENT_DEPT) REFERENCES DEPARTMENT (DEPT_ID)
+     * @return joined Department.
+     */
+    public Department parentDeptRef() {
+        return parentDeptRef.get();
+    }
+
+    private OnDemand<Employee> manager = new OnDemand<Employee>() {
+        @Override
+        public Employee construct() {
+            Employee other = new Employee();
+            leftJoin(other, managerId().eq(other.empId()));
+            return other;
+        }
+    };
+
+    /**
+     * Auto-join to Employee by {@link #managerId()}
+     * FOREIGN KEY MANAGER_FK (MANAGER_ID) REFERENCES EMPLOYEE (EMP_ID)
+     * @return joined Employee.
+     */
+    public Employee manager() {
+        return manager.get();
+    }
+}
+

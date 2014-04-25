@@ -1,9 +1,5 @@
-<#ftl strip_whitespace="true">
-<#if model.primaryKey??>
-<#list model.primaryKey.columns as column>
-  <#if column.properties.GENERATED_KEY??>
 /* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
-package ${packages["${package}"]};
+package org.symqle.model;
 
 import org.symqle.common.InBox;
 import org.symqle.common.Mapper;
@@ -11,28 +7,27 @@ import org.symqle.common.OutBox;
 
 import java.sql.SQLException;
 
-<#assign javaType>${column.properties.GENERATED_KEY}</#assign>
 /**
- * Unique key identifying ${column.owner.properties.JAVA_NAME}.
+ * Unique key identifying Employee.
  */
-public final class ${javaType} {
+public final class EmployeeId {
     private long id;
-    private ${column.properties.GENERATED_KEY}(final long id) {
+    private EmployeeId(final long id) {
         this.id = id;
     }
 
   /**
    * Mapper for DepartmentId.
    */
-    public static final Mapper<${javaType}> MAPPER = new Mapper<${javaType}>() {
+    public static final Mapper<EmployeeId> MAPPER = new Mapper<EmployeeId>() {
         @Override
-        public ${javaType} value(final InBox inBox) throws SQLException {
+        public EmployeeId value(final InBox inBox) throws SQLException {
             final Long longId = inBox.getLong();
-            return longId == null ? null : new ${javaType}(longId);
+            return longId == null ? null : new EmployeeId(longId);
         }
 
         @Override
-        public void setValue(final OutBox param, final ${javaType} value) throws SQLException {
+        public void setValue(final OutBox param, final EmployeeId value) throws SQLException {
             final Long longId = value == null ? null : value.id;
             param.setLong(longId);
         }
@@ -43,7 +38,7 @@ public final class ${javaType} {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        final ${javaType} personId = (${javaType}) o;
+        final EmployeeId personId = (EmployeeId) o;
 
         if (id != personId.id) return false;
 
@@ -55,7 +50,7 @@ public final class ${javaType} {
         return (int) (id ^ (id >>> 32));
     }
 
-    private final static String prefix = ${javaType}.class.getName() + "#";
+    private final static String prefix = EmployeeId.class.getName() + "#";
 
     @Override
     public final String toString() {
@@ -63,14 +58,14 @@ public final class ${javaType} {
     }
 
   /**
-   * Creates ${javaType} from its string representation.
+   * Creates EmployeeId from its string representation.
    * It is guaranteed that for any non null {@code id}
-   * {@code ${javaType}.valueOf(id.toString()).equals(id)}
+   * {@code EmployeeId.valueOf(id.toString()).equals(id)}
    * @param s source string
    * @return new instance of EmployeeId; null if s is null or contains only whitespace.
    * @throws IllegalArgumentException id is not null or empty and has format different from that produced by {@link #toString()}.
    */
-    public static ${javaType} valueOf(final String s) {
+    public static EmployeeId valueOf(final String s) {
         if (s == null  || s.trim().isEmpty()) {
             return null;
         }
@@ -78,13 +73,10 @@ public final class ${javaType} {
             throw new IllegalArgumentException(s);
         }
         try {
-            return new ${javaType}(Long.parseLong(s.substring(prefix.length())));
+            return new EmployeeId(Long.parseLong(s.substring(prefix.length())));
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(s);
         }
     }
 
 }
-  </#if>
-</#list>
-</#if>

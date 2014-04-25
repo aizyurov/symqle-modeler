@@ -1,0 +1,58 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.sql.SmartSelector;
+import org.symqle.model.AllTypesDto;
+import org.symqle.model.AllTypes;
+
+import java.sql.SQLException;
+
+/**
+ * Selects {@link org.symqle.model.AllTypesDto} from {@link org.symqle.model.AllTypes}.
+ */
+public class AllTypesSmartSelector extends SmartSelector<AllTypesDto> {
+
+  private final AllTypes table;
+
+  /**
+   * Constructs AllTypesSmartSelector for given table.
+   * @param table instance of AllTypes to select from.
+   */
+  public AllTypesSmartSelector(final AllTypes table) {
+      this.table = table;
+  }
+
+  protected final AllTypesDto create() throws SQLException {
+      final AllTypesDto dto = new AllTypesDto(get(table.tBit()));
+      dto.setTTinyint(get(table.tTinyint()));
+      dto.setTSmallint(get(table.tSmallint()));
+      dto.setTMediumint(get(table.tMediumint()));
+      dto.setTInteger(get(table.tInteger()));
+      dto.setTBigint(get(table.tBigint()));
+      dto.setTFloat(get(table.tFloat()));
+      dto.setTReal(get(table.tReal()));
+      dto.setTDouble(get(table.tDouble()));
+      dto.setTNumeric(get(table.tNumeric()));
+      dto.setTDecimal(get(table.tDecimal()));
+      dto.setTChar(get(table.tChar()));
+      dto.setTVarchar(get(table.tVarchar()));
+      dto.setTLongvarchar(get(table.tLongvarchar()));
+      dto.setTDate(get(table.tDate()));
+      dto.setTTime(get(table.tTime()));
+      dto.setTTimestamp(get(table.tTimestamp()));
+      dto.setTDatetime(get(table.tDatetime()));
+      dto.setTBinary(get(table.tBinary()));
+      dto.setTVarbinary(get(table.tVarbinary()));
+      dto.setTLongvarbinary(get(table.tLongvarbinary()));
+      dto.setTBlob(get(table.tBlob()));
+      dto.setTClob(get(table.tClob()));
+      dto.setTBoolean(get(table.tBoolean()));
+      dto.setTNchar(get(table.tNchar()));
+      dto.setTNvarchar(get(table.tNvarchar()));
+      dto.setTLongnvarchar(get(table.tLongnvarchar()));
+      dto.setTNclob(get(table.tNclob()));
+      return dto;
+  }
+}
+

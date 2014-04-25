@@ -1,0 +1,41 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.sql.Selector;
+import org.symqle.common.RowMapper;
+import org.symqle.common.Row;
+import org.symqle.model.DetailDto;
+import org.symqle.model.Detail;
+import java.sql.SQLException;
+
+/**
+ * Selects {@link org.symqle.model.DetailDto} from {@link org.symqle.model.Detail}.
+ */
+public class DetailSelector extends Selector<DetailDto> {
+
+  private final RowMapper<Integer> idMapper;
+  private final RowMapper<Integer> masterMajorMapper;
+  private final RowMapper<Long> masterMinorMapper;
+  private final RowMapper<String> nameMapper;
+
+  /**
+   * Constructs DetailSelector for given table.
+   * @param table instance of Detail to select from.
+   */
+  public DetailSelector(final Detail table) {
+      idMapper = map(table.id());
+      masterMajorMapper = map(table.masterMajor());
+      masterMinorMapper = map(table.masterMinor());
+      nameMapper = map(table.name());
+  }
+
+  protected final DetailDto create(final Row row) throws SQLException {
+      final DetailDto dto = new DetailDto(idMapper.extract(row));
+      dto.setMasterMajor(masterMajorMapper.extract(row));
+      dto.setMasterMinor(masterMinorMapper.extract(row));
+      dto.setName(nameMapper.extract(row));
+      return dto;
+  }
+}
+

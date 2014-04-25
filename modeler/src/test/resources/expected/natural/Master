@@ -1,0 +1,51 @@
+/* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
+
+package org.symqle.model;
+
+import org.symqle.sql.Table;
+import org.symqle.common.Mappers;
+import org.symqle.sql.Column;
+import org.symqle.common.OnDemand;
+
+/**
+ * TABLE MASTER
+ * 
+ */
+public class Master extends Table {
+
+   public String getTableName() {
+       return "MASTER";
+   }
+
+    /**
+     * MAJOR.
+     * INTEGER(10, 0) NOT NULL
+     * 
+     * @return MAJOR
+     */
+    public Column<Integer> major() {
+        return defineColumn(Mappers.INTEGER, "MAJOR");
+    }
+
+    /**
+     * MINOR.
+     * BIGINT(19, 0) NOT NULL
+     * 
+     * @return MINOR
+     */
+    public Column<Long> minor() {
+        return defineColumn(Mappers.LONG, "MINOR");
+    }
+
+    /**
+     * NAME.
+     * VARCHAR(20)
+     * 
+     * @return NAME
+     */
+    public Column<String> name() {
+        return defineColumn(Mappers.STRING, "NAME");
+    }
+
+}
+

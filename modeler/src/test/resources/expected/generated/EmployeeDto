@@ -1,0 +1,76 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import java.sql.Date;
+import org.symqle.model.DepartmentId;
+import org.symqle.model.EmployeeId;
+
+public class EmployeeDto {
+    private final EmployeeId empId;
+    private String firstName;
+    private String lastName;
+    private String title;
+    private Date hireDate;
+    private Boolean isRetired;
+    private Double salary;
+    private DepartmentId deptId;
+
+   public EmployeeDto(final EmployeeId empId) {
+            this.empId = empId;
+   }
+
+  public EmployeeId getEmpId() {
+    return empId;
+  }
+  public String getFirstName() {
+    return firstName;
+  }
+  public void setFirstName(final String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+  public void setLastName(final String lastName) {
+    this.lastName = lastName;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+  public void setTitle(final String title) {
+    this.title = title;
+  }
+
+  public Date getHireDate() {
+    return hireDate;
+  }
+  public void setHireDate(final Date hireDate) {
+    this.hireDate = hireDate;
+  }
+
+  public Boolean getIsRetired() {
+    return isRetired;
+  }
+  public void setIsRetired(final Boolean isRetired) {
+    this.isRetired = isRetired;
+  }
+
+  public Double getSalary() {
+    return salary;
+  }
+  public void setSalary(final Double salary) {
+    this.salary = salary;
+  }
+
+  public DepartmentId getDeptId() {
+    return deptId;
+  }
+  public void setDeptId(final DepartmentId deptId) {
+    this.deptId = deptId;
+  }
+
+}
+

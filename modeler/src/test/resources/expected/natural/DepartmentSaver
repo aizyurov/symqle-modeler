@@ -1,0 +1,42 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.jdbc.Engine;
+import org.symqle.jdbc.GeneratedKeys;
+import org.symqle.jdbc.Option;
+import org.symqle.jdbc.PreparedUpdate;
+import org.symqle.sql.SetClauseList;
+import org.symqle.model.DepartmentDto;
+
+import java.sql.SQLException;
+import java.util.Arrays;
+
+public class DepartmentSaver {
+
+    private final Engine engine;
+    private final Option[] options;
+
+    public DepartmentSaver(final Engine engine, final Option[] options) {
+        this.engine = engine;
+        this.options = Arrays.copyOf(options, options.length);
+    }
+
+    public Integer save(final DepartmentDto dto) throws SQLException {
+        final Department table = new Department();
+        final SetClauseList setList = table.deptName().set(dto.getDeptName())
+                                .also(table.managerId().set(dto.getManagerId()))
+                                .also(table.parentDept().set(dto.getParentDept()));
+      final Integer id = dto.getDeptId();
+      if (id == null) {
+          final GeneratedKeys<Integer> generatedKeys = GeneratedKeys.create(Mappers.INTEGER);
+          table.insert(setList).compileUpdate(generatedKeys, engine, options).execute();
+          return generatedKeys.first();
+      } else {
+          final int affectedRows = table.update(setList).where(table.deptId().eq(id)).compileUpdate(engine, options).execute();
+          return affectedRows == 1 ? id : null;
+      }
+    }
+}
+
+

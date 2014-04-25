@@ -6,10 +6,10 @@ import org.symqle.modeler.sql.TableSqlModel;
 /**
  * @author lvovich
  */
-public class GeneratedKeysCondition implements ConditionalFreeMarkerClassWriter.Condition {
+public class GeneratedKeyWriter extends ConditionalClassWriter {
 
     @Override
-    public boolean generate(final TableSqlModel table) {
+    protected boolean mustGenerate(final TableSqlModel table) {
         if (table.getPrimaryKey() == null) {
             return false;
         } else {
@@ -21,4 +21,5 @@ public class GeneratedKeysCondition implements ConditionalFreeMarkerClassWriter.
             return false;
         }
     }
+
 }

@@ -1,0 +1,34 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.sql.SmartSelector;
+import org.symqle.model.DepartmentDto;
+import org.symqle.model.Department;
+
+import java.sql.SQLException;
+
+/**
+ * Selects {@link org.symqle.model.DepartmentDto} from {@link org.symqle.model.Department}.
+ */
+public class DepartmentSmartSelector extends SmartSelector<DepartmentDto> {
+
+  private final Department table;
+
+  /**
+   * Constructs DepartmentSmartSelector for given table.
+   * @param table instance of Department to select from.
+   */
+  public DepartmentSmartSelector(final Department table) {
+      this.table = table;
+  }
+
+  protected final DepartmentDto create() throws SQLException {
+      final DepartmentDto dto = new DepartmentDto(get(table.deptId()));
+      dto.setDeptName(get(table.deptName()));
+      dto.setManagerId(get(table.managerId()));
+      dto.setParentDept(get(table.parentDept()));
+      return dto;
+  }
+}
+

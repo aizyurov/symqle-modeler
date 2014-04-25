@@ -1,0 +1,122 @@
+/* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
+
+package org.symqle.model;
+
+import org.symqle.sql.Table;
+import org.symqle.common.Mappers;
+import org.symqle.sql.Column;
+import org.symqle.common.OnDemand;
+import java.sql.Date;
+import org.symqle.model.DepartmentId;
+import org.symqle.model.EmployeeId;
+
+/**
+ * TABLE EMPLOYEE
+ * 
+ */
+public class Employee extends Table {
+
+   public String getTableName() {
+       return "EMPLOYEE";
+   }
+
+    /**
+     * EMP_ID.
+     * INTEGER(10, 0) NOT NULL DEFAULT GENERATED_BY_DEFAULT
+     * 
+     * @return EMP_ID
+     */
+    public Column<EmployeeId> empId() {
+        return defineColumn(EmployeeId.MAPPER, "EMP_ID");
+    }
+
+    /**
+     * FIRST_NAME.
+     * VARCHAR(30)
+     * 
+     * @return FIRST_NAME
+     */
+    public Column<String> firstName() {
+        return defineColumn(Mappers.STRING, "FIRST_NAME");
+    }
+
+    /**
+     * LAST_NAME.
+     * VARCHAR(50)
+     * 
+     * @return LAST_NAME
+     */
+    public Column<String> lastName() {
+        return defineColumn(Mappers.STRING, "LAST_NAME");
+    }
+
+    /**
+     * TITLE.
+     * VARCHAR(50)
+     * 
+     * @return TITLE
+     */
+    public Column<String> title() {
+        return defineColumn(Mappers.STRING, "TITLE");
+    }
+
+    /**
+     * HIRE_DATE.
+     * DATE(10, 0)
+     * 
+     * @return HIRE_DATE
+     */
+    public Column<Date> hireDate() {
+        return defineColumn(Mappers.DATE, "HIRE_DATE");
+    }
+
+    /**
+     * IS_RETIRED.
+     * BOOLEAN(1) DEFAULT false
+     * 
+     * @return IS_RETIRED
+     */
+    public Column<Boolean> isRetired() {
+        return defineColumn(Mappers.BOOLEAN, "IS_RETIRED");
+    }
+
+    /**
+     * SALARY.
+     * DOUBLE(52)
+     * 
+     * @return SALARY
+     */
+    public Column<Double> salary() {
+        return defineColumn(Mappers.DOUBLE, "SALARY");
+    }
+
+    /**
+     * DEPT_ID.
+     * INTEGER(10, 0)
+     * 
+     * @return DEPT_ID
+     */
+    public Column<DepartmentId> deptId() {
+        return defineColumn(DepartmentId.MAPPER, "DEPT_ID");
+    }
+
+
+    private OnDemand<Department> dept = new OnDemand<Department>() {
+        @Override
+        public Department construct() {
+            Department other = new Department();
+            leftJoin(other, deptId().eq(other.deptId()));
+            return other;
+        }
+    };
+
+    /**
+     * Auto-join to Department by {@link #deptId()}
+     * FOREIGN KEY DEPARTMENT_FK (DEPT_ID) REFERENCES DEPARTMENT (DEPT_ID)
+     * @return joined Department.
+     */
+    public Department dept() {
+        return dept.get();
+    }
+}
+

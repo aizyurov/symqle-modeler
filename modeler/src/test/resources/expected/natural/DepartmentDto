@@ -1,0 +1,41 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+
+public class DepartmentDto {
+    private final Integer deptId;
+    private String deptName;
+    private Integer managerId;
+    private Integer parentDept;
+
+   public DepartmentDto(final Integer deptId) {
+            this.deptId = deptId;
+   }
+
+  public Integer getDeptId() {
+    return deptId;
+  }
+  public String getDeptName() {
+    return deptName;
+  }
+  public void setDeptName(final String deptName) {
+    this.deptName = deptName;
+  }
+
+  public Integer getManagerId() {
+    return managerId;
+  }
+  public void setManagerId(final Integer managerId) {
+    this.managerId = managerId;
+  }
+
+  public Integer getParentDept() {
+    return parentDept;
+  }
+  public void setParentDept(final Integer parentDept) {
+    this.parentDept = parentDept;
+  }
+
+}
+
