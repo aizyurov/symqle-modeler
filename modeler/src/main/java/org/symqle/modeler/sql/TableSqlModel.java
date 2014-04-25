@@ -1,6 +1,7 @@
 package org.symqle.modeler.sql;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author lvovich
@@ -22,5 +23,17 @@ public interface TableSqlModel extends DatabaseObjectModel {
     List<ForeignKeySqlModel> getForeignKeys();
 
     PrimaryKeySqlModel getPrimaryKey();
+
+    /**
+     * List of referenced classes, which are in Java SE API but not in java.lang and require import.
+     * @return Fully qualified names, no duplicates
+     */
+    Set<String> getExternalClassFqn();
+
+    /**
+     * Short names of generated keys classes used by this table
+     * @return
+     */
+    Set<String> getGeneratedKeys();
 
 }

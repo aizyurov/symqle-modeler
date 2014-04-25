@@ -8,12 +8,7 @@ import org.symqle.modeler.sql.PrimaryKeySqlModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author lvovich
@@ -54,6 +49,33 @@ public class MetadataModel implements SchemaSqlModel {
         @Override
         public PrimaryKeySqlModel getPrimaryKey() {
             return primaryKeysByTable.get(getName());
+        }
+
+        @Override
+        public Set<String> getExternalClassFqn() {
+            final Set<String> fqns = new TreeSet<>();
+            for (ColumnSqlModel column: getColumns()) {
+                if (column.getProperties().get("GENERATED_KEY") == null) {
+                    final String shortName = column.getProperties().get("JAVA_CLASS");
+                    final String fqn = NaturalTypeMapping.getInstance().getFqnForImport(shortName);
+                    if (fqn != null) {
+                        fqns.add(fqn);
+                    }
+                }
+            }
+            return fqns;
+        }
+
+        @Override
+        public Set<String> getGeneratedKeys() {
+            final Set<String> keys = new TreeSet<>();
+            for (ColumnSqlModel column: getColumns()) {
+                final String generatedKey = column.getProperties().get("GENERATED_KEY");
+                if (generatedKey != null) {
+                    keys.add(generatedKey);
+                }
+            }
+            return keys;
         }
     }
 
@@ -124,6 +146,17 @@ public class MetadataModel implements SchemaSqlModel {
             return MetadataModel.this.tables.get(properties.get("TABLE_NAME"));
         }
 
+        @Override
+        public boolean isForeignKey() {
+            for (ForeignKeySqlModel foreignKeySqlModel : getOwner().getForeignKeys()) {
+                for (ColumnPair pair : foreignKeySqlModel.getMapping()) {
+                    if (pair.getFirst().equals(this)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 
 

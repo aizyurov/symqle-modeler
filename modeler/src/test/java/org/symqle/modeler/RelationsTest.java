@@ -3,11 +3,12 @@ package org.symqle.modeler;
 import junit.framework.TestCase;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.symqle.modeler.generator.FreeMarkerClassWriter;
-import org.symqle.modeler.metadata.ColumnJavaNameAppender;
-import org.symqle.modeler.metadata.ForeignKeyJavaNameAppender;
+import org.symqle.modeler.metadata.ColumnTransformer;
+import org.symqle.modeler.metadata.ForeignKeyTransformer;
+import org.symqle.modeler.metadata.GeneratedFkTransformer;
 import org.symqle.modeler.metadata.MetadataReader;
 import org.symqle.modeler.metadata.Sieve;
-import org.symqle.modeler.metadata.TableJavaNameAppender;
+import org.symqle.modeler.metadata.TableTransformer;
 import org.symqle.modeler.sql.DatabaseObjectModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
@@ -33,7 +34,13 @@ import java.util.Map;
  */
 public class RelationsTest extends TestCase {
 
-    private final List<Transformer> transformers = Arrays.<Transformer>asList(createSieve(), new TableJavaNameAppender(), new ColumnJavaNameAppender(), new ForeignKeyJavaNameAppender());
+    private ColumnTransformer makeColumnTransformer(boolean naturalKeys) {
+        final ColumnTransformer columnTransformer = new ColumnTransformer();
+        columnTransformer.setNaturalKeys(naturalKeys);
+        return columnTransformer;
+    }
+    private final List<Transformer> transformers = Arrays.<Transformer>asList(createSieve(), new TableTransformer(),
+            makeColumnTransformer(false), new GeneratedFkTransformer(), new ForeignKeyTransformer());
 
     private final Sieve createSieve() {
         final Sieve sieve = new Sieve();
@@ -53,6 +60,11 @@ public class RelationsTest extends TestCase {
 
     public void testRelations() throws Exception {
         generate("freemarker/PlainKeysTable.ftl", "");
+        generate("freemarker/PlainKeysDto.ftl", "Dto");
+        generate("freemarker/GeneratedKey.ftl", "Id");
+        generate("freemarker/PlainKeysSelector.ftl", "Selector");
+        generate("freemarker/PlainKeysSmartSelector.ftl", "SmartSelector");
+        generate("freemarker/Saver.ftl", "Saver");
     }
 
     private void generate(final String templateName, final String suffix) throws Exception {
@@ -71,14 +83,14 @@ public class RelationsTest extends TestCase {
         final File packageDir = new File("target/test-generation/org/symqle/model");
         packageDir.mkdirs();
         final Map<String, String> packageNames = new HashMap<>();
-        packageNames.put("model", "org.symqle.model");
-        packageNames.put("dto", "org.symqle.model");
-        packageNames.put("dao", "org.symqle.model");
+        packageNames.put("symqle.modeler.model.package", "org.symqle.model");
+        packageNames.put("symqle.modeler.dto.package", "org.symqle.model");
+        packageNames.put("symqle.modeler.dao.package", "org.symqle.model");
         final FreeMarkerClassWriter writer = new FreeMarkerClassWriter();
         writer.setTemplateName(templateName);
         writer.setSuffix(suffix);
         for (TableSqlModel table : transformed.getTables()) {
-            writer.writeClass(packageDir, "model", table, packageNames);
+            writer.writeClass(packageDir, "symqle.modeler.model.package", table, packageNames);
         }
     }
 

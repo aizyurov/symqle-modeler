@@ -3,11 +3,12 @@ package org.symqle.modeler;
 import junit.framework.TestCase;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.symqle.modeler.generator.FreeMarkerClassWriter;
-import org.symqle.modeler.metadata.ColumnJavaNameAppender;
-import org.symqle.modeler.metadata.ForeignKeyJavaNameAppender;
+import org.symqle.modeler.metadata.ColumnTransformer;
+import org.symqle.modeler.metadata.ForeignKeyTransformer;
+import org.symqle.modeler.metadata.GeneratedFkTransformer;
 import org.symqle.modeler.metadata.MetadataReader;
 import org.symqle.modeler.metadata.Sieve;
-import org.symqle.modeler.metadata.TableJavaNameAppender;
+import org.symqle.modeler.metadata.TableTransformer;
 import org.symqle.modeler.sql.DatabaseObjectModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
@@ -33,7 +34,7 @@ import java.util.Map;
  */
 public class PlainKeysTableTest extends TestCase {
 
-    private final List<Transformer> transformers = Arrays.<Transformer>asList(createSieve(), new TableJavaNameAppender(), new ColumnJavaNameAppender(), new ForeignKeyJavaNameAppender());
+    private final List<Transformer> transformers = Arrays.<Transformer>asList(createSieve(), new TableTransformer(), new ColumnTransformer(), new ForeignKeyTransformer(), new GeneratedFkTransformer());
 
     private final Sieve createSieve() {
         final Sieve sieve = new Sieve();

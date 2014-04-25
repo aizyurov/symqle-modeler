@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * @author lvovich
  */
-public class TableJavaNameAppender extends  AbstractTransformer {
+public class TableTransformer extends  AbstractTransformer {
 
     @Override
     public SchemaSqlModel transform(final SchemaSqlModel source) {

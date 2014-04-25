@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * @author lvovich
  */
-public class ForeignKeyJavaNameAppender extends AbstractTransformer {
+public class ForeignKeyTransformer extends AbstractTransformer {
 
     private String singleColumnKey = "FKCOLUMN_NAME";
     private String multiColumnKey = "PKTABLE_NAME";
@@ -72,11 +72,4 @@ public class ForeignKeyJavaNameAppender extends AbstractTransformer {
         return model;
     }
 
-    public void setSingleColumnKey(final String singleColumnKey) {
-        this.singleColumnKey = singleColumnKey;
-    }
-
-    public void setMultiColumnKey(final String multiColumnKey) {
-        this.multiColumnKey = multiColumnKey;
-    }
 }

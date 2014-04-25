@@ -1,5 +1,5 @@
 <#ftl strip_whitespace="true">
-/* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
 
 <#include "PlainKeysDefinitions.ftl"/>
 <#function isPrimaryKey column table>
@@ -14,25 +14,22 @@
 </#function>
 package ${packages["${package}"]};
 
-import org.symqle.sql.AbstractSelector;
+import org.symqle.sql.Selector;
 import org.symqle.common.RowMapper;
 import org.symqle.common.Row;
 import java.sql.SQLException;
-import ${packages["dto"]}.${model.properties.JAVA_NAME}Dto;
-<#list requiredImport?keys as importKey>
-  <#list model.columns as column>
-      <#assign javaType>${columnTypeMapping["${column.properties.DATA_TYPE}"]}</#assign>
-    <#if importKey == javaType>
-import ${requiredImport["${javaType}"]};
-    <#break></#if>
-  </#list>
+import ${packages["symqle.modeler.dto.package"]}.${model.properties.JAVA_NAME}Dto;
+<#list model.externalClassFqn as requiredImport>
+import ${requiredImport};
+</#list>
+<#list model.generatedKeys as key>
+import ${packages["symqle.modeler.dto.package"]}.${key};
 </#list>
 
-public class ${className} extends AbstractSelector<${model.properties.JAVA_NAME}Dto> {
+public class ${className} extends Selector<${model.properties.JAVA_NAME}Dto> {
 
 <#list model.columns as column>
-  <#assign javaType>${columnTypeMapping["${column.properties.DATA_TYPE}"]}</#assign>
-  private final RowMapper<${javaType}> ${column.properties.JAVA_NAME}Mapper;
+  private final RowMapper<${column.properties.JAVA_CLASS}> ${column.properties.JAVA_NAME}Mapper;
 </#list>
 
   public ${className}(final ${model.properties.JAVA_NAME} table) {

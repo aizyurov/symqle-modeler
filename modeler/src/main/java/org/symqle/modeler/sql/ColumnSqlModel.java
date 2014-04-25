@@ -7,4 +7,6 @@ public interface ColumnSqlModel extends DatabaseObjectModel {
 
     TableSqlModel getOwner();
 
+    boolean isForeignKey();
+
 }

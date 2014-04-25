@@ -2,10 +2,10 @@ package org.symqle.modeler;
 
 import junit.framework.TestCase;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-import org.symqle.modeler.metadata.ColumnJavaNameAppender;
-import org.symqle.modeler.metadata.ForeignKeyJavaNameAppender;
+import org.symqle.modeler.metadata.ColumnTransformer;
+import org.symqle.modeler.metadata.ForeignKeyTransformer;
 import org.symqle.modeler.metadata.MetadataReader;
-import org.symqle.modeler.metadata.TableJavaNameAppender;
+import org.symqle.modeler.metadata.TableTransformer;
 import org.symqle.modeler.sql.ColumnPair;
 import org.symqle.modeler.sql.ColumnSqlModel;
 import org.symqle.modeler.sql.DatabaseObjectModel;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class TransformerTest extends TestCase {
 
-    private final List<Transformer> transformers = Arrays.<Transformer>asList(new TableJavaNameAppender(), new ColumnJavaNameAppender(), new ForeignKeyJavaNameAppender());
+    private final List<Transformer> transformers = Arrays.<Transformer>asList(new TableTransformer(), new ColumnTransformer(), new ForeignKeyTransformer());
 
     public void testSymqleTestDatabase() throws Exception {
         final MetadataReader reader = new MetadataReader();

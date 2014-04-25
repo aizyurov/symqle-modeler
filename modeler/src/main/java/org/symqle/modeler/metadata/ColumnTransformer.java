@@ -13,7 +13,13 @@ import java.util.Set;
 /**
  * @author lvovich
  */
-public class ColumnJavaNameAppender extends AbstractTransformer {
+public class ColumnTransformer extends AbstractTransformer {
+
+    private boolean naturalKeys;
+
+    public void setNaturalKeys(final boolean naturalKeys) {
+        this.naturalKeys = naturalKeys;
+    }
 
     @Override
     public SchemaSqlModel transform(final SchemaSqlModel source) {
@@ -35,6 +41,18 @@ public class ColumnJavaNameAppender extends AbstractTransformer {
                         usedNames.add(candidate);
                     }
                 }
+                if (naturalKeys || !mustGenerateKey(column)) {
+                    final Integer dataType = Integer.valueOf(properties.get("DATA_TYPE"));
+                    final NaturalTypeMapping mapping = NaturalTypeMapping.getInstance();
+                    final String javaType = mapping.getJavaType(dataType);
+                    properties.put("JAVA_CLASS", javaType);
+                    properties.put("COLUMN_MAPPER", "Mappers." + mapping.getMapper(javaType));
+                } else {
+                    final String keyClassName = table.getProperties().get("JAVA_NAME") + "Id";
+                    properties.put("JAVA_CLASS", keyClassName);
+                    properties.put("COLUMN_MAPPER", keyClassName + ".MAPPER");
+                    properties.put("GENERATED_KEY", keyClassName);
+                }
                 model.addColumn(new PropertyHolder(properties));
             }
         }
@@ -43,6 +61,11 @@ public class ColumnJavaNameAppender extends AbstractTransformer {
         copyForeignKeys(source, model);
 
         return model;
+    }
+
+    private boolean mustGenerateKey(final ColumnSqlModel column) {
+        return column.getOwner().getPrimaryKey().getColumns().contains(column)
+                && column.getProperties().get("IS_AUTOINCREMENT").equals("YES");
     }
 
 }

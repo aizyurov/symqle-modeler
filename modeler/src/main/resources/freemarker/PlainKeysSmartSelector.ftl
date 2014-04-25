@@ -1,5 +1,5 @@
 <#ftl strip_whitespace="true">
-/* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
 
 <#include "PlainKeysDefinitions.ftl"/>
 <#function isPrimaryKey column table>
@@ -16,7 +16,7 @@ package ${packages["${package}"]};
 
 import org.symqle.sql.SmartSelector;
 import java.sql.SQLException;
-import ${packages["dto"]}.${model.properties.JAVA_NAME}Dto;
+import ${packages["symqle.modeler.dto.package"]}.${model.properties.JAVA_NAME}Dto;
 
 public class ${className} extends SmartSelector<${model.properties.JAVA_NAME}Dto> {
 
