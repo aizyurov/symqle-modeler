@@ -7,6 +7,7 @@ import org.symqle.modeler.transformer.Transformer;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Generates code from metadata
@@ -16,14 +17,17 @@ public class Generator {
 
     private ModelReader modelReader;
     private List<Transformer> transformers;
-    private CodeWriter codeWriter;
+    private Map<String, String> packageNames;
+    private List<ClassWriter> classWriters;
 
     public void generate() throws IOException, SQLException, ReflectiveOperationException {
         SchemaSqlModel model = modelReader.readModel();
         for (Transformer transformer : transformers) {
             model = transformer.transform(model);
         }
-        codeWriter.writeCode(model);
+        for (ClassWriter classWriter : classWriters) {
+            classWriter.writeClasses(model, packageNames);
+        }
     }
 
     public void setModelReader(final ModelReader modelReader) {
@@ -34,7 +38,11 @@ public class Generator {
         this.transformers = transformers;
     }
 
-    public void setCodeWriter(final CodeWriter codeWriter) {
-        this.codeWriter = codeWriter;
+    public void setPackageNames(Map<String, String> packageNames) {
+        this.packageNames = packageNames;
+    }
+
+    public void setClassWriters(List<ClassWriter> classWriters) {
+        this.classWriters = classWriters;
     }
 }

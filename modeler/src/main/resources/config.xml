@@ -20,11 +20,12 @@
         <property name="packageNames">
             <map>
                 <entry key="model" value="${symqle.modeler.model.package}"/>
-                <entry key="model" value="${symqle.modeler.dto.package}"/>
-                <entry key="model" value="${symqle.modeler.dao.package}"/>
+                <entry key="dto" value="${symqle.modeler.dto.package}"/>
+                <entry key="dao" value="${symqle.modeler.dao.package}"/>
             </map>
         </property>
-        <property name="outputDirectory" value="${symqle.modeler.generated.classes.dir}"/>
+        <property name="outputDirectory" value="${symqle.modeler.generated.sources.dir}"/>
+        <property name="samplesDirectory" value="${symqle.modeler.generated.samples.dir}"/>
         <property name="packageWriters">
             <list>
                 <ref bean="freeMarkerPlainKeysTableWriter"/>
@@ -32,7 +33,7 @@
         </property>
     </bean>
 
-    <bean id="freeMarkerPlainKeysTableWriter" class="org.symqle.modeler.generator.PackageWriter">
+    <bean id="tableWriter" class="org.symqle.modeler.generator.PackageWriter">
         <property name="packageKey" value="model"/>
         <property name="classWriter">
             <bean class="org.symqle.modeler.generator.FreeMarkerClassWriter">

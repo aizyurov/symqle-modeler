@@ -2,13 +2,13 @@
 <#include "Definitions.ftl"/>
 /* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
 
-package ${packages["${package}"]};
+package ${package};
 
 <#list model.externalClassFqn as requiredImport>
 import ${requiredImport};
 </#list>
 <#list model.generatedKeys as key>
-import ${packages["symqle.modeler.dto.package"]}.${key};
+import ${packages.dto}.${key};
 </#list>
 
 public class ${className} {

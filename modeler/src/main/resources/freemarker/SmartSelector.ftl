@@ -2,16 +2,16 @@
 /* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
 
 <#include "Definitions.ftl"/>
-package ${packages["${package}"]};
+package ${package};
 
 import org.symqle.sql.SmartSelector;
-import ${packages["symqle.modeler.dto.package"]}.${model.properties.JAVA_NAME}Dto;
-import ${packages["symqle.modeler.model.package"]}.${model.properties.JAVA_NAME};
+import ${packages.dto}.${model.properties.JAVA_NAME}Dto;
+import ${packages.model}.${model.properties.JAVA_NAME};
 
 import java.sql.SQLException;
 
 /**
- * Selects {@link ${packages["symqle.modeler.dto.package"]}.${model.properties.JAVA_NAME}Dto} from {@link ${packages["symqle.modeler.model.package"]}.${model.properties.JAVA_NAME}}.
+ * Selects {@link ${packages.dto}.${model.properties.JAVA_NAME}Dto} from {@link ${packages.model}.${model.properties.JAVA_NAME}}.
  */
 public class ${className} extends SmartSelector<${model.properties.JAVA_NAME}Dto> {
 

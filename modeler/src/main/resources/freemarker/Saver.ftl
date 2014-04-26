@@ -13,19 +13,19 @@
   <#return false>
 </#function>
 <#if model.primaryKey?? && (model.primaryKey.columns?size == 1)>
-package ${packages["${package}"]};
+package ${package};
 
 import org.symqle.jdbc.Engine;
 import org.symqle.jdbc.GeneratedKeys;
 import org.symqle.jdbc.Option;
 import org.symqle.jdbc.PreparedUpdate;
 import org.symqle.sql.SetClauseList;
-import ${packages["symqle.modeler.dto.package"]}.${model.properties.JAVA_NAME}Dto;
+import ${packages.dto}.${model.properties.JAVA_NAME}Dto;
 <#list model.externalClassFqn as requiredImport>
 import ${requiredImport};
 </#list>
 <#list model.generatedKeys as key>
-import ${packages["symqle.modeler.dto.package"]}.${key};
+import ${packages.dto}.${key};
 </#list>
 <#list model.primaryKey.columns as key>
   <#assign primaryKey = key/>

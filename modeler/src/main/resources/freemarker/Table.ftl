@@ -1,7 +1,7 @@
 <#ftl strip_whitespace="true">
 /* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
 
-package ${packages["${package}"]};
+package ${package};
 
 <#include "Definitions.ftl"/>
 import org.symqle.sql.${tableTypeMapping["${model.properties.TABLE_TYPE}"]};
@@ -12,7 +12,7 @@ import org.symqle.common.OnDemand;
 import ${requiredImport};
 </#list>
 <#list model.generatedKeys as key>
-import ${packages["symqle.modeler.dto.package"]}.${key};
+import ${packages.dto}.${key};
 </#list>
 
 /**

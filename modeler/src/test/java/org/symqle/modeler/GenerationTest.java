@@ -1,9 +1,7 @@
 package org.symqle.modeler;
 
 import org.apache.commons.io.IOUtils;
-import org.symqle.modeler.generator.FreeMarkerClassWriter;
-import org.symqle.modeler.generator.GeneratedKeyWriter;
-import org.symqle.modeler.generator.SaverWriter;
+import org.symqle.modeler.generator.*;
 import org.symqle.modeler.metadata.ColumnTransformer;
 import org.symqle.modeler.metadata.ForeignKeyTransformer;
 import org.symqle.modeler.metadata.GeneratedFkTransformer;
@@ -81,14 +79,14 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testTableNaturalKeys() throws Exception {
-        generate(naturalKeyTransformers, "freemarker/Table.ftl", "", new FreeMarkerClassWriter());
+        generate(naturalKeyTransformers, "freemarker/Table.ftl", "", new UnconditionalClassWriter());
         assertMatchesExpected("expected/natural", "AllTypes");
         assertMatchesExpected("expected/natural", "Department");
         assertMatchesExpected("expected/natural", "Detail");
     }
 
     public void testTableGeneratedKeys() throws Exception {
-        generate(generatedKeyTransformers, "freemarker/Table.ftl", "", new FreeMarkerClassWriter());
+        generate(generatedKeyTransformers, "freemarker/Table.ftl", "", new UnconditionalClassWriter());
         assertMatchesExpected("expected/generated", "AllTypes");
         assertMatchesExpected("expected/generated", "Department");
         assertMatchesExpected("expected/generated", "Detail");
@@ -109,7 +107,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testDtoNaturalKeys() throws Exception {
-        generate(naturalKeyTransformers, "freemarker/Dto.ftl", "Dto", new FreeMarkerClassWriter());
+        generate(naturalKeyTransformers, "freemarker/Dto.ftl", "Dto", new UnconditionalClassWriter());
         assertMatchesExpected("expected/natural", "AllTypesDto");
         assertMatchesExpected("expected/natural", "DepartmentDto");
         assertMatchesExpected("expected/natural", "MasterDto");
@@ -117,7 +115,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testDtoGeneratedKeys() throws Exception {
-        generate(generatedKeyTransformers, "freemarker/Dto.ftl", "Dto", new FreeMarkerClassWriter());
+        generate(generatedKeyTransformers, "freemarker/Dto.ftl", "Dto", new UnconditionalClassWriter());
         assertMatchesExpected("expected/generated", "AllTypesDto");
         assertMatchesExpected("expected/generated", "DepartmentDto");
         assertMatchesExpected("expected/generated", "MasterDto");
@@ -125,7 +123,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testSelectorNaturalKeys() throws Exception {
-        generate(naturalKeyTransformers, "freemarker/Selector.ftl", "Selector", new FreeMarkerClassWriter());
+        generate(naturalKeyTransformers, "freemarker/Selector.ftl", "Selector", new UnconditionalClassWriter());
         assertMatchesExpected("expected/natural", "AllTypesSelector");
         assertMatchesExpected("expected/natural", "DepartmentSelector");
         assertMatchesExpected("expected/natural", "MasterSelector");
@@ -133,7 +131,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testSelectorGeneratedKeys() throws Exception {
-        generate(generatedKeyTransformers, "freemarker/Selector.ftl", "Selector", new FreeMarkerClassWriter());
+        generate(generatedKeyTransformers, "freemarker/Selector.ftl", "Selector", new UnconditionalClassWriter());
         assertMatchesExpected("expected/generated", "AllTypesSelector");
         assertMatchesExpected("expected/generated", "DepartmentSelector");
         assertMatchesExpected("expected/generated", "MasterSelector");
@@ -141,7 +139,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testSmartSelectorNaturalKeys() throws Exception {
-        generate(naturalKeyTransformers, "freemarker/SmartSelector.ftl", "SmartSelector", new FreeMarkerClassWriter());
+        generate(naturalKeyTransformers, "freemarker/SmartSelector.ftl", "SmartSelector", new UnconditionalClassWriter());
         assertMatchesExpected("expected/natural", "AllTypesSmartSelector");
         assertMatchesExpected("expected/natural", "DepartmentSmartSelector");
         assertMatchesExpected("expected/natural", "MasterSmartSelector");
@@ -149,7 +147,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testSmartSelectorGeneratedKeys() throws Exception {
-        generate(generatedKeyTransformers, "freemarker/SmartSelector.ftl", "SmartSelector", new FreeMarkerClassWriter());
+        generate(generatedKeyTransformers, "freemarker/SmartSelector.ftl", "SmartSelector", new UnconditionalClassWriter());
         assertMatchesExpected("expected/generated", "AllTypesSmartSelector");
         assertMatchesExpected("expected/generated", "DepartmentSmartSelector");
         assertMatchesExpected("expected/generated", "MasterSmartSelector");
@@ -175,6 +173,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     private final File packageDir = new File("target/test-generation/org/symqle/model");
+    private String outputDir = "target/test-generation";
 
     private void generate(final List<Transformer> transformers, final String templateName, final String suffix, final FreeMarkerClassWriter writer) throws Exception {
         final DataSource dataSource = getDataSource();
@@ -188,14 +187,14 @@ public class GenerationTest extends DatabaseTestBase {
             transformed = transformer.transform(transformed);
         }
         final Map<String, String> packageNames = new HashMap<>();
-        packageNames.put("symqle.modeler.model.package", "org.symqle.model");
-        packageNames.put("symqle.modeler.dto.package", "org.symqle.model");
-        packageNames.put("symqle.modeler.dao.package", "org.symqle.model");
+        packageNames.put("model", "org.symqle.model");
+        packageNames.put("dto", "org.symqle.model");
+        packageNames.put("dao", "org.symqle.model");
         writer.setTemplateName(templateName);
         writer.setSuffix(suffix);
-        for (TableSqlModel table : transformed.getTables()) {
-            writer.writeClass(packageDir, "symqle.modeler.model.package", table, packageNames);
-        }
+        writer.setOutputDirectory(outputDir);
+        writer.setPackageKey("model");
+        writer.writeClasses(transformed, packageNames);
     }
 
     private void assertMatchesExpected(final String resourceDir, final String fileName) throws Exception {

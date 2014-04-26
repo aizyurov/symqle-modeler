@@ -2,15 +2,15 @@
 /* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
 
 <#include "Definitions.ftl"/>
-package ${packages["${package}"]};
+package ${package};
 
 import org.symqle.sql.Selector;
 import org.symqle.common.RowMapper;
 import org.symqle.common.Row;
-import ${packages["symqle.modeler.dto.package"]}.${model.properties.JAVA_NAME}Dto;
-import ${packages["symqle.modeler.model.package"]}.${model.properties.JAVA_NAME};
+import ${packages.dto}.${model.properties.JAVA_NAME}Dto;
+import ${packages.model}.${model.properties.JAVA_NAME};
 <#list model.generatedKeys as key>
-import ${packages["symqle.modeler.dto.package"]}.${key};
+import ${packages.dto}.${key};
 </#list>
 import java.sql.SQLException;
 <#list model.externalClassFqn as requiredImport>
@@ -18,7 +18,7 @@ import ${requiredImport};
 </#list>
 
 /**
- * Selects {@link ${packages["symqle.modeler.dto.package"]}.${model.properties.JAVA_NAME}Dto} from {@link ${packages["symqle.modeler.model.package"]}.${model.properties.JAVA_NAME}}.
+ * Selects {@link ${packages.dto}.${model.properties.JAVA_NAME}Dto} from {@link ${packages.model}.${model.properties.JAVA_NAME}}.
  */
 public class ${className} extends Selector<${model.properties.JAVA_NAME}Dto> {
 

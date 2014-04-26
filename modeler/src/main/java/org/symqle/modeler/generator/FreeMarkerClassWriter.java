@@ -5,8 +5,10 @@ import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Required;
+import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
 
+import javax.xml.validation.Schema;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,8 +19,10 @@ import java.util.Map;
 /**
  * @author lvovich
  */
-public class FreeMarkerClassWriter implements ClassWriter {
+public abstract class FreeMarkerClassWriter implements ClassWriter {
 
+    private String outputDirectory;
+    private String packageKey;
     private String templateName;
     private String suffix = "";
 
@@ -31,24 +35,49 @@ public class FreeMarkerClassWriter implements ClassWriter {
         this.suffix = suffix;
     }
 
-    @Override
-    public void writeClass(final File packageDir, final String packageKey, final TableSqlModel model, final Map<String, String> packageNames) throws IOException {
-        final String className = model.getProperties().get("JAVA_NAME") + suffix;
-        File generated = new File(packageDir, className + ".java");
-        try (Writer writer = new FileWriter(generated)) {
+    public void setOutputDirectory(String outputDirectory) {
+        this.outputDirectory = outputDirectory;
+    }
+
+
+    public void setPackageKey(String packageKey) {
+        this.packageKey = packageKey;
+    }
+
+    public void writeClasses(final SchemaSqlModel model,  final Map<String, String> packageNames)
+                                                    throws IOException {
+        final File outputDir = new File(outputDirectory);
+        String packageName = packageNames.get(packageKey);
+        final String packageSubdirName = packageName.replaceAll("\\.", "/");
+        final File packageDir = new File(outputDir, packageSubdirName);
+        packageDir.mkdirs();
+        for (final TableSqlModel table : model.getTables()) {
+            if (mustGenerate(table)) {
+                final String className = table.getProperties().get("JAVA_NAME") + suffix;
+                final Map<String, Object> root = new HashMap<>();
+                root.put("package", packageNames.get(packageKey));
+                root.put("packages", packageNames);
+                root.put("model", table);
+                root.put("className", className);
+                File generated = new File(packageDir, className + ".java");
+                writeFile(generated, root);
+            }
+        }
+    }
+
+    private void writeFile(final File file, final Map<String, Object> model) throws IOException {
+        try (Writer writer = new FileWriter(file)) {
             final Configuration configuration= new Configuration();
             configuration.setClassForTemplateLoading(this.getClass(), "/");
             configuration.setObjectWrapper(new DefaultObjectWrapper());
             final Template template = configuration.getTemplate(templateName);
             template.setObjectWrapper(new DefaultObjectWrapper());
-            final Map<String, Object> root = new HashMap<>();
-            root.put("package", packageKey);
-            root.put("packages", packageNames);
-            root.put("model", model);
-            root.put("className", className);
-            template.process(root, writer);
+            template.process(model, writer);
         } catch (TemplateException e) {
             throw new RuntimeException("Bad template", e);
         }
     }
+
+    protected abstract boolean mustGenerate(TableSqlModel table);
+
 }

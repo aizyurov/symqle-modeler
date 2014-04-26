@@ -3,7 +3,7 @@
 <#list model.primaryKey.columns as column>
   <#if column.properties.GENERATED_KEY??>
 /* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
-package ${packages["${package}"]};
+package ${package};
 
 import org.symqle.common.InBox;
 import org.symqle.common.Mapper;

@@ -5,7 +5,7 @@ import org.symqle.modeler.sql.TableSqlModel;
 /**
  * @author lvovich
  */
-public class SaverWriter extends ConditionalClassWriter {
+public class SaverWriter extends FreeMarkerClassWriter {
 
     @Override
     protected boolean mustGenerate(final TableSqlModel table) {
