@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 
 public class AllTypesSaver {
 
@@ -59,14 +60,26 @@ public class AllTypesSaver {
       if (id == null) {
           final Long newId = generateId();
           final SetClauseList setListWithId = setList.also(table.tBit().set(newId));
-          table.insert(setListWithId).compileUpdate(engine, options).execute();
+          table.insert(setListWithId).execute(engine, options);
           return newId;
       } else {
-          final int affectedRows = table.update(setList).where(table.tBit().eq(id)).compileUpdate(engine, options).execute();
+          final int affectedRows = table.update(setList).where(table.tBit().eq(id)).execute(engine, options);
           return affectedRows == 1 ? id : null;
       }
     }
-      private Long generateId() {
+
+    public boolean delete(final Long id) throws SQLException {
+        final AllTypes table = new AllTypes();
+        return 1 == table.delete().where(table.tBit().eq(id)).execute(engine, options);
+    }
+
+    public AllTypesDto getById(final Long id) throws SQLException {
+        final AllTypes table = new AllTypes();
+        List<AllTypesDto> list = new AllTypesSelector(table).where(table.tBit().eq(id)).list(engine, options);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+      private Long  generateId() {
           throw new IllegalStateException("Not implemented");
       }
 }

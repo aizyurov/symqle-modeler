@@ -5,7 +5,7 @@ import org.symqle.modeler.sql.TableSqlModel;
 /**
  * Created by aizyurov on 4/26/14.
  */
-public class UnconditionalClassWriter extends FreeMarkerClassWriter {
+public class RegularClassWriter extends FreeMarkerClassWriter {
 
     @Override
     protected boolean mustGenerate(TableSqlModel table) {

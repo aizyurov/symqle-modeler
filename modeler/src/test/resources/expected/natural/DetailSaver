@@ -11,6 +11,7 @@ import org.symqle.model.DetailDto;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 
 public class DetailSaver {
 
@@ -31,14 +32,26 @@ public class DetailSaver {
       if (id == null) {
           final Integer newId = generateId();
           final SetClauseList setListWithId = setList.also(table.id().set(newId));
-          table.insert(setListWithId).compileUpdate(engine, options).execute();
+          table.insert(setListWithId).execute(engine, options);
           return newId;
       } else {
-          final int affectedRows = table.update(setList).where(table.id().eq(id)).compileUpdate(engine, options).execute();
+          final int affectedRows = table.update(setList).where(table.id().eq(id)).execute(engine, options);
           return affectedRows == 1 ? id : null;
       }
     }
-      private Long generateId() {
+
+    public boolean delete(final Integer id) throws SQLException {
+        final Detail table = new Detail();
+        return 1 == table.delete().where(table.id().eq(id)).execute(engine, options);
+    }
+
+    public DetailDto getById(final Integer id) throws SQLException {
+        final Detail table = new Detail();
+        List<DetailDto> list = new DetailSelector(table).where(table.id().eq(id)).list(engine, options);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
+      private Integer  generateId() {
           throw new IllegalStateException("Not implemented");
       }
 }

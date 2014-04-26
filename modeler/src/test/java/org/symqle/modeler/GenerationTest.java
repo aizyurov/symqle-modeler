@@ -10,7 +10,6 @@ import org.symqle.modeler.metadata.Sieve;
 import org.symqle.modeler.metadata.TableTransformer;
 import org.symqle.modeler.sql.DatabaseObjectModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
-import org.symqle.modeler.sql.TableSqlModel;
 import org.symqle.modeler.transformer.Filter;
 import org.symqle.modeler.transformer.FilterOutcome;
 import org.symqle.modeler.transformer.RegexpFilter;
@@ -79,14 +78,14 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testTableNaturalKeys() throws Exception {
-        generate(naturalKeyTransformers, "freemarker/Table.ftl", "", new UnconditionalClassWriter());
+        generate(naturalKeyTransformers, "freemarker/Table.ftl", "", new RegularClassWriter());
         assertMatchesExpected("expected/natural", "AllTypes");
         assertMatchesExpected("expected/natural", "Department");
         assertMatchesExpected("expected/natural", "Detail");
     }
 
     public void testTableGeneratedKeys() throws Exception {
-        generate(generatedKeyTransformers, "freemarker/Table.ftl", "", new UnconditionalClassWriter());
+        generate(generatedKeyTransformers, "freemarker/Table.ftl", "", new RegularClassWriter());
         assertMatchesExpected("expected/generated", "AllTypes");
         assertMatchesExpected("expected/generated", "Department");
         assertMatchesExpected("expected/generated", "Detail");
@@ -107,7 +106,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testDtoNaturalKeys() throws Exception {
-        generate(naturalKeyTransformers, "freemarker/Dto.ftl", "Dto", new UnconditionalClassWriter());
+        generate(naturalKeyTransformers, "freemarker/Dto.ftl", "Dto", new RegularClassWriter());
         assertMatchesExpected("expected/natural", "AllTypesDto");
         assertMatchesExpected("expected/natural", "DepartmentDto");
         assertMatchesExpected("expected/natural", "MasterDto");
@@ -115,7 +114,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testDtoGeneratedKeys() throws Exception {
-        generate(generatedKeyTransformers, "freemarker/Dto.ftl", "Dto", new UnconditionalClassWriter());
+        generate(generatedKeyTransformers, "freemarker/Dto.ftl", "Dto", new RegularClassWriter());
         assertMatchesExpected("expected/generated", "AllTypesDto");
         assertMatchesExpected("expected/generated", "DepartmentDto");
         assertMatchesExpected("expected/generated", "MasterDto");
@@ -123,7 +122,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testSelectorNaturalKeys() throws Exception {
-        generate(naturalKeyTransformers, "freemarker/Selector.ftl", "Selector", new UnconditionalClassWriter());
+        generate(naturalKeyTransformers, "freemarker/Selector.ftl", "Selector", new RegularClassWriter());
         assertMatchesExpected("expected/natural", "AllTypesSelector");
         assertMatchesExpected("expected/natural", "DepartmentSelector");
         assertMatchesExpected("expected/natural", "MasterSelector");
@@ -131,7 +130,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testSelectorGeneratedKeys() throws Exception {
-        generate(generatedKeyTransformers, "freemarker/Selector.ftl", "Selector", new UnconditionalClassWriter());
+        generate(generatedKeyTransformers, "freemarker/Selector.ftl", "Selector", new RegularClassWriter());
         assertMatchesExpected("expected/generated", "AllTypesSelector");
         assertMatchesExpected("expected/generated", "DepartmentSelector");
         assertMatchesExpected("expected/generated", "MasterSelector");
@@ -139,7 +138,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testSmartSelectorNaturalKeys() throws Exception {
-        generate(naturalKeyTransformers, "freemarker/SmartSelector.ftl", "SmartSelector", new UnconditionalClassWriter());
+        generate(naturalKeyTransformers, "freemarker/SmartSelector.ftl", "SmartSelector", new RegularClassWriter());
         assertMatchesExpected("expected/natural", "AllTypesSmartSelector");
         assertMatchesExpected("expected/natural", "DepartmentSmartSelector");
         assertMatchesExpected("expected/natural", "MasterSmartSelector");
@@ -147,7 +146,7 @@ public class GenerationTest extends DatabaseTestBase {
     }
 
     public void testSmartSelectorGeneratedKeys() throws Exception {
-        generate(generatedKeyTransformers, "freemarker/SmartSelector.ftl", "SmartSelector", new UnconditionalClassWriter());
+        generate(generatedKeyTransformers, "freemarker/SmartSelector.ftl", "SmartSelector", new RegularClassWriter());
         assertMatchesExpected("expected/generated", "AllTypesSmartSelector");
         assertMatchesExpected("expected/generated", "DepartmentSmartSelector");
         assertMatchesExpected("expected/generated", "MasterSmartSelector");

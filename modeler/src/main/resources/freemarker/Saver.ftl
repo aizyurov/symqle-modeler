@@ -33,6 +33,7 @@ import ${packages.dto}.${key};
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 
 public class ${className} {
 
@@ -58,16 +59,28 @@ public class ${className} {
           <#else>
           final ${primaryKey.properties.JAVA_CLASS} newId = generateId();
           final SetClauseList setListWithId = setList.also(table.${primaryKey.properties.JAVA_NAME}().set(newId));
-          table.insert(setListWithId).compileUpdate(engine, options).execute();
+          table.insert(setListWithId).execute(engine, options);
           return newId;
           </#if>
       } else {
-          final int affectedRows = table.update(setList).where(table.${primaryKey.properties.JAVA_NAME}().eq(id)).compileUpdate(engine, options).execute();
+          final int affectedRows = table.update(setList).where(table.${primaryKey.properties.JAVA_NAME}().eq(id)).execute(engine, options);
           return affectedRows == 1 ? id : null;
       }
     }
+
+    public boolean delete(final ${primaryKey.properties.JAVA_CLASS} id) throws SQLException {
+        final ${model.properties.JAVA_NAME} table = new ${model.properties.JAVA_NAME}();
+        return 1 == table.delete().where(table.${primaryKey.properties.JAVA_NAME}().eq(id)).execute(engine, options);
+    }
+
+    public ${model.properties.JAVA_NAME}Dto getById(final ${primaryKey.properties.JAVA_CLASS} id) throws SQLException {
+        final ${model.properties.JAVA_NAME} table = new ${model.properties.JAVA_NAME}();
+        List<${model.properties.JAVA_NAME}Dto> list = new ${model.properties.JAVA_NAME}Selector(table).where(table.${primaryKey.properties.JAVA_NAME}().eq(id)).list(engine, options);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
 <#if primaryKey.properties.IS_AUTOINCREMENT != "YES">
-      private Long generateId() {
+      private ${primaryKey.properties.JAVA_CLASS}  generateId() {
           throw new IllegalStateException("Not implemented");
       }
 </#if>

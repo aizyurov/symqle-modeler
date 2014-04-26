@@ -12,6 +12,7 @@ import java.sql.Date;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 
 public class EmployeeSaver {
 
@@ -38,10 +39,22 @@ public class EmployeeSaver {
           table.insert(setList).compileUpdate(generatedKeys, engine, options).execute();
           return generatedKeys.first();
       } else {
-          final int affectedRows = table.update(setList).where(table.empId().eq(id)).compileUpdate(engine, options).execute();
+          final int affectedRows = table.update(setList).where(table.empId().eq(id)).execute(engine, options);
           return affectedRows == 1 ? id : null;
       }
     }
+
+    public boolean delete(final Integer id) throws SQLException {
+        final Employee table = new Employee();
+        return 1 == table.delete().where(table.empId().eq(id)).execute(engine, options);
+    }
+
+    public EmployeeDto getById(final Integer id) throws SQLException {
+        final Employee table = new Employee();
+        List<EmployeeDto> list = new EmployeeSelector(table).where(table.empId().eq(id)).list(engine, options);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
 }
 
 

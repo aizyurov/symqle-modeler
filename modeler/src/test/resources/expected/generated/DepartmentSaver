@@ -13,6 +13,7 @@ import org.symqle.model.EmployeeId;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.List;
 
 public class DepartmentSaver {
 
@@ -35,10 +36,22 @@ public class DepartmentSaver {
           table.insert(setList).compileUpdate(generatedKeys, engine, options).execute();
           return generatedKeys.first();
       } else {
-          final int affectedRows = table.update(setList).where(table.deptId().eq(id)).compileUpdate(engine, options).execute();
+          final int affectedRows = table.update(setList).where(table.deptId().eq(id)).execute(engine, options);
           return affectedRows == 1 ? id : null;
       }
     }
+
+    public boolean delete(final DepartmentId id) throws SQLException {
+        final Department table = new Department();
+        return 1 == table.delete().where(table.deptId().eq(id)).execute(engine, options);
+    }
+
+    public DepartmentDto getById(final DepartmentId id) throws SQLException {
+        final Department table = new Department();
+        List<DepartmentDto> list = new DepartmentSelector(table).where(table.deptId().eq(id)).list(engine, options);
+        return list.isEmpty() ? null : list.get(0);
+    }
+
 }
 
 
