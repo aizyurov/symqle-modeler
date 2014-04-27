@@ -16,23 +16,6 @@
         </property>
     </bean>
     
-    <bean id="freeMarkerPlainKeysWriter" class="org.symqle.modeler.generator.CodeWriter">
-        <property name="packageNames">
-            <map>
-                <entry key="model" value="${symqle.modeler.model.package}"/>
-                <entry key="dto" value="${symqle.modeler.dto.package}"/>
-                <entry key="dao" value="${symqle.modeler.dao.package}"/>
-            </map>
-        </property>
-        <property name="outputDirectory" value="${symqle.modeler.generated.sources.dir}"/>
-        <property name="samplesDirectory" value="${symqle.modeler.generated.samples.dir}"/>
-        <property name="packageWriters">
-            <list>
-                <ref bean="freeMarkerPlainKeysTableWriter"/>
-            </list>
-        </property>
-    </bean>
-
     <bean id="tableWriter" class="org.symqle.modeler.generator.RegularClassWriter">
         <property name="packageKey" value="model"/>
         <property name="suffix" value=""/>
