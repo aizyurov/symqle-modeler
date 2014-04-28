@@ -17,7 +17,7 @@ public class RangeFilter extends AbstractPropertyFilter {
     }
 
     @Override
-    protected boolean matches(final String value) {
+    protected boolean acceptable(final String value) {
         int intValue = Integer.valueOf(value);
         return intValue >= lowerBound && intValue <= upperBound;
     }

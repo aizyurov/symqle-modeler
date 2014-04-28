@@ -1,7 +1,10 @@
 package org.symqle.modeler;
 
 import org.apache.commons.io.IOUtils;
-import org.symqle.modeler.generator.*;
+import org.symqle.modeler.generator.FreeMarkerClassWriter;
+import org.symqle.modeler.generator.GeneratedKeyWriter;
+import org.symqle.modeler.generator.RegularClassWriter;
+import org.symqle.modeler.generator.SaverWriter;
 import org.symqle.modeler.metadata.ColumnTransformer;
 import org.symqle.modeler.metadata.ForeignKeyTransformer;
 import org.symqle.modeler.metadata.GeneratedFkTransformer;
@@ -11,13 +14,13 @@ import org.symqle.modeler.metadata.TableTransformer;
 import org.symqle.modeler.sql.DatabaseObjectModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.transformer.Filter;
-import org.symqle.modeler.transformer.FilterOutcome;
-import org.symqle.modeler.transformer.RegexpFilter;
+import org.symqle.modeler.transformer.RejectRegexpFilter;
 import org.symqle.modeler.transformer.Transformer;
 
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,6 +34,7 @@ public class GenerationTest extends DatabaseTestBase {
 
     @Override
     public void setUp() throws Exception {
+        System.err.println("Starting " + getName());
         packageDir.mkdirs();
         for (File file: packageDir.listFiles()) {
             if (file.isFile()) {
@@ -39,7 +43,10 @@ public class GenerationTest extends DatabaseTestBase {
         }
     }
 
-
+    @Override
+    protected void tearDown() throws Exception {
+        System.err.println("Done " + getName());
+    }
 
     // generated code is different due to different data types in model
     // cannont use same expected code for all DBs, run for Apache Derby only
@@ -63,14 +70,13 @@ public class GenerationTest extends DatabaseTestBase {
 
     private final Sieve createSieve() {
         final Sieve sieve = new Sieve();
-        final RegexpFilter regexpFilter = new RegexpFilter();
+        final RejectRegexpFilter regexpFilter = new RejectRegexpFilter();
         regexpFilter.setPattern("SYS.*");
-        regexpFilter.setMatchOutcome(FilterOutcome.DENY);
         regexpFilter.setProperty("TABLE_NAME");
         final Filter acceptOthers = new Filter() {
             @Override
-            public FilterOutcome decide(final DatabaseObjectModel subject) {
-                return FilterOutcome.ACCEPT;
+            public boolean accept(final DatabaseObjectModel subject) {
+                return true;
             }
         };
         sieve.setTableFilters(Arrays.asList((Filter)regexpFilter, acceptOthers));
@@ -204,6 +210,13 @@ public class GenerationTest extends DatabaseTestBase {
         }
         try (InputStream inputStream = new FileInputStream(new File(packageDir, fileName+".java"))) {
             actual = IOUtils.toString(inputStream);
+        } catch (FileNotFoundException e) {
+            if (!packageDir.exists()) {
+                System.err.println(packageDir + "does not exist");
+            } else {
+                System.err.println(packageDir + ":" +Arrays.asList(packageDir.listFiles()));
+            }
+            throw e;
         }
         assertEquals(expected, actual);
     }

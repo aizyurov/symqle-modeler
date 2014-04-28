@@ -7,24 +7,19 @@ import org.symqle.modeler.sql.DatabaseObjectModel;
  */
 public abstract class AbstractPropertyFilter implements Filter {
     private String property;
-    private FilterOutcome matchOutcome;
 
     public void setProperty(final String property) {
         this.property = property;
     }
 
-    public void setMatchOutcome(final FilterOutcome matchOutcome) {
-        this.matchOutcome = matchOutcome;
-    }
-
     @Override
-    public FilterOutcome decide(final DatabaseObjectModel subject) {
+    public boolean accept(final DatabaseObjectModel subject) {
         final String value = subject.getProperties().get(property);
         if (value == null) {
-            return FilterOutcome.NEUTRAL;
+            return false;
         }
-        return matches(value) ? matchOutcome : FilterOutcome.NEUTRAL;
+        return acceptable(value);
     }
 
-    protected abstract boolean matches(String value);
+    protected abstract boolean acceptable(String value);
 }

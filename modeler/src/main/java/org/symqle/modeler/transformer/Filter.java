@@ -7,6 +7,6 @@ import org.symqle.modeler.sql.DatabaseObjectModel;
  */
 public interface Filter {
 
-    FilterOutcome decide(DatabaseObjectModel subject);
+    boolean accept(DatabaseObjectModel subject);
 
 }

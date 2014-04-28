@@ -72,7 +72,7 @@ public class DatabaseTestBase extends TestCase {
         }
     }
 
-    private static void initDatabase(final DataSource dataSource, String resource) throws Exception {
+    public static void initDatabase(final DataSource dataSource, String resource) throws Exception {
         try (Connection connection = dataSource.getConnection()) {
             final BufferedReader reader = new BufferedReader(
                     new InputStreamReader(DatabaseTestBase.class.getClassLoader().getResourceAsStream(resource)));

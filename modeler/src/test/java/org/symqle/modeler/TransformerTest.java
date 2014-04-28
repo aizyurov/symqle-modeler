@@ -11,8 +11,7 @@ import org.symqle.modeler.sql.DatabaseObjectModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
 import org.symqle.modeler.transformer.Filter;
-import org.symqle.modeler.transformer.FilterOutcome;
-import org.symqle.modeler.transformer.RegexpFilter;
+import org.symqle.modeler.transformer.RejectRegexpFilter;
 import org.symqle.modeler.transformer.Transformer;
 
 import javax.sql.DataSource;
@@ -32,14 +31,13 @@ public class TransformerTest extends DatabaseTestBase {
 
     private final Sieve createSieve() {
         final Sieve sieve = new Sieve();
-        final RegexpFilter regexpFilter = new RegexpFilter();
+        final RejectRegexpFilter regexpFilter = new RejectRegexpFilter();
         regexpFilter.setPattern("SYS.*");
-        regexpFilter.setMatchOutcome(FilterOutcome.DENY);
         regexpFilter.setProperty("TABLE_NAME");
         final Filter acceptOthers = new Filter() {
             @Override
-            public FilterOutcome decide(final DatabaseObjectModel subject) {
-                return FilterOutcome.ACCEPT;
+            public boolean accept(final DatabaseObjectModel subject) {
+                return true;
             }
         };
         sieve.setTableFilters(Arrays.asList((Filter)regexpFilter, acceptOthers));

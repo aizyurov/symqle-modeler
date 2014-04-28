@@ -1,5 +1,6 @@
 package org.symqle.modeler.generator;
 
+import org.springframework.beans.factory.annotation.Required;
 import org.symqle.modeler.metadata.ModelReader;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.transformer.Transformer;
@@ -30,18 +31,22 @@ public class Generator {
         }
     }
 
+    @Required
     public void setModelReader(final ModelReader modelReader) {
         this.modelReader = modelReader;
     }
 
+    @Required
     public void setTransformers(final List<Transformer> transformers) {
         this.transformers = transformers;
     }
 
+    @Required
     public void setPackageNames(Map<String, String> packageNames) {
         this.packageNames = packageNames;
     }
 
+    @Required
     public void setClassWriters(List<ClassWriter> classWriters) {
         this.classWriters = classWriters;
     }

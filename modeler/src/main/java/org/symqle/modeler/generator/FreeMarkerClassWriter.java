@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Required;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
 
-import javax.xml.validation.Schema;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,12 +46,15 @@ public abstract class FreeMarkerClassWriter implements ClassWriter {
 
     public void writeClasses(final SchemaSqlModel model,  final Map<String, String> packageNames)
                                                     throws IOException {
+        System.err.println("About to write classes, packageKey " + packageKey +", suffix "+suffix);
         final File outputDir = new File(outputDirectory);
         String packageName = packageNames.get(packageKey);
         final String packageSubdirName = packageName.replaceAll("\\.", "/");
         final File packageDir = new File(outputDir, packageSubdirName);
         packageDir.mkdirs();
-        for (final TableSqlModel table : model.getTables()) {
+        final List<TableSqlModel> tables = model.getTables();
+        System.err.println("Tables: " + tables.size());
+        for (final TableSqlModel table : tables) {
             if (mustGenerate(table)) {
                 final String className = table.getProperties().get("JAVA_NAME") + suffix;
                 final Map<String, Object> root = new HashMap<>();
@@ -66,6 +69,7 @@ public abstract class FreeMarkerClassWriter implements ClassWriter {
     }
 
     private void writeFile(final File file, final Map<String, Object> model) throws IOException {
+        System.err.println("Writing to file: " + file.getPath() + " (" + file.getAbsolutePath() +")");
         try (Writer writer = new FileWriter(file)) {
             final Configuration configuration= new Configuration();
             configuration.setClassForTemplateLoading(this.getClass(), "/");

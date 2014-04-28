@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 /**
  * @author lvovich
  */
-public class RegexpFilter extends AbstractPropertyFilter {
+public class RejectRegexpFilter extends AbstractPropertyFilter {
     private Pattern pattern;
 
 
@@ -15,7 +15,7 @@ public class RegexpFilter extends AbstractPropertyFilter {
 
     @Override
     protected boolean acceptable(final String value) {
-        return pattern.matcher(value).matches();
+        return !pattern.matcher(value).matches();
     }
 
 

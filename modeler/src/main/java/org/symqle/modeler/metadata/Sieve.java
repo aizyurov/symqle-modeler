@@ -75,13 +75,8 @@ public class Sieve implements Transformer {
 
     private boolean accept(final DatabaseObjectModel model, List<Filter> filters) {
         for (Filter filter : filters) {
-            switch (filter.decide(model)) {
-                case ACCEPT:
-                    return true;
-                case NEUTRAL:
-                    break;
-                case DENY:
-                    return false;
+            if (!filter.accept(model)) {
+                return false;
             }
         }
         return true;
