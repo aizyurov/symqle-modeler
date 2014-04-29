@@ -77,6 +77,11 @@ public class MetadataModel implements SchemaSqlModel {
             }
             return keys;
         }
+
+        @Override
+        public String toString() {
+            return getProperties().get("TABLE_TYPE") + " " + getName();
+        }
     }
 
     private class ForeignKeyModel implements ForeignKeySqlModel {
@@ -131,6 +136,10 @@ public class MetadataModel implements SchemaSqlModel {
             return properties;
         }
 
+        @Override
+        public String toString() {
+            return getProperties().get("FK_NAME");
+        }
     }
 
 
@@ -156,6 +165,11 @@ public class MetadataModel implements SchemaSqlModel {
                 }
             }
             return false;
+        }
+
+        @Override
+        public String toString() {
+            return getProperties().get("TABLE_NAME") +"." +getProperties().get("COLUMN_NAME");
         }
     }
 

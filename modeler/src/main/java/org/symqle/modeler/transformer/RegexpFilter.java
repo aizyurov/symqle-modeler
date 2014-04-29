@@ -18,5 +18,8 @@ public class RegexpFilter extends AbstractPropertyFilter {
         return pattern.matcher(value).matches();
     }
 
-
+    @Override
+    public String toString() {
+        return "Accept " + getProperty() + ": '" + pattern +"'";
+    }
 }

@@ -22,4 +22,8 @@ public abstract class AbstractPropertyFilter implements Filter {
     }
 
     protected abstract boolean acceptable(String value);
+
+    protected final String getProperty() {
+        return property;
+    }
 }

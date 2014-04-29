@@ -7,6 +7,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.symqle.modeler.utils.SimpleLogger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,12 +29,15 @@ public class Main {
 
     private final Options options;
 
+    private final String[] requiredProperties = {"outputDirectory", "samplesDirectory", "jdbcDriver", "jdbcUrl", "jdbcUser", "dataPackage", "dataAccessPackage", "symqleModelPackage"};
+    private final String passwordKey = "jdbcPassword";
+
 
     public Main(String[] args) {
         this.args = args;
         final Options  options = new Options();
         options.addOption(new Option("c", "config", true, "config file location"));
-        options.addOption(new Option("e", "extra-classpath", true, "additional class path"));
+        options.addOption(new Option("v", "verbose", false, "verbose logging"));
         this.options = options;
     }
 
@@ -61,8 +65,23 @@ public class Main {
             localProperties.load(stream);
         }
 
-        final String classPathValue = commandLine.getOptionValue("p");
+        for (String key : requiredProperties) {
+            if (!localProperties.containsKey(key)) {
+                System.err.println("Missing required property: " + key);
+                return 2;
+            }
+        }
+        final String password = localProperties.getProperty(passwordKey);
+        if (password == null) {
+            final char[] passChars = System.console().readPassword("Enter database password:");
+            localProperties.setProperty(passwordKey, new String(passChars));
+        }
+
+        SimpleLogger.setLogger(commandLine.hasOption("v") ? new VerboseLogger() : new RegularLogger());
+
+        final String classPathValue = localProperties.getProperty("classpath");
         if (classPathValue != null) {
+            SimpleLogger.info("Setting classpath: %s", classPathValue);
             final String[] classPathElements = classPathValue.split(":");
             final URL[] classPath = new URL[classPathElements.length];
             for (int i = 0; i < classPathElements.length; i++) {
@@ -70,6 +89,8 @@ public class Main {
             }
             final URLClassLoader urlClassLoader = new URLClassLoader(classPath);
             Thread.currentThread().setContextClassLoader(urlClassLoader);
+        } else {
+            SimpleLogger.warn("No classpath property in config file; jdbc drivers may be unavailable");
         }
 
         new Launcher().run(localProperties);
@@ -95,6 +116,55 @@ public class Main {
                 properties.load(resourceAsStream);
                 return properties.getProperty("version");
             }
+        }
+    }
+
+    private static class RegularLogger extends SimpleLogger {
+        @Override
+        protected void logError(final String format, final Object... args) {
+            System.err.println(String.format(format,  args));
+        }
+
+        @Override
+        protected void logError(final Throwable t, final String format, final Object... args) {
+            System.err.println(String.format(format, args));
+        }
+
+        @Override
+        protected void logWarn(final String format, final Object... args) {
+            System.err.println(String.format(format,  args));
+        }
+
+        @Override
+        protected void logInfo(final String format, final Object... args) {
+            System.err.println(String.format(format,  args));
+        }
+    }
+
+    private static class VerboseLogger extends SimpleLogger {
+        @Override
+        protected void logError(final String format, final Object... args) {
+            System.err.println(String.format(format,  args));
+        }
+
+        @Override
+        protected void logError(final Throwable t, final String format, final Object... args) {
+            System.err.println(String.format(format,  args));
+        }
+
+        @Override
+        protected void logWarn(final String format, final Object... args) {
+            System.err.println(String.format(format,  args));
+        }
+
+        @Override
+        protected void logInfo(final String format, final Object... args) {
+            System.err.println(String.format(format,  args));
+        }
+
+        @Override
+        protected void logDebug(final String format, final Object... args) {
+            System.err.println(String.format(format,  args));
         }
     }
 
