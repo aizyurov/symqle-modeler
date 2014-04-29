@@ -15,12 +15,18 @@
 <#if model.primaryKey?? && (model.primaryKey.columns?size == 1)>
 package ${package};
 
+<#list model.primaryKey.columns as key>
+  <#if !key.properties.GENERATED_KEY?? >
+import org.symqle.common.Mappers;
+  </#if>
+</#list>
+
 import org.symqle.jdbc.Engine;
 import org.symqle.jdbc.GeneratedKeys;
 import org.symqle.jdbc.Option;
-import org.symqle.jdbc.PreparedUpdate;
 import org.symqle.sql.SetClauseList;
 import ${packages.dto}.${model.properties.JAVA_NAME}Dto;
+import ${packages.model}.${model.properties.JAVA_NAME};
 <#list model.externalClassFqn as requiredImport>
 import ${requiredImport};
 </#list>
@@ -75,7 +81,7 @@ public class ${className} {
 
     public ${model.properties.JAVA_NAME}Dto getById(final ${primaryKey.properties.JAVA_CLASS} id) throws SQLException {
         final ${model.properties.JAVA_NAME} table = new ${model.properties.JAVA_NAME}();
-        List<${model.properties.JAVA_NAME}Dto> list = new ${model.properties.JAVA_NAME}Selector(table).where(table.${primaryKey.properties.JAVA_NAME}().eq(id)).list(engine, options);
+        List<${model.properties.JAVA_NAME}Dto> list = new ${model.properties.JAVA_NAME}Select(table).where(table.${primaryKey.properties.JAVA_NAME}().eq(id)).list(engine, options);
         return list.isEmpty() ? null : list.get(0);
     }
 

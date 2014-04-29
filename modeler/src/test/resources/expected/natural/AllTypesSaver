@@ -2,12 +2,14 @@
 
 package org.symqle.model;
 
+import org.symqle.common.Mappers;
+
 import org.symqle.jdbc.Engine;
 import org.symqle.jdbc.GeneratedKeys;
 import org.symqle.jdbc.Option;
-import org.symqle.jdbc.PreparedUpdate;
 import org.symqle.sql.SetClauseList;
 import org.symqle.model.AllTypesDto;
+import org.symqle.model.AllTypes;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
@@ -75,7 +77,7 @@ public class AllTypesSaver {
 
     public AllTypesDto getById(final Long id) throws SQLException {
         final AllTypes table = new AllTypes();
-        List<AllTypesDto> list = new AllTypesSelector(table).where(table.tBit().eq(id)).list(engine, options);
+        List<AllTypesDto> list = new AllTypesSelect(table).where(table.tBit().eq(id)).list(engine, options);
         return list.isEmpty() ? null : list.get(0);
     }
 

@@ -2,12 +2,13 @@
 
 package org.symqle.model;
 
+
 import org.symqle.jdbc.Engine;
 import org.symqle.jdbc.GeneratedKeys;
 import org.symqle.jdbc.Option;
-import org.symqle.jdbc.PreparedUpdate;
 import org.symqle.sql.SetClauseList;
 import org.symqle.model.DepartmentDto;
+import org.symqle.model.Department;
 import org.symqle.model.DepartmentId;
 import org.symqle.model.EmployeeId;
 
@@ -48,7 +49,7 @@ public class DepartmentSaver {
 
     public DepartmentDto getById(final DepartmentId id) throws SQLException {
         final Department table = new Department();
-        List<DepartmentDto> list = new DepartmentSelector(table).where(table.deptId().eq(id)).list(engine, options);
+        List<DepartmentDto> list = new DepartmentSelect(table).where(table.deptId().eq(id)).list(engine, options);
         return list.isEmpty() ? null : list.get(0);
     }
 

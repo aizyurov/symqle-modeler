@@ -2,12 +2,13 @@
 
 package org.symqle.model;
 
+
 import org.symqle.jdbc.Engine;
 import org.symqle.jdbc.GeneratedKeys;
 import org.symqle.jdbc.Option;
-import org.symqle.jdbc.PreparedUpdate;
 import org.symqle.sql.SetClauseList;
 import org.symqle.model.EmployeeDto;
+import org.symqle.model.Employee;
 import java.sql.Date;
 import org.symqle.model.DepartmentId;
 import org.symqle.model.EmployeeId;
@@ -53,7 +54,7 @@ public class EmployeeSaver {
 
     public EmployeeDto getById(final EmployeeId id) throws SQLException {
         final Employee table = new Employee();
-        List<EmployeeDto> list = new EmployeeSelector(table).where(table.empId().eq(id)).list(engine, options);
+        List<EmployeeDto> list = new EmployeeSelect(table).where(table.empId().eq(id)).list(engine, options);
         return list.isEmpty() ? null : list.get(0);
     }
 
