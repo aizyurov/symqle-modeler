@@ -9,4 +9,6 @@ public interface SchemaSqlModel {
 
     List<TableSqlModel> getTables();
 
+    String getDatabaseName();
+
 }

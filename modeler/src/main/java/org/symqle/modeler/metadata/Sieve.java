@@ -50,7 +50,7 @@ public class Sieve implements Transformer, InitializingBean {
 
     @Override
     public SchemaSqlModel transform(final SchemaSqlModel source) {
-        final MetadataModel model = new MetadataModel();
+        final MetadataModel model = new MetadataModel(source.getDatabaseName());
         final List<TableSqlModel> acceptedTables = new ArrayList<>();
         for (TableSqlModel table : source.getTables()) {
             if (accept(table, tableFilters)) {

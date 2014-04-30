@@ -17,7 +17,7 @@ public class GeneratedFkTransformer extends AbstractTransformer {
 
     @Override
     public SchemaSqlModel transform(final SchemaSqlModel source) {
-        final MetadataModel model = new MetadataModel();
+        final MetadataModel model = new MetadataModel(source.getDatabaseName());
 
         copyTables(source, model);
 

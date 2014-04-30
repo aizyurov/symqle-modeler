@@ -12,11 +12,10 @@ import java.util.Set;
 /**
  * @author lvovich
  */
-public class TableTransformer extends  AbstractTransformer {
+public class TableTransformer extends AbstractTableTransformer {
 
     @Override
-    public SchemaSqlModel transform(final SchemaSqlModel source) {
-        final MetadataModel model = new MetadataModel();
+    protected void transformTables(final SchemaSqlModel source, final MetadataModel target) {
         final Set<String> usedNames = new HashSet<>();
         for (TableSqlModel table: source.getTables()) {
             final Map<String,String> properties = new HashMap<>(table.getProperties());
@@ -29,14 +28,8 @@ public class TableTransformer extends  AbstractTransformer {
                     usedNames.add(candidate);
                 }
             }
-            model.addTable(new PropertyHolder(properties));
+            target.addTable(new PropertyHolder(properties));
         }
-
-        copyColumns(source, model);
-        copyForeignKeys(source, model);
-        copyPrimaryKeys(source, model);
-
-        return model;
     }
 
 }

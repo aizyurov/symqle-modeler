@@ -36,7 +36,7 @@ public class MetadataReader implements ModelReader {
     }
 
     private SchemaSqlModel readMetadata(DatabaseMetaData metaData) throws SQLException {
-        final MetadataModel metadataModel = new MetadataModel();
+        final MetadataModel metadataModel = new MetadataModel(metaData.getDatabaseProductName());
         final Set<String> tableNames = new HashSet<>();
         {
             final ResultSet rs = metaData.getTables(null, null, null, null);

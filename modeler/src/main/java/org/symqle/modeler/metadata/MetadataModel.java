@@ -16,6 +16,17 @@ import java.util.*;
 public class MetadataModel implements SchemaSqlModel {
 
     final Map<String, TableModel> tables = new LinkedHashMap<>();
+
+    final String databaseName;
+
+    public MetadataModel(final String databaseName) {
+        this.databaseName = databaseName;
+    }
+
+    public String getDatabaseName() {
+        return databaseName;
+    }
+
     /**
      * Key is table name
      * ColumnModels are ordered by seqeuqntial number
