@@ -13,7 +13,7 @@ import org.symqle.common.OnDemand;
  */
 public class Detail extends Table {
 
-   public String getTableName() {
+   public String getTableDefinition() {
        return "DETAIL";
    }
 

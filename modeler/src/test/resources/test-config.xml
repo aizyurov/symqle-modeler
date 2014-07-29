@@ -5,7 +5,7 @@
     
     <import resource="config.xml"/>
 
-    <bean id="testPropertyPlaceholderConfigurer"
+    <bean id="propertyPlaceholderConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>

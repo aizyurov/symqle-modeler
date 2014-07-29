@@ -4,8 +4,10 @@ package org.symqle.model;
 
 import org.symqle.common.Mappers;
 
+import java.util.List;
+import java.util.ArrayList;
 import org.symqle.jdbc.Engine;
-import org.symqle.jdbc.GeneratedKeys;
+import org.symqle.sql.GeneratedKeys;
 import org.symqle.jdbc.Option;
 import org.symqle.sql.SetClauseList;
 import org.symqle.model.DetailDto;
@@ -34,8 +36,8 @@ public class DetailSaver {
       if (id == null) {
           final Integer newId = generateId();
           final SetClauseList setListWithId = setList.also(table.id().set(newId));
-          table.insert(setListWithId).execute(engine, options);
-          return newId;
+          final int affectedRows = table.insert(setListWithId).execute(engine, options);
+          return affectedRows == 1 ? newId : null;
       } else {
           final int affectedRows = table.update(setList).where(table.id().eq(id)).execute(engine, options);
           return affectedRows == 1 ? id : null;

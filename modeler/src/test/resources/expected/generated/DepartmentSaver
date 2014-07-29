@@ -3,8 +3,10 @@
 package org.symqle.model;
 
 
+import java.util.List;
+import java.util.ArrayList;
 import org.symqle.jdbc.Engine;
-import org.symqle.jdbc.GeneratedKeys;
+import org.symqle.sql.GeneratedKeys;
 import org.symqle.jdbc.Option;
 import org.symqle.sql.SetClauseList;
 import org.symqle.model.DepartmentDto;
@@ -33,9 +35,10 @@ public class DepartmentSaver {
                                 .also(table.parentDept().set(dto.getParentDept()));
       final DepartmentId id = dto.getDeptId();
       if (id == null) {
-          final GeneratedKeys<DepartmentId> generatedKeys = GeneratedKeys.create(DepartmentId.MAPPER);
-          table.insert(setList).compileUpdate(generatedKeys, engine, options).execute();
-          return generatedKeys.first();
+          final List<DepartmentId> keys = new ArrayList<>();
+          final GeneratedKeys<DepartmentId> generatedKeys = GeneratedKeys.collect(table.deptId(), keys);
+          final int affectedRows = table.insert(setList).compileUpdate(generatedKeys, engine, options).execute();
+          return affectedRows == 1 ? keys.get(0) : null;
       } else {
           final int affectedRows = table.update(setList).where(table.deptId().eq(id)).execute(engine, options);
           return affectedRows == 1 ? id : null;

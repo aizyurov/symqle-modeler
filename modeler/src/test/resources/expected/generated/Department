@@ -15,7 +15,7 @@ import org.symqle.model.EmployeeId;
  */
 public class Department extends Table {
 
-   public String getTableName() {
+   public String getTableDefinition() {
        return "DEPARTMENT";
    }
 

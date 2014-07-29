@@ -13,7 +13,7 @@ import org.symqle.common.OnDemand;
  */
 public class Department extends Table {
 
-   public String getTableName() {
+   public String getTableDefinition() {
        return "DEPARTMENT";
    }
 

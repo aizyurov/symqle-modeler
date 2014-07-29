@@ -10,7 +10,7 @@
                 <value>default.modeler.properties</value>
             </list>
         </property>
-        <property name="ignoreResourceNotFound" value="false"/>
+        <property name="ignoreResourceNotFound" value="true"/>
     </bean>
 
     <bean id="generator" class="org.symqle.modeler.generator.Generator">
