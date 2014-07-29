@@ -21,8 +21,10 @@ import org.symqle.common.Mappers;
   </#if>
 </#list>
 
+import java.util.List;
+import java.util.ArrayList;
 import org.symqle.jdbc.Engine;
-import org.symqle.jdbc.GeneratedKeys;
+import org.symqle.sql.GeneratedKeys;
 import org.symqle.jdbc.Option;
 import org.symqle.sql.SetClauseList;
 import ${packages.dto}.${model.properties.JAVA_NAME}Dto;
@@ -59,14 +61,15 @@ public class ${className} {
       final ${primaryKey.properties.JAVA_CLASS} id = dto.get${primaryKey.properties.JAVA_NAME?cap_first}();
       if (id == null) {
           <#if primaryKey.properties.IS_AUTOINCREMENT == "YES">
-          final GeneratedKeys<${primaryKey.properties.JAVA_CLASS}> generatedKeys = GeneratedKeys.create(${primaryKey.properties.COLUMN_MAPPER});
-          table.insert(setList).compileUpdate(generatedKeys, engine, options).execute();
-          return generatedKeys.first();
+          final List<${primaryKey.properties.JAVA_CLASS}> keys = new ArrayList<>();
+          final GeneratedKeys<${primaryKey.properties.JAVA_CLASS}> generatedKeys = GeneratedKeys.collect(table.${primaryKey.properties.JAVA_NAME}(), keys);
+          final int affectedRows = table.insert(setList).compileUpdate(generatedKeys, engine, options).execute();
+          return affectedRows == 1 ? keys.get(0) : null;
           <#else>
           final ${primaryKey.properties.JAVA_CLASS} newId = generateId();
           final SetClauseList setListWithId = setList.also(table.${primaryKey.properties.JAVA_NAME}().set(newId));
-          table.insert(setListWithId).execute(engine, options);
-          return newId;
+          final int affectedRows = table.insert(setListWithId).execute(engine, options);
+          return affectedRows == 1 ? newId : null;
           </#if>
       } else {
           final int affectedRows = table.update(setList).where(table.${primaryKey.properties.JAVA_NAME}().eq(id)).execute(engine, options);

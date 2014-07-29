@@ -3,6 +3,8 @@
 
 <beans default-lazy-init="true" default-autowire="no">
     
+    <import resource="config.xml"/>
+
     <bean id="testPropertyPlaceholderConfigurer"
           class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -14,6 +16,5 @@
         <property name="ignoreResourceNotFound" value="false"/>
     </bean>
 
-    <import resource="config.xml"/>
 
 </beans>

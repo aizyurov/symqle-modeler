@@ -21,7 +21,7 @@ import ${packages.dto}.${key};
  */
 public class ${model.properties.JAVA_NAME} extends ${tableTypeMapping["${model.properties.TABLE_TYPE}"]} {
 
-   public String getTableName() {
+   public String getTableDefinition() {
        return "${model.properties.TABLE_NAME}";
    }
 

@@ -1,6 +1,7 @@
 package org.symqle.modeler;
 
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.MutablePropertyValues;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
 import org.symqle.modeler.generator.Generator;
@@ -27,10 +28,10 @@ public class Launcher {
         final GenericApplicationContext appContext = new GenericApplicationContext();
         final XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(appContext);
         xmlReader.loadBeanDefinitions(appContext.getResource("config.xml"));
-        PropertyPlaceholderConfigurer configurer = (PropertyPlaceholderConfigurer) appContext.getBean("propertyPlaceholderConfigurer");
-        configurer.setLocalOverride(true);
-        configurer.setProperties(localProperties);
-        appContext.addBeanFactoryPostProcessor(configurer);
+        BeanDefinition configurer = (BeanDefinition) appContext.getBeanDefinition("propertyPlaceholderConfigurer");
+        final MutablePropertyValues propertyValues = configurer.getPropertyValues();
+        propertyValues.addPropertyValue("properties", localProperties);
+        propertyValues.addPropertyValue("localOverride", true);
         appContext.refresh();
 
         final Generator generator = (Generator) appContext.getBean("generator");
