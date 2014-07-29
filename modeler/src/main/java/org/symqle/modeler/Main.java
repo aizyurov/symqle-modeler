@@ -108,15 +108,7 @@ public class Main {
     }
 
     private String getVersion() throws IOException {
-        try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream("META-INF/maven/org.symqle/symqle-modeler/pom.properties")) {
-            if (resourceAsStream == null) {
-                return null;
-            } else {
-                Properties properties = new Properties();
-                properties.load(resourceAsStream);
-                return properties.getProperty("version");
-            }
-        }
+        return getClass().getPackage().getSpecificationVersion();
     }
 
     private static class RegularLogger extends SimpleLogger {
