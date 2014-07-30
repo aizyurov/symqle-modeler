@@ -9,7 +9,6 @@ import org.symqle.common.OnDemand;
 
 /**
  * TABLE DETAIL
- * 
  */
 public class Detail extends Table {
 
@@ -20,7 +19,6 @@ public class Detail extends Table {
     /**
      * ID.
      * INTEGER(10, 0) NOT NULL
-     * 
      * @return ID
      */
     public Column<Integer> id() {
@@ -30,7 +28,6 @@ public class Detail extends Table {
     /**
      * MASTER_MAJOR.
      * INTEGER(10, 0)
-     * 
      * @return MASTER_MAJOR
      */
     public Column<Integer> masterMajor() {
@@ -40,7 +37,6 @@ public class Detail extends Table {
     /**
      * MASTER_MINOR.
      * BIGINT(19, 0)
-     * 
      * @return MASTER_MINOR
      */
     public Column<Long> masterMinor() {
@@ -50,7 +46,6 @@ public class Detail extends Table {
     /**
      * NAME.
      * VARCHAR(30)
-     * 
      * @return NAME
      */
     public Column<String> name() {

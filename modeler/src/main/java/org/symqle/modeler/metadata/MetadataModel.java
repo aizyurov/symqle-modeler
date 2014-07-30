@@ -89,20 +89,12 @@ public class MetadataModel implements SchemaSqlModel {
             return keys;
         }
 
-        @Override
-        public String toString() {
-            return getProperties().get("TABLE_TYPE") + " " + getName();
-        }
     }
 
     private class ForeignKeyModel implements ForeignKeySqlModel {
 
         private final List<DatabaseObjectModel> fkColumns;
         private final Map<String, String> extraProperties = new HashMap<>();
-
-        private ForeignKeyModel(final List<DatabaseObjectModel> fkColumns) {
-            this.fkColumns = new ArrayList<>(fkColumns);
-        }
 
         private ForeignKeyModel(final List<DatabaseObjectModel> fkColumns, final Map<String, String> extraProperties) {
             this.fkColumns = new ArrayList<>(fkColumns);
@@ -130,11 +122,6 @@ public class MetadataModel implements SchemaSqlModel {
         }
 
         @Override
-        public TableSqlModel getTable() {
-            return tables.get(fkColumns.get(0).getProperties().get("FKTABLE_NAME"));
-        }
-
-        @Override
         public TableSqlModel getReferencedTable() {
             return tables.get(fkColumns.get(0).getProperties().get("PKTABLE_NAME"));
         }
@@ -147,10 +134,6 @@ public class MetadataModel implements SchemaSqlModel {
             return properties;
         }
 
-        @Override
-        public String toString() {
-            return getProperties().get("FK_NAME");
-        }
     }
 
 
@@ -166,22 +149,6 @@ public class MetadataModel implements SchemaSqlModel {
             return MetadataModel.this.tables.get(properties.get("TABLE_NAME"));
         }
 
-        @Override
-        public boolean isForeignKey() {
-            for (ForeignKeySqlModel foreignKeySqlModel : getOwner().getForeignKeys()) {
-                for (ColumnPair pair : foreignKeySqlModel.getMapping()) {
-                    if (pair.getFirst().equals(this)) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public String toString() {
-            return getProperties().get("TABLE_NAME") +"." +getProperties().get("COLUMN_NAME");
-        }
     }
 
 
@@ -209,6 +176,15 @@ public class MetadataModel implements SchemaSqlModel {
     void addPrimaryKey(final List<DatabaseObjectModel> accumulator) {
         final PrimaryKeyModel key = new PrimaryKeyModel(accumulator);
         final String tableName = key.getProperties().get("TABLE_NAME");
+        final List<ColumnSqlModel> columns = key.getColumns();
+        for (ColumnSqlModel column : columns) {
+            final ColumnModel columnModel = columnsByTable.get(column.getProperties().get("TABLE_NAME"))
+                    .get(column.getProperties().get("COLUMN_NAME"));
+            if (columnModel == null) {
+                // column excluded from model; do not add primary key
+                return;
+            }
+        }
         primaryKeysByTable.put(tableName, key);
     }
 
@@ -252,11 +228,6 @@ public class MetadataModel implements SchemaSqlModel {
         }
 
         @Override
-        public TableSqlModel getTable() {
-            return tables.get(columns.get(0).getProperties().get("TABLE_NAME"));
-        }
-
-        @Override
         public Map<String, String> getProperties() {
             final Map<String, String> props = new HashMap<>(columns.get(0).getProperties());
             props.remove("COLUMN_NAME");
@@ -275,11 +246,7 @@ public class MetadataModel implements SchemaSqlModel {
             for (DatabaseObjectModel column : columns) {
                 final ColumnModel columnModel = columnsByTable.get(column.getProperties().get("TABLE_NAME"))
                         .get(column.getProperties().get("COLUMN_NAME"));
-                if (columnModel == null) {
-                    throw new IllegalStateException("column not found: " + column.getProperties().get("TABLE_NAME") +"." + column.getProperties().get("COLUMN_NAME"));
-                } else {
-                    result.add(columnModel);
-                }
+                result.add(columnModel);
             }
             return result;
         }

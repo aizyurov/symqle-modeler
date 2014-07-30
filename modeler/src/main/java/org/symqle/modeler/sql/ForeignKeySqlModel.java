@@ -14,7 +14,6 @@ public interface ForeignKeySqlModel extends DatabaseObjectModel {
      * @return
      */
     List<ColumnPair> getMapping();
-    TableSqlModel getTable();
     TableSqlModel getReferencedTable();
     List<DatabaseObjectModel> getColumnProperties();
 

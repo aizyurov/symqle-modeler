@@ -88,6 +88,8 @@ public class GenerationTest extends DatabaseTestBase {
         assertMatchesExpected("expected/natural", "AllTypes");
         assertMatchesExpected("expected/natural", "Department");
         assertMatchesExpected("expected/natural", "Detail");
+        assertMatchesExpected("expected/natural", "Plain");
+        assertMatchesExpected("expected/natural", "Second1");
     }
 
     public void testTableGeneratedKeys() throws Exception {
@@ -95,6 +97,9 @@ public class GenerationTest extends DatabaseTestBase {
         assertMatchesExpected("expected/generated", "AllTypes");
         assertMatchesExpected("expected/generated", "Department");
         assertMatchesExpected("expected/generated", "Detail");
+        assertMatchesExpected("expected/generated", "Plain");
+        assertMatchesExpected("expected/generated", "Second2");
+        assertMatchesExpected("expected/generated", "First2");
     }
 
     public void testNoGeneratedIds() throws Exception {
@@ -107,8 +112,13 @@ public class GenerationTest extends DatabaseTestBase {
         assertFalse("MasterId", new File(packageDir, "MasterId.java").exists());
         assertFalse("DetailId", new File(packageDir, "DetailId.java").exists());
         assertFalse("AllTypesId", new File(packageDir, "AllTypesId.java").exists());
+        assertFalse("PlainId", new File(packageDir, "PlainId.java").exists());
+        assertFalse("Second1Id", new File(packageDir, "Second1Id.java").exists());
+        assertFalse("First2Id", new File(packageDir, "First2Id.java").exists());
+        assertFalse("Second2Id", new File(packageDir, "Second2Id.java").exists());
         assertMatchesExpected("expected/generated", "DepartmentId");
         assertMatchesExpected("expected/generated", "EmployeeId");
+        assertMatchesExpected("expected/generated", "First1Id");
     }
 
     public void testDtoNaturalKeys() throws Exception {
@@ -117,6 +127,7 @@ public class GenerationTest extends DatabaseTestBase {
         assertMatchesExpected("expected/natural", "DepartmentDto");
         assertMatchesExpected("expected/natural", "MasterDto");
         assertMatchesExpected("expected/natural", "DetailDto");
+        assertMatchesExpected("expected/natural", "PlainDto");
     }
 
     public void testDtoGeneratedKeys() throws Exception {
@@ -125,6 +136,9 @@ public class GenerationTest extends DatabaseTestBase {
         assertMatchesExpected("expected/generated", "DepartmentDto");
         assertMatchesExpected("expected/generated", "MasterDto");
         assertMatchesExpected("expected/generated", "DetailDto");
+        assertMatchesExpected("expected/generated", "Second1Dto");
+        assertMatchesExpected("expected/generated", "Second2Dto");
+        assertMatchesExpected("expected/generated", "First2Dto");
     }
 
     public void testSelectorNaturalKeys() throws Exception {
@@ -133,6 +147,7 @@ public class GenerationTest extends DatabaseTestBase {
         assertMatchesExpected("expected/natural", "DepartmentSelector");
         assertMatchesExpected("expected/natural", "MasterSelector");
         assertMatchesExpected("expected/natural", "DetailSelector");
+        assertMatchesExpected("expected/natural", "PlainSelector");
     }
 
     public void testSelectorGeneratedKeys() throws Exception {
@@ -141,6 +156,7 @@ public class GenerationTest extends DatabaseTestBase {
         assertMatchesExpected("expected/generated", "DepartmentSelector");
         assertMatchesExpected("expected/generated", "MasterSelector");
         assertMatchesExpected("expected/generated", "DetailSelector");
+        assertMatchesExpected("expected/generated", "Second1Selector");
     }
 
     public void testSmartSelectorNaturalKeys() throws Exception {
@@ -149,6 +165,7 @@ public class GenerationTest extends DatabaseTestBase {
         assertMatchesExpected("expected/natural", "DepartmentSmartSelector");
         assertMatchesExpected("expected/natural", "MasterSmartSelector");
         assertMatchesExpected("expected/natural", "DetailSmartSelector");
+        assertMatchesExpected("expected/natural", "PlainSmartSelector");
     }
 
     public void testSmartSelectorGeneratedKeys() throws Exception {
@@ -163,6 +180,7 @@ public class GenerationTest extends DatabaseTestBase {
         generate(naturalKeyTransformers, "freemarker/Saver.ftl", "Saver", new SaverWriter());
         // no Saver for table with composite key
         assertFalse("MasterSaver", new File(packageDir, "MasterSaver.java").exists());
+        assertFalse("PlainSaver", new File(packageDir, "PlainSaver.java").exists());
         assertMatchesExpected("expected/natural", "AllTypesSaver");
         assertMatchesExpected("expected/natural", "DepartmentSaver");
         assertMatchesExpected("expected/natural", "DetailSaver");
@@ -171,6 +189,7 @@ public class GenerationTest extends DatabaseTestBase {
     public void testSaverGeneratedKeys() throws Exception {
         generate(generatedKeyTransformers, "freemarker/Saver.ftl", "Saver", new SaverWriter());
         // no Saver for table with composite key
+        assertFalse("MasterSaver", new File(packageDir, "MasterSaver.java").exists());
         assertFalse("MasterSaver", new File(packageDir, "MasterSaver.java").exists());
         assertMatchesExpected("expected/generated", "AllTypesSaver");
         assertMatchesExpected("expected/generated", "DepartmentSaver");

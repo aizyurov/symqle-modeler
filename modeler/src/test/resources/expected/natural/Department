@@ -9,7 +9,6 @@ import org.symqle.common.OnDemand;
 
 /**
  * TABLE DEPARTMENT
- * 
  */
 public class Department extends Table {
 
@@ -20,7 +19,6 @@ public class Department extends Table {
     /**
      * DEPT_ID.
      * INTEGER(10, 0) NOT NULL DEFAULT GENERATED_BY_DEFAULT
-     * 
      * @return DEPT_ID
      */
     public Column<Integer> deptId() {
@@ -30,7 +28,6 @@ public class Department extends Table {
     /**
      * DEPT_NAME.
      * VARCHAR(100) NOT NULL
-     * 
      * @return DEPT_NAME
      */
     public Column<String> deptName() {
@@ -40,7 +37,6 @@ public class Department extends Table {
     /**
      * MANAGER_ID.
      * INTEGER(10, 0)
-     * 
      * @return MANAGER_ID
      */
     public Column<Integer> managerId() {
@@ -50,7 +46,6 @@ public class Department extends Table {
     /**
      * PARENT_DEPT.
      * INTEGER(10, 0)
-     * 
      * @return PARENT_DEPT
      */
     public Column<Integer> parentDept() {

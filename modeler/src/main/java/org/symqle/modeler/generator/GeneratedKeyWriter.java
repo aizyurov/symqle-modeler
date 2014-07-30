@@ -14,7 +14,7 @@ public class GeneratedKeyWriter extends FreeMarkerClassWriter {
             return false;
         } else {
             for (final ColumnSqlModel column: table.getPrimaryKey().getColumns()) {
-                if (column.getProperties().get("GENERATED_KEY") != null) {
+                if (column.getProperties().get("GENERATED_KEY_OWNER") != null) {
                     return true;
                 }
             }

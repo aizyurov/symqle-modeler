@@ -13,8 +13,8 @@ public abstract class AbstractTableTransformer extends AbstractTransformer {
         transformTables(source, model);
 
         copyColumns(source, model);
-        copyForeignKeys(source, model);
         copyPrimaryKeys(source, model);
+        copyForeignKeys(source, model);
 
         return model;
     }

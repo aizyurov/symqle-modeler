@@ -17,7 +17,7 @@ public final class EmployeeId {
     }
 
   /**
-   * Mapper for DepartmentId.
+   * Mapper for EmployeeId.
    */
     public static final Mapper<EmployeeId> MAPPER = new Mapper<EmployeeId>() {
         @Override
@@ -38,9 +38,9 @@ public final class EmployeeId {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        final EmployeeId personId = (EmployeeId) o;
+        final EmployeeId otherId = (EmployeeId) o;
 
-        if (id != personId.id) return false;
+        if (id != otherId.id) return false;
 
         return true;
     }

@@ -13,7 +13,6 @@ import java.sql.Timestamp;
 
 /**
  * TABLE ALL_TYPES
- * 
  */
 public class AllTypes extends Table {
 
@@ -24,7 +23,6 @@ public class AllTypes extends Table {
     /**
      * T_BIT.
      * BIGINT(19, 0) NOT NULL
-     * 
      * @return T_BIT
      */
     public Column<Long> tBit() {
@@ -34,7 +32,6 @@ public class AllTypes extends Table {
     /**
      * T_TINYINT.
      * SMALLINT(5, 0)
-     * 
      * @return T_TINYINT
      */
     public Column<Short> tTinyint() {
@@ -44,7 +41,6 @@ public class AllTypes extends Table {
     /**
      * T_SMALLINT.
      * SMALLINT(5, 0)
-     * 
      * @return T_SMALLINT
      */
     public Column<Short> tSmallint() {
@@ -54,7 +50,6 @@ public class AllTypes extends Table {
     /**
      * T_MEDIUMINT.
      * INTEGER(10, 0)
-     * 
      * @return T_MEDIUMINT
      */
     public Column<Integer> tMediumint() {
@@ -64,7 +59,6 @@ public class AllTypes extends Table {
     /**
      * T_INTEGER.
      * INTEGER(10, 0)
-     * 
      * @return T_INTEGER
      */
     public Column<Integer> tInteger() {
@@ -74,7 +68,6 @@ public class AllTypes extends Table {
     /**
      * T_BIGINT.
      * BIGINT(19, 0)
-     * 
      * @return T_BIGINT
      */
     public Column<Long> tBigint() {
@@ -84,7 +77,6 @@ public class AllTypes extends Table {
     /**
      * T_FLOAT.
      * REAL(23)
-     * 
      * @return T_FLOAT
      */
     public Column<Float> tFloat() {
@@ -94,7 +86,6 @@ public class AllTypes extends Table {
     /**
      * T_REAL.
      * REAL(23)
-     * 
      * @return T_REAL
      */
     public Column<Float> tReal() {
@@ -104,7 +95,6 @@ public class AllTypes extends Table {
     /**
      * T_DOUBLE.
      * DOUBLE(52)
-     * 
      * @return T_DOUBLE
      */
     public Column<Double> tDouble() {
@@ -114,7 +104,6 @@ public class AllTypes extends Table {
     /**
      * T_NUMERIC.
      * NUMERIC(10, 3)
-     * 
      * @return T_NUMERIC
      */
     public Column<BigDecimal> tNumeric() {
@@ -124,7 +113,6 @@ public class AllTypes extends Table {
     /**
      * T_DECIMAL.
      * DECIMAL(10, 3)
-     * 
      * @return T_DECIMAL
      */
     public Column<BigDecimal> tDecimal() {
@@ -134,7 +122,6 @@ public class AllTypes extends Table {
     /**
      * T_CHAR.
      * CHAR(10)
-     * 
      * @return T_CHAR
      */
     public Column<String> tChar() {
@@ -144,7 +131,6 @@ public class AllTypes extends Table {
     /**
      * T_VARCHAR.
      * VARCHAR(20)
-     * 
      * @return T_VARCHAR
      */
     public Column<String> tVarchar() {
@@ -154,7 +140,6 @@ public class AllTypes extends Table {
     /**
      * T_LONGVARCHAR.
      * LONG VARCHAR(32700)
-     * 
      * @return T_LONGVARCHAR
      */
     public Column<String> tLongvarchar() {
@@ -164,7 +149,6 @@ public class AllTypes extends Table {
     /**
      * T_DATE.
      * DATE(10, 0)
-     * 
      * @return T_DATE
      */
     public Column<Date> tDate() {
@@ -174,7 +158,6 @@ public class AllTypes extends Table {
     /**
      * T_TIME.
      * TIME(8, 0)
-     * 
      * @return T_TIME
      */
     public Column<Time> tTime() {
@@ -184,7 +167,6 @@ public class AllTypes extends Table {
     /**
      * T_TIMESTAMP.
      * TIMESTAMP(29, 9)
-     * 
      * @return T_TIMESTAMP
      */
     public Column<Timestamp> tTimestamp() {
@@ -194,7 +176,6 @@ public class AllTypes extends Table {
     /**
      * T_DATETIME.
      * TIMESTAMP(29, 9)
-     * 
      * @return T_DATETIME
      */
     public Column<Timestamp> tDatetime() {
@@ -204,7 +185,6 @@ public class AllTypes extends Table {
     /**
      * T_BINARY.
      * CHAR () FOR BIT DATA(4)
-     * 
      * @return T_BINARY
      */
     public Column<byte[]> tBinary() {
@@ -214,7 +194,6 @@ public class AllTypes extends Table {
     /**
      * T_VARBINARY.
      * VARCHAR () FOR BIT DATA(1000)
-     * 
      * @return T_VARBINARY
      */
     public Column<byte[]> tVarbinary() {
@@ -224,7 +203,6 @@ public class AllTypes extends Table {
     /**
      * T_LONGVARBINARY.
      * LONG VARCHAR FOR BIT DATA(32700)
-     * 
      * @return T_LONGVARBINARY
      */
     public Column<byte[]> tLongvarbinary() {
@@ -234,7 +212,6 @@ public class AllTypes extends Table {
     /**
      * T_BLOB.
      * BLOB(2147483647)
-     * 
      * @return T_BLOB
      */
     public Column<byte[]> tBlob() {
@@ -244,7 +221,6 @@ public class AllTypes extends Table {
     /**
      * T_CLOB.
      * CLOB(2147483647)
-     * 
      * @return T_CLOB
      */
     public Column<String> tClob() {
@@ -254,7 +230,6 @@ public class AllTypes extends Table {
     /**
      * T_BOOLEAN.
      * BOOLEAN(1)
-     * 
      * @return T_BOOLEAN
      */
     public Column<Boolean> tBoolean() {
@@ -264,7 +239,6 @@ public class AllTypes extends Table {
     /**
      * T_NCHAR.
      * CHAR(10)
-     * 
      * @return T_NCHAR
      */
     public Column<String> tNchar() {
@@ -274,7 +248,6 @@ public class AllTypes extends Table {
     /**
      * T_NVARCHAR.
      * VARCHAR(20)
-     * 
      * @return T_NVARCHAR
      */
     public Column<String> tNvarchar() {
@@ -284,7 +257,6 @@ public class AllTypes extends Table {
     /**
      * T_LONGNVARCHAR.
      * LONG VARCHAR(32700)
-     * 
      * @return T_LONGNVARCHAR
      */
     public Column<String> tLongnvarchar() {
@@ -294,7 +266,6 @@ public class AllTypes extends Table {
     /**
      * T_NCLOB.
      * CLOB(2147483647)
-     * 
      * @return T_NCLOB
      */
     public Column<String> tNclob() {

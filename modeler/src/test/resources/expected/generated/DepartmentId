@@ -38,9 +38,9 @@ public final class DepartmentId {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        final DepartmentId personId = (DepartmentId) o;
+        final DepartmentId otherId = (DepartmentId) o;
 
-        if (id != personId.id) return false;
+        if (id != otherId.id) return false;
 
         return true;
     }
@@ -62,7 +62,7 @@ public final class DepartmentId {
    * It is guaranteed that for any non null {@code id}
    * {@code DepartmentId.valueOf(id.toString()).equals(id)}
    * @param s source string
-   * @return new instance of EmployeeId; null if s is null or contains only whitespace.
+   * @return new instance of DepartmentId; null if s is null or contains only whitespace.
    * @throws IllegalArgumentException id is not null or empty and has format different from that produced by {@link #toString()}.
    */
     public static DepartmentId valueOf(final String s) {

@@ -13,7 +13,6 @@ public interface PrimaryKeySqlModel extends DatabaseObjectModel {
      * all PK columns belong to the same table.
      * @return
      */
-    TableSqlModel getTable();
     List<DatabaseObjectModel> getColumnProperties();
     List<ColumnSqlModel> getColumns();
 

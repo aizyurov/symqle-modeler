@@ -3,7 +3,6 @@ package org.symqle.modeler.generator;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Required;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
@@ -24,12 +23,17 @@ public abstract class FreeMarkerClassWriter implements ClassWriter {
 
     private String outputDirectory;
     private String packageKey;
-    private String templateName;
+    private BugFreeTemplate template;
     private String suffix = "";
 
     @Required
-    public void setTemplateName(final String templateName) {
-        this.templateName = templateName;
+    public void setTemplateName(final String templateName) throws IOException {
+        final Configuration configuration= new Configuration();
+        configuration.setClassForTemplateLoading(this.getClass(), "/");
+        configuration.setObjectWrapper(new DefaultObjectWrapper());
+        final Template fmTemplate = configuration.getTemplate(templateName);
+        fmTemplate.setObjectWrapper(new DefaultObjectWrapper());
+        this.template = new BugFreeTemplate(fmTemplate);
     }
 
     public void setSuffix(final String suffix) {
@@ -74,14 +78,7 @@ public abstract class FreeMarkerClassWriter implements ClassWriter {
 
     private void writeFile(final File file, final Map<String, Object> model) throws IOException {
         try (Writer writer = new FileWriter(file)) {
-            final Configuration configuration= new Configuration();
-            configuration.setClassForTemplateLoading(this.getClass(), "/");
-            configuration.setObjectWrapper(new DefaultObjectWrapper());
-            final Template template = configuration.getTemplate(templateName);
-            template.setObjectWrapper(new DefaultObjectWrapper());
             template.process(model, writer);
-        } catch (TemplateException e) {
-            throw new RuntimeException("Bad template", e);
         }
     }
 

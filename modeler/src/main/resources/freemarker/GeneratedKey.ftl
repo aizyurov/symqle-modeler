@@ -22,7 +22,7 @@ public final class ${javaType} {
     }
 
   /**
-   * Mapper for DepartmentId.
+   * Mapper for ${javaType}.
    */
     public static final Mapper<${javaType}> MAPPER = new Mapper<${javaType}>() {
         @Override
@@ -43,9 +43,9 @@ public final class ${javaType} {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        final ${javaType} personId = (${javaType}) o;
+        final ${javaType} otherId = (${javaType}) o;
 
-        if (id != personId.id) return false;
+        if (id != otherId.id) return false;
 
         return true;
     }
@@ -67,7 +67,7 @@ public final class ${javaType} {
    * It is guaranteed that for any non null {@code id}
    * {@code ${javaType}.valueOf(id.toString()).equals(id)}
    * @param s source string
-   * @return new instance of EmployeeId; null if s is null or contains only whitespace.
+   * @return new instance of ${javaType}; null if s is null or contains only whitespace.
    * @throws IllegalArgumentException id is not null or empty and has format different from that produced by {@link #toString()}.
    */
     public static ${javaType} valueOf(final String s) {

@@ -53,6 +53,7 @@ public class ColumnTransformer extends AbstractTransformer {
                     properties.put("JAVA_CLASS", keyClassName);
                     properties.put("COLUMN_MAPPER", keyClassName + ".MAPPER");
                     properties.put("GENERATED_KEY", keyClassName);
+                    properties.put("GENERATED_KEY_OWNER", "true");
                 }
                 model.addColumn(new PropertyHolder(properties));
             }
@@ -66,7 +67,7 @@ public class ColumnTransformer extends AbstractTransformer {
 
     private boolean mustGenerateKey(final ColumnSqlModel column) {
         final PrimaryKeySqlModel primaryKey = column.getOwner().getPrimaryKey();
-        return primaryKey != null && primaryKey.getColumns().contains(column)
+        return primaryKey != null && primaryKey.getColumns().contains(column) && primaryKey.getColumns().size() == 1
                 && "YES".equals(column.getProperties().get("IS_AUTOINCREMENT"));
     }
 

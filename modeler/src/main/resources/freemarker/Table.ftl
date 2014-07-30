@@ -16,7 +16,7 @@ import ${packages.dto}.${key};
 </#list>
 
 /**
- * ${model.properties.TABLE_TYPE} ${model.properties.TABLE_NAME}<#if model.properties.REMARKS?? >
+ * ${model.properties.TABLE_TYPE} ${model.properties.TABLE_NAME}<#if model.properties.REMARKS?? && model.properties.REMARKS != "">
  * ${model.properties.REMARKS}</#if>
  */
 public class ${model.properties.JAVA_NAME} extends ${tableTypeMapping["${model.properties.TABLE_TYPE}"]} {
@@ -28,7 +28,7 @@ public class ${model.properties.JAVA_NAME} extends ${tableTypeMapping["${model.p
 <#list model.columns as column>
     /**
      * ${column.properties.COLUMN_NAME}.
-     * ${column.properties.TYPE_NAME}<#if column.properties.COLUMN_SIZE??>(${column.properties.COLUMN_SIZE}<#if column.properties.DECIMAL_DIGITS?? >, ${column.properties.DECIMAL_DIGITS}</#if>)</#if><#if column.properties.IS_NULLABLE == "NO"> NOT NULL</#if><#if column.properties.COLUMN_DEF?? > DEFAULT ${column.properties.COLUMN_DEF}</#if><#if column.properties.REMARKS?? >
+     * ${column.properties.TYPE_NAME}<#if column.properties.COLUMN_SIZE??>(${column.properties.COLUMN_SIZE}<#if column.properties.DECIMAL_DIGITS?? >, ${column.properties.DECIMAL_DIGITS}</#if>)</#if><#if column.properties.IS_NULLABLE == "NO"> NOT NULL</#if><#if column.properties.COLUMN_DEF?? > DEFAULT ${column.properties.COLUMN_DEF}</#if><#if column.properties.REMARKS?? &&  column.properties.REMARKS != "">
      * ${column.properties.REMARKS}</#if>
      * @return ${column.properties.COLUMN_NAME}
      */
