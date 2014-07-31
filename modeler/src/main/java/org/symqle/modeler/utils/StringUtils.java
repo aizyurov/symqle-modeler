@@ -21,7 +21,6 @@ public final class StringUtils {
     }
 
     public static String firstToUpper(final String source) {
-        return source.length() == 0 ? source :
-                Character.toUpperCase(source.charAt(0)) + source.substring(1);
+        return Character.toUpperCase(source.charAt(0)) + source.substring(1);
     }
 }

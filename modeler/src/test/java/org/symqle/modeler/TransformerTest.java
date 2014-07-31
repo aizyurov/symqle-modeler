@@ -1,17 +1,13 @@
 package org.symqle.modeler;
 
-import org.symqle.modeler.metadata.ColumnTransformer;
-import org.symqle.modeler.metadata.ForeignKeyTransformer;
-import org.symqle.modeler.metadata.GeneratedFkTransformer;
-import org.symqle.modeler.metadata.MetadataReader;
-import org.symqle.modeler.metadata.Sieve;
-import org.symqle.modeler.metadata.TableTransformer;
+import org.symqle.modeler.metadata.*;
 import org.symqle.modeler.sql.ColumnSqlModel;
-import org.symqle.modeler.sql.DatabaseObjectModel;
+import org.symqle.modeler.sql.ForeignKeySqlModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
+import org.symqle.modeler.transformer.AllFilter;
 import org.symqle.modeler.transformer.Filter;
-import org.symqle.modeler.transformer.RejectRegexpFilter;
+import org.symqle.modeler.transformer.RegexpFilter;
 import org.symqle.modeler.transformer.Transformer;
 
 import javax.sql.DataSource;
@@ -26,24 +22,17 @@ import java.util.TreeMap;
  */
 public class TransformerTest extends DatabaseTestBase {
 
-    private final List<Transformer> transformers = Arrays.<Transformer>asList(createSieve(), new TableTransformer(),
+    private final List<Transformer> transformers = Arrays.<Transformer>asList(createTableSieve(), new TableTransformer(),
             new ColumnTransformer(), new GeneratedFkTransformer(), new ForeignKeyTransformer());
 
-    private final Sieve createSieve() {
-        final Sieve sieve = new Sieve();
-        final RejectRegexpFilter regexpFilter = new RejectRegexpFilter();
+    private TableSieve createTableSieve() {
+        final TableSieve sieve = new TableSieve();
+        final RegexpFilter regexpFilter = new RegexpFilter();
         regexpFilter.setPattern("SYS.*");
         regexpFilter.setProperty("TABLE_NAME");
-        final Filter acceptOthers = new Filter() {
-            @Override
-            public boolean accept(final DatabaseObjectModel subject) {
-                return true;
-            }
-        };
-        sieve.setTableFilters(Arrays.asList((Filter)regexpFilter, acceptOthers));
+        sieve.setTableFilters(Arrays.<Filter>asList(regexpFilter));
         return sieve;
     }
-
 
     public void testTransformers() throws Exception {
         final MetadataReader reader = new MetadataReader();
@@ -81,6 +70,136 @@ public class TransformerTest extends DatabaseTestBase {
         assertEquals("DepartmentId", deptId.getProperties().get("JAVA_CLASS"));
         assertEquals("DepartmentId.MAPPER", deptId.getProperties().get("COLUMN_MAPPER"));
         assertEquals("DepartmentId", deptId.getProperties().get("GENERATED_KEY"));
+
+    }
+
+    public void testColumnSieve() throws Exception {
+        final RegexpFilter tableFilter = new RegexpFilter();
+        tableFilter.setProperty("TABLE_NAME");
+        tableFilter.setPattern("DEPARTMENT");
+        final RegexpFilter columnFilter = new RegexpFilter();
+        columnFilter.setProperty("COLUMN_NAME");
+        columnFilter.setPattern("MANAGER_ID");
+        final AllFilter allFilter = new AllFilter();
+        allFilter.setFilters(Arrays.<Filter>asList(tableFilter, columnFilter));
+        final ColumnSieve columnSieve = new ColumnSieve();
+        columnSieve.setColumnFilters(Arrays.<Filter>asList(allFilter));
+        final MetadataReader reader = new MetadataReader();
+        final DataSource dataSource = getDataSource();
+
+        reader.setDataSource(dataSource);
+
+        final SchemaSqlModel model = reader.readModel();
+        final SchemaSqlModel transformed = columnSieve.transform(model);
+        for (TableSqlModel table : transformed.getTables()) {
+            if (table.getProperties().get("TABLE_NAME").equals("EMPLOYEE")) {
+                assertEquals(8, table.getColumns().size());
+            } else if (table.getProperties().get("TABLE_NAME").equals("DEPARTMENT")) {
+                assertEquals(3, table.getColumns().size());
+                for (final ColumnSqlModel column : table.getColumns()) {
+                    assertFalse(column.getProperties().toString(), column.getProperties().get("COLUMN_NAME").equals("MANAGER_ID"));
+                }
+                assertEquals(1, table.getForeignKeys().size());
+                final ForeignKeySqlModel fk = table.getForeignKeys().get(0);
+                assertFalse(fk.getProperties().get("FK_NAME").equals("MANAGER_FK"));
+            }
+        }
+
+
+    }
+
+    public void testPrimaryKeyColumnSieve() throws Exception {
+        final RegexpFilter tableFilter = new RegexpFilter();
+        tableFilter.setProperty("TABLE_NAME");
+        tableFilter.setPattern("DEPARTMENT");
+        final RegexpFilter columnFilter = new RegexpFilter();
+        columnFilter.setProperty("COLUMN_NAME");
+        columnFilter.setPattern("DEPT_ID");
+        final AllFilter allFilter = new AllFilter();
+        allFilter.setFilters(Arrays.<Filter>asList(tableFilter, columnFilter));
+        final ColumnSieve columnSieve = new ColumnSieve();
+        columnSieve.setColumnFilters(Arrays.<Filter>asList(allFilter));
+        final MetadataReader reader = new MetadataReader();
+        final DataSource dataSource = getDataSource();
+
+        reader.setDataSource(dataSource);
+
+        final SchemaSqlModel model = reader.readModel();
+        final SchemaSqlModel transformed = columnSieve.transform(model);
+        for (TableSqlModel table : transformed.getTables()) {
+            if (table.getProperties().get("TABLE_NAME").equals("EMPLOYEE")) {
+                // dept_id must not be hidden
+                assertEquals(8, table.getColumns().size());
+                // fk to department.dept_id MUST be hidden
+                assertEquals(0, table.getForeignKeys().size());
+            } else if (table.getProperties().get("TABLE_NAME").equals("DEPARTMENT")) {
+                assertEquals(3, table.getColumns().size());
+                for (final ColumnSqlModel column : table.getColumns()) {
+                    assertFalse(column.getProperties().toString(), column.getProperties().get("COLUMN_NAME").equals("DEPT_ID"));
+                }
+                assertEquals(1, table.getForeignKeys().size());
+                final ForeignKeySqlModel fk = table.getForeignKeys().get(0);
+                assertFalse(fk.getProperties().get("FK_NAME").equals("PARENT_FK"));
+                assertNull(table.getPrimaryKey());
+            }
+        }
+    }
+
+    public void testForeignKeySieve() throws Exception {
+        final RegexpFilter fkFilter = new RegexpFilter();
+        fkFilter.setProperty("FK_NAME");
+        fkFilter.setPattern("PARENT_FK");
+        final ForeignKeySieve columnSieve = new ForeignKeySieve();
+        columnSieve.setForeignKeyFilters(Arrays.<Filter>asList(fkFilter));
+        final MetadataReader reader = new MetadataReader();
+        final DataSource dataSource = getDataSource();
+
+        reader.setDataSource(dataSource);
+
+        final SchemaSqlModel model = reader.readModel();
+        final SchemaSqlModel transformed = columnSieve.transform(model);
+        for (TableSqlModel table : transformed.getTables()) {
+            if (table.getProperties().get("TABLE_NAME").equals("EMPLOYEE")) {
+                // everything should be in place
+                assertEquals(8, table.getColumns().size());
+                // fk to department.dept_id MUST be hidden
+                assertEquals(1, table.getForeignKeys().size());
+            } else if (table.getProperties().get("TABLE_NAME").equals("DEPARTMENT")) {
+                // all columns kept
+                assertEquals(4, table.getColumns().size());
+                assertEquals(1, table.getForeignKeys().size());
+                final ForeignKeySqlModel fk = table.getForeignKeys().get(0);
+                assertFalse(fk.getProperties().get("FK_NAME").equals("PARENT_FK"));
+            }
+        }
+    }
+
+    public void testFilterOutTable() throws Exception {
+        final TableSieve sieve = new TableSieve();
+        final RegexpFilter regexpFilter = new RegexpFilter();
+        regexpFilter.setPattern("EMPLOYEE");
+        regexpFilter.setProperty("TABLE_NAME");
+        sieve.setTableFilters(Arrays.<Filter>asList(regexpFilter));
+        final MetadataReader reader = new MetadataReader();
+        final DataSource dataSource = getDataSource();
+
+        reader.setDataSource(dataSource);
+
+        final SchemaSqlModel model = reader.readModel();
+        final SchemaSqlModel transformed = sieve.transform(model);
+        for (TableSqlModel table : transformed.getTables()) {
+            if (table.getProperties().get("TABLE_NAME").equals("EMPLOYEE")) {
+                fail("EMPLOYEE should be deleted");
+            } else if (table.getProperties().get("TABLE_NAME").equals("DEPARTMENT")) {
+                // all columns kept
+                assertEquals(4, table.getColumns().size());
+                assertEquals(1, table.getForeignKeys().size());
+                // manager_fk must be lost because it points to deleted EMPLOYEE
+                final ForeignKeySqlModel fk = table.getForeignKeys().get(0);
+                assertFalse(fk.getProperties().get("FK_NAME").equals("MANAGER_FK"));
+            }
+        }
+
 
     }
 

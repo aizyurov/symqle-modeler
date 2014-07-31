@@ -7,7 +7,9 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.symqle.modeler.utils.RegularStdErrLogger;
 import org.symqle.modeler.utils.SimpleLogger;
+import org.symqle.modeler.utils.VerboseStdErrLogger;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -77,7 +79,7 @@ public class Main {
             localProperties.setProperty(passwordKey, new String(passChars));
         }
 
-        SimpleLogger.setLogger(commandLine.hasOption("v") ? new VerboseLogger() : new RegularLogger());
+        SimpleLogger.setLogger(commandLine.hasOption("v") ? new VerboseStdErrLogger() : new RegularStdErrLogger());
 
         final String classPathValue = localProperties.getProperty("classpath");
         if (classPathValue != null) {
@@ -99,7 +101,7 @@ public class Main {
 
 
     private void usage() {
-        formatter.printHelp("java -jar symqle-modeler.jar -c configLocation", options);
+        formatter.printHelp("java -jar symqle-modeler.jar -c configLocation [-v]", options);
     }
 
     public static void main(String[] args) throws Exception {
@@ -109,55 +111,6 @@ public class Main {
 
     private String getVersion() throws IOException {
         return getClass().getPackage().getSpecificationVersion();
-    }
-
-    private static class RegularLogger extends SimpleLogger {
-        @Override
-        protected void logError(final String format, final Object... args) {
-            System.err.println(String.format(format,  args));
-        }
-
-        @Override
-        protected void logError(final Throwable t, final String format, final Object... args) {
-            System.err.println(String.format(format, args));
-        }
-
-        @Override
-        protected void logWarn(final String format, final Object... args) {
-            System.err.println(String.format(format,  args));
-        }
-
-        @Override
-        protected void logInfo(final String format, final Object... args) {
-            System.err.println(String.format(format,  args));
-        }
-    }
-
-    private static class VerboseLogger extends SimpleLogger {
-        @Override
-        protected void logError(final String format, final Object... args) {
-            System.err.println(String.format(format,  args));
-        }
-
-        @Override
-        protected void logError(final Throwable t, final String format, final Object... args) {
-            System.err.println(String.format(format,  args));
-        }
-
-        @Override
-        protected void logWarn(final String format, final Object... args) {
-            System.err.println(String.format(format,  args));
-        }
-
-        @Override
-        protected void logInfo(final String format, final Object... args) {
-            System.err.println(String.format(format,  args));
-        }
-
-        @Override
-        protected void logDebug(final String format, final Object... args) {
-            System.err.println(String.format(format,  args));
-        }
     }
 
 }

@@ -14,12 +14,12 @@ public class RegexpFilter extends AbstractPropertyFilter {
     }
 
     @Override
-    protected boolean acceptable(final String value) {
+    protected boolean notAcceptable(final String value) {
         return pattern.matcher(value).matches();
     }
 
     @Override
     public String toString() {
-        return "Accept " + getProperty() + ": '" + pattern +"'";
+        return getProperty() + " matches '" + pattern +"'";
     }
 }

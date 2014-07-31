@@ -17,7 +17,9 @@
         <property name="modelReader" ref="metadataReader"/>
         <property name="transformers">
             <list>
-                <ref bean="sieve"/>
+                <ref bean="tableSieve"/>
+                <ref bean="columnSieve"/>
+                <ref bean="foreignKeySieve"/>
                 <bean class="org.symqle.modeler.metadata.TableTransformer"/>
                 <bean class="org.symqle.modeler.metadata.ColumnTransformer">
                     <property name="naturalKeys" value="${naturalKeys}"/>
@@ -98,38 +100,30 @@
         <constructor-arg value="${jdbcPassword}" />
     </bean>
     
-    <bean name="sieve" class="org.symqle.modeler.metadata.Sieve">
+    <bean name="tableSieve" class="org.symqle.modeler.metadata.TableSieve">
         <property name="tableFilters">
             <list>
-                <bean class="org.symqle.modeler.transformer.RejectRegexpFilter">
+                <bean class="org.symqle.modeler.transformer.RegexpFilter">
                     <property name="property" value="TABLE_TYPE"/>
                     <property name="pattern" value="${excludeTableTypePattern}"/>
                 </bean>
                 <bean class="org.symqle.modeler.transformer.RegexpFilter">
-                    <property name="property" value="TABLE_TYPE"/>
-                    <property name="pattern" value="${includeTableTypePattern}"/>
-                </bean>
-                <bean class="org.symqle.modeler.transformer.RejectRegexpFilter">
                     <property name="property" value="TABLE_NAME"/>
                     <property name="pattern" value="${excludeTableNamePattern}"/>
                 </bean>
-                <bean class="org.symqle.modeler.transformer.RegexpFilter">
-                    <property name="property" value="TABLE_NAME"/>
-                    <property name="pattern" value="${includeTableNamePattern}"/>
-                </bean>
             </list>
         </property>
+    </bean>
+
+    <bean name="columnSieve" class="org.symqle.modeler.metadata.ColumnSieve">
         <property name="columnFilters">
-            <list>
-                <bean class="org.symqle.modeler.transformer.RejectRegexpFilter">
-                    <property name="property" value="COLUMN_NAME"/>
-                    <property name="pattern" value="${excludeColumnNamePattern}"/>
-                </bean>
-                <bean class="org.symqle.modeler.transformer.RegexpFilter">
-                    <property name="property" value="COLUMN_NAME"/>
-                    <property name="pattern" value="${includeColumnNamePattern}"/>
-                </bean>
-            </list>
+            <list/>
+        </property>
+    </bean>
+
+    <bean name="foreignKeySieve" class="org.symqle.modeler.metadata.ForeignKeySieve">
+        <property name="foreignKeyFilters">
+            <list/>
         </property>
     </bean>
 

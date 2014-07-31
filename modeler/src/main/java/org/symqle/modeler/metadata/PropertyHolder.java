@@ -10,7 +10,7 @@ import java.util.Map;
 * @author lvovich
 */
 public class PropertyHolder implements DatabaseObjectModel {
-    final Map<String, String> properties = new HashMap<>();
+    private final Map<String, String> properties = new HashMap<>();
 
     PropertyHolder(final Map<String, String> properties) {
         this.properties.putAll(properties);

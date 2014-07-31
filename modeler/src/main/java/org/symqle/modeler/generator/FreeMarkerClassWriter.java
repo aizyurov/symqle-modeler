@@ -77,8 +77,11 @@ public abstract class FreeMarkerClassWriter implements ClassWriter {
     }
 
     private void writeFile(final File file, final Map<String, Object> model) throws IOException {
-        try (Writer writer = new FileWriter(file)) {
+        Writer writer = new FileWriter(file);
+        try {
             template.process(model, writer);
+        } finally {
+            writer.close();
         }
     }
 

@@ -89,6 +89,12 @@ public class MetadataModel implements SchemaSqlModel {
             return keys;
         }
 
+
+        @Override
+        public String toString() {
+            return getProperties().get("TABLE_TYPE") + " " + getProperties().get("TABLE_NAME");
+        }
+
     }
 
     private class ForeignKeyModel implements ForeignKeySqlModel {
@@ -134,6 +140,11 @@ public class MetadataModel implements SchemaSqlModel {
             return properties;
         }
 
+        @Override
+        public String toString() {
+            return getProperties().get("FK_NAME");
+        }
+
     }
 
 
@@ -146,7 +157,12 @@ public class MetadataModel implements SchemaSqlModel {
 
         @Override
         public TableSqlModel getOwner() {
-            return MetadataModel.this.tables.get(properties.get("TABLE_NAME"));
+            return MetadataModel.this.tables.get(getProperties().get("TABLE_NAME"));
+        }
+
+        @Override
+        public String toString() {
+            return getProperties().get("TABLE_NAME") +"." + getProperties().get("COLUMN_NAME");
         }
 
     }
@@ -177,15 +193,9 @@ public class MetadataModel implements SchemaSqlModel {
         final PrimaryKeyModel key = new PrimaryKeyModel(accumulator);
         final String tableName = key.getProperties().get("TABLE_NAME");
         final List<ColumnSqlModel> columns = key.getColumns();
-        for (ColumnSqlModel column : columns) {
-            final ColumnModel columnModel = columnsByTable.get(column.getProperties().get("TABLE_NAME"))
-                    .get(column.getProperties().get("COLUMN_NAME"));
-            if (columnModel == null) {
-                // column excluded from model; do not add primary key
-                return;
-            }
+        if (!columns.isEmpty()) {
+            primaryKeysByTable.put(tableName, key);
         }
-        primaryKeysByTable.put(tableName, key);
     }
 
 
@@ -244,9 +254,14 @@ public class MetadataModel implements SchemaSqlModel {
         public List<ColumnSqlModel> getColumns() {
             final List<ColumnSqlModel> result = new ArrayList<>();
             for (DatabaseObjectModel column : columns) {
-                final ColumnModel columnModel = columnsByTable.get(column.getProperties().get("TABLE_NAME"))
-                        .get(column.getProperties().get("COLUMN_NAME"));
-                result.add(columnModel);
+                final Map<String, ColumnModel> table = columnsByTable.get(column.getProperties().get("TABLE_NAME"));
+                if (table != null) {
+                    final ColumnModel columnModel = table
+                            .get(column.getProperties().get("COLUMN_NAME"));
+                    if (columnModel != null) {
+                        result.add(columnModel);
+                    }
+                }
             }
             return result;
         }

@@ -13,15 +13,12 @@ public abstract class AbstractPropertyFilter implements Filter {
     }
 
     @Override
-    public boolean accept(final DatabaseObjectModel subject) {
+    public boolean reject(final DatabaseObjectModel subject) {
         final String value = subject.getProperties().get(property);
-        if (value == null) {
-            return false;
-        }
-        return acceptable(value);
+        return notAcceptable(value);
     }
 
-    protected abstract boolean acceptable(String value);
+    protected abstract boolean notAcceptable(String value);
 
     protected final String getProperty() {
         return property;

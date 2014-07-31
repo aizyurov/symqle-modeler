@@ -56,7 +56,6 @@ public class ForeignKeyTransformer extends AbstractTransformer {
                     final String candidate = i==0 ? suggestedName : suggestedName + i;
                     if (!usedNames.contains(candidate)) {
                         properties.put("JAVA_NAME", candidate);
-                        properties.put("GETTER_NAME", "get" + StringUtils.firstToUpper(candidate));
                         usedNames.add(candidate);
                     }
                 }

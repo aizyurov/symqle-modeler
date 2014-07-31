@@ -9,12 +9,11 @@ import org.symqle.modeler.metadata.ColumnTransformer;
 import org.symqle.modeler.metadata.ForeignKeyTransformer;
 import org.symqle.modeler.metadata.GeneratedFkTransformer;
 import org.symqle.modeler.metadata.MetadataReader;
-import org.symqle.modeler.metadata.Sieve;
+import org.symqle.modeler.metadata.TableSieve;
 import org.symqle.modeler.metadata.TableTransformer;
-import org.symqle.modeler.sql.DatabaseObjectModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.transformer.Filter;
-import org.symqle.modeler.transformer.RejectRegexpFilter;
+import org.symqle.modeler.transformer.RegexpFilter;
 import org.symqle.modeler.transformer.Transformer;
 
 import javax.sql.DataSource;
@@ -68,18 +67,12 @@ public class GenerationTest extends DatabaseTestBase {
     private final List<Transformer> generatedKeyTransformers = Arrays.<Transformer>asList(createSieve(), new TableTransformer(),
             makeColumnTransformer(false), new GeneratedFkTransformer(), new ForeignKeyTransformer());
 
-    private final Sieve createSieve() {
-        final Sieve sieve = new Sieve();
-        final RejectRegexpFilter regexpFilter = new RejectRegexpFilter();
+    private TableSieve createSieve() {
+        final TableSieve sieve = new TableSieve();
+        final RegexpFilter regexpFilter = new RegexpFilter();
         regexpFilter.setPattern("SYS.*");
         regexpFilter.setProperty("TABLE_NAME");
-        final Filter acceptOthers = new Filter() {
-            @Override
-            public boolean accept(final DatabaseObjectModel subject) {
-                return true;
-            }
-        };
-        sieve.setTableFilters(Arrays.asList((Filter)regexpFilter, acceptOthers));
+        sieve.setTableFilters(Arrays.<Filter>asList(regexpFilter));
         return sieve;
     }
 

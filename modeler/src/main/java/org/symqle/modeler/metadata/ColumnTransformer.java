@@ -38,7 +38,6 @@ public class ColumnTransformer extends AbstractTransformer {
                     final String candidate = i==0 ? camelCaseName : camelCaseName + i;
                     if (!usedNames.contains(candidate)) {
                         properties.put("JAVA_NAME", candidate);
-                        properties.put("GETTER_NAME", "get" + StringUtils.firstToUpper(candidate));
                         usedNames.add(candidate);
                     }
                 }

@@ -3,20 +3,14 @@ package org.symqle.modeler.utils;
 /**
  * @author lvovich
  */
-public class SimpleLogger {
+public abstract class SimpleLogger {
     
-    protected void logError(String format, Object... args) {
-    }
-    protected void logError(Throwable t, String format, Object... args) {
-    }
-    protected void logWarn(String format, Object... args) {
-    }
-    protected void logInfo(String format, Object... args) {
-    }
-    protected void logDebug(String format, Object... args) {
-    }
-    
-    private static SimpleLogger instance = new SimpleLogger();
+    protected abstract void logError(String format, Object... args);
+    protected abstract void logWarn(String format, Object... args);
+    protected abstract void logInfo(String format, Object... args);
+    protected abstract void logDebug(String format, Object... args);
+
+    private static SimpleLogger instance = new VerboseStdErrLogger();
     
     public static void setLogger(final SimpleLogger logger) {
         instance = logger;
@@ -26,9 +20,6 @@ public class SimpleLogger {
         instance.logError(format, args);
     }
 
-    public static void error(Throwable t, String format, Object... args) {
-        instance.logError(t, format, args);
-    }
     public static void warn(String format, Object... args) {
         instance.logWarn(format, args);
     }

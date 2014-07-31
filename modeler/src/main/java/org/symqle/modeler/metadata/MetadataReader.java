@@ -29,9 +29,12 @@ public class MetadataReader implements ModelReader {
 
     @Override
     public SchemaSqlModel readModel() throws SQLException, ReflectiveOperationException {
-        try (Connection connection = dataSource.getConnection()) {
+        Connection connection = dataSource.getConnection();
+        try {
             DatabaseMetaData metaData = connection.getMetaData();
             return readMetadata(metaData);
+        } finally {
+            connection.close();
         }
     }
 
