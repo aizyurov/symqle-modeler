@@ -55,16 +55,16 @@ public class BeanTest extends AbstractDependencyInjectionSpringContextTests {
 
         final File modelDir = new File("target/bean-test/main/org/symqle/modeler/test/model");
         assertTrue(new File(modelDir, "AllTypes.java").exists());
-        assertEquals(11, modelDir.listFiles().length);
+        assertEquals(12, modelDir.listFiles().length);
 
         final File sampleDataDir = new File("target/bean-test/samples/org/symqle/modeler/test/data");
         assertTrue(new File(sampleDataDir, "AllTypesDto.java").exists());
-        assertEquals(11, sampleDataDir.listFiles().length);
+        assertEquals(12, sampleDataDir.listFiles().length);
 
         final File daoDir = new File("target/bean-test/samples/org/symqle/modeler/test/dao");
         assertTrue(new File(daoDir, "AllTypesCrud.java").exists());
         assertTrue(new File(daoDir, "AllTypesSelect.java").exists());
         assertTrue(new File(daoDir, "AllTypesSmartSelect.java").exists());
-        assertEquals(31, daoDir.listFiles().length);
+        assertEquals(33, daoDir.listFiles().length);
     }
 }

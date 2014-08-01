@@ -23,7 +23,7 @@ public abstract class FreeMarkerClassWriter implements ClassWriter {
 
     private String outputDirectory;
     private String packageKey;
-    private BugFreeTemplate template;
+    private TemplateWrapper template;
     private String suffix = "";
 
     @Required
@@ -33,7 +33,7 @@ public abstract class FreeMarkerClassWriter implements ClassWriter {
         configuration.setObjectWrapper(new DefaultObjectWrapper());
         final Template fmTemplate = configuration.getTemplate(templateName);
         fmTemplate.setObjectWrapper(new DefaultObjectWrapper());
-        this.template = new BugFreeTemplate(fmTemplate);
+        this.template = new TemplateWrapper(fmTemplate);
     }
 
     public void setSuffix(final String suffix) {

@@ -34,23 +34,63 @@ public class MainTest extends TestCase {
 
 
     public void testMain() throws Exception {
-        new Main(new String[] {"-c", "src/test/resources/test.modeler.properties"}).run();
+        new CommandLineRunner(new String[] {"-c", "src/test/resources/test.modeler.properties"}).run();
         final File dataDir = new File("target/bean-test/main/org/symqle/modeler/test/data");
         assertTrue(new File(dataDir, "DepartmentId.java").exists());
         assertEquals(4, dataDir.listFiles().length);
 
         final File modelDir = new File("target/bean-test/main/org/symqle/modeler/test/model");
         assertTrue(new File(modelDir, "AllTypes.java").exists());
-        assertEquals(11, modelDir.listFiles().length);
+        assertTrue(new File(modelDir, "Plain1.java").exists());
+        assertEquals(12, modelDir.listFiles().length);
 
         final File sampleDataDir = new File("target/bean-test/samples/org/symqle/modeler/test/data");
         assertTrue(new File(sampleDataDir, "AllTypesDto.java").exists());
-        assertEquals(11, sampleDataDir.listFiles().length);
+        assertEquals(12, sampleDataDir.listFiles().length);
 
         final File daoDir = new File("target/bean-test/samples/org/symqle/modeler/test/dao");
         assertTrue(new File(daoDir, "AllTypesCrud.java").exists());
         assertTrue(new File(daoDir, "AllTypesSelect.java").exists());
         assertTrue(new File(daoDir, "AllTypesSmartSelect.java").exists());
-        assertEquals(31, daoDir.listFiles().length);
+        assertEquals(33, daoDir.listFiles().length);
     }
+
+    public void testWrongOptions() throws Exception {
+        final int retval = new CommandLineRunner(new String[]{"-a -b -c"}).run();
+        assertEquals(1, retval);
+    }
+
+    public void testMissingConfigName() throws Exception {
+        final int retval = new CommandLineRunner(new String[]{"-c"}).run();
+        assertEquals(1, retval);
+    }
+
+    public void testMissingConfigFile() throws Exception {
+        final int retval = new CommandLineRunner(new String[]{"-c abrakadabra"}).run();
+        assertEquals(1, retval);
+    }
+
+    public void testMissingProperty() throws Exception {
+        final int retval = new CommandLineRunner(new String[]{"-c", "src/test/resources/broken.properties", "-v"}).run();
+        assertEquals(1, retval);
+    }
+
+    public void testVerboseOption() throws Exception {
+        final int retval = new CommandLineRunner(new String[] {"-c", "src/test/resources/test.modeler.properties", "-v"}).run();
+        assertEquals(0, retval);
+        final File dataDir = new File("target/bean-test/main/org/symqle/modeler/test/data");
+        assertTrue(new File(dataDir, "DepartmentId.java").exists());
+        assertEquals(4, dataDir.listFiles().length);
+    }
+
+    public void testWithClasspath() throws Exception {
+        final int retval = new CommandLineRunner(new String[] {"-c", "src/test/resources/test.modeler.withclasspath.properties", "-v"}).run();
+        assertEquals(0, retval);
+        final File dataDir = new File("target/bean-test/main/org/symqle/modeler/test/data");
+        assertTrue(new File(dataDir, "DepartmentId.java").exists());
+        assertEquals(4, dataDir.listFiles().length);
+    }
+
 }
+
+

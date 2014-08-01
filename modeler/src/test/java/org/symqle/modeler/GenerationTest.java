@@ -82,6 +82,7 @@ public class GenerationTest extends DatabaseTestBase {
         assertMatchesExpected("expected/natural", "Department");
         assertMatchesExpected("expected/natural", "Detail");
         assertMatchesExpected("expected/natural", "Plain");
+        assertMatchesExpected("expected/natural", "Plain1");
         assertMatchesExpected("expected/natural", "Second1");
     }
 

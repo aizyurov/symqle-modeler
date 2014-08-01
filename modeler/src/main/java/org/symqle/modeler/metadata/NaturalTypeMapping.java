@@ -104,8 +104,7 @@ public class NaturalTypeMapping {
 
 
     public String getJavaType(final int databaseType) {
-        final String found = typeMap.get(databaseType);
-        return found != null ? found : typeVoid;
+        return typeMap.get(databaseType);
     }
     
     public String getFqnForImport(final String className) {

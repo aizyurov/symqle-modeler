@@ -190,29 +190,36 @@ public class MetadataModel implements SchemaSqlModel {
     }
 
     void addPrimaryKey(final List<DatabaseObjectModel> accumulator) {
-        final PrimaryKeyModel key = new PrimaryKeyModel(accumulator);
-        final String tableName = key.getProperties().get("TABLE_NAME");
-        final List<ColumnSqlModel> columns = key.getColumns();
-        if (!columns.isEmpty()) {
-            primaryKeysByTable.put(tableName, key);
+        final String tableName = accumulator.get(0).getProperties().get("TABLE_NAME");
+        final Map<String, ColumnModel> tableColumns = columnsByTable.get(tableName);
+        if (tableColumns == null) {
+            // primary key of deleted table
+            return;
         }
+        for (DatabaseObjectModel objectModel : accumulator) {
+            if (!tableColumns.containsKey(objectModel.getProperties().get("COLUMN_NAME"))) {
+                // primary key references to unkown column; do not add
+                return;
+            }
+        }
+            primaryKeysByTable.put(tableName, new PrimaryKeyModel(accumulator));
     }
 
-
-
     void addForeignKey(final List<DatabaseObjectModel> accumulator, final Map<String, String> extraProperties) {
-        final ForeignKeyModel foreignKeyModel = new ForeignKeyModel(accumulator, extraProperties);
-        final List<ForeignKeyModel> tableForeignKeys = foreignKeysByTable.get(foreignKeyModel.getProperties().get("FKTABLE_NAME"));
-        if (!tables.containsKey(foreignKeyModel.getProperties().get("FKTABLE_NAME"))) {
+        final Map<String, String> fkProperties = accumulator.get(0).getProperties();
+        final String fkTableName = fkProperties.get("FKTABLE_NAME");
+        final List<ForeignKeyModel> tableForeignKeys = foreignKeysByTable.get(fkTableName);
+        if (!tables.containsKey(fkTableName)) {
             // ignore foreign keys from unknown tables
             return;
         }
-        if (!tables.containsKey(foreignKeyModel.getProperties().get("PKTABLE_NAME"))) {
+        final String pkTableName = fkProperties.get("PKTABLE_NAME");
+        if (!tables.containsKey(pkTableName)) {
             // ignore foreign keys to unknown tables
             return;
         }
-        final Map<String, ColumnModel> tableColumns = columnsByTable.get(foreignKeyModel.getProperties().get("FKTABLE_NAME"));
-        final Map<String, ColumnModel> pkTableColumns = columnsByTable.get(foreignKeyModel.getProperties().get("PKTABLE_NAME"));
+        final Map<String, ColumnModel> tableColumns = columnsByTable.get(fkTableName);
+        final Map<String, ColumnModel> pkTableColumns = columnsByTable.get(pkTableName);
         for (DatabaseObjectModel fkColumn: accumulator) {
             final String columnName = fkColumn.getProperties().get("FKCOLUMN_NAME");
             final String pkColumnName = fkColumn.getProperties().get("PKCOLUMN_NAME");
@@ -221,7 +228,7 @@ public class MetadataModel implements SchemaSqlModel {
                 return;
             }
         }
-        tableForeignKeys.add(foreignKeyModel);
+        tableForeignKeys.add(new ForeignKeyModel(accumulator, extraProperties));
     }
 
     @Override
@@ -255,13 +262,9 @@ public class MetadataModel implements SchemaSqlModel {
             final List<ColumnSqlModel> result = new ArrayList<>();
             for (DatabaseObjectModel column : columns) {
                 final Map<String, ColumnModel> table = columnsByTable.get(column.getProperties().get("TABLE_NAME"));
-                if (table != null) {
-                    final ColumnModel columnModel = table
-                            .get(column.getProperties().get("COLUMN_NAME"));
-                    if (columnModel != null) {
-                        result.add(columnModel);
-                    }
-                }
+                final ColumnModel columnModel = table
+                        .get(column.getProperties().get("COLUMN_NAME"));
+                result.add(columnModel);
             }
             return result;
         }

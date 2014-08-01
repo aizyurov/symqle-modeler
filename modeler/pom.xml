@@ -79,7 +79,7 @@
                      <archive>
                          <manifest>
                              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                             <mainClass>org.symqle.modeler.Main</mainClass>
+                             <mainClass>org.symqle.modeler.CommandLineRunner</mainClass>
                              <addClasspath>true</addClasspath>
                              <classpathPrefix>lib/</classpathPrefix>
                          </manifest>
@@ -162,7 +162,7 @@
                     </check>
                     <instrumentation>
                       <excludes>
-                        <exclude>org/symqle/dialect/*.class</exclude>
+                        <exclude>org/symqle/modeler/Main.class</exclude>
                       </excludes>
                     </instrumentation>
                 </configuration>
