@@ -40,7 +40,7 @@ public abstract class AbstractTransformer implements Transformer {
         for (TableSqlModel table: source.getTables()) {
             final PrimaryKeySqlModel primaryKey = table.getPrimaryKey();
             if (primaryKey != null) {
-                target.addPrimaryKey(primaryKey.getColumnProperties());
+                target.addPrimaryKey(primaryKey.getColumns());
             }
         }
     }

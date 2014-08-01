@@ -189,7 +189,7 @@ public class MetadataModel implements SchemaSqlModel {
         addForeignKey(accumulator, Collections.<String, String>emptyMap());
     }
 
-    void addPrimaryKey(final List<DatabaseObjectModel> accumulator) {
+    void addPrimaryKey(final List<? extends DatabaseObjectModel> accumulator) {
         final String tableName = accumulator.get(0).getProperties().get("TABLE_NAME");
         final Map<String, ColumnModel> tableColumns = columnsByTable.get(tableName);
         if (tableColumns == null) {
@@ -240,21 +240,8 @@ public class MetadataModel implements SchemaSqlModel {
 
         List<DatabaseObjectModel> columns = new ArrayList<>();
 
-        private PrimaryKeyModel(final List<DatabaseObjectModel> accumulator) {
+        private PrimaryKeyModel(final List<? extends DatabaseObjectModel> accumulator) {
             columns.addAll(accumulator);
-        }
-
-        @Override
-        public Map<String, String> getProperties() {
-            final Map<String, String> props = new HashMap<>(columns.get(0).getProperties());
-            props.remove("COLUMN_NAME");
-            props.remove("KEY_SEQ");
-            return props;
-        }
-
-        @Override
-        public List<DatabaseObjectModel> getColumnProperties() {
-            return Collections.unmodifiableList(columns);
         }
 
         @Override

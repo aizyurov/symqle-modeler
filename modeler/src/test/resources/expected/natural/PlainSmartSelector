@@ -1,0 +1,33 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.sql.SmartSelector;
+import org.symqle.model.PlainDto;
+import org.symqle.model.Plain;
+
+import java.sql.SQLException;
+
+/**
+ * Selects {@link org.symqle.model.PlainDto} from {@link org.symqle.model.Plain}.
+ */
+public class PlainSmartSelector extends SmartSelector<PlainDto> {
+
+  private final Plain table;
+
+  /**
+   * Constructs PlainSmartSelector for given table.
+   * @param table instance of Plain to select from.
+   */
+  public PlainSmartSelector(final Plain table) {
+      this.table = table;
+  }
+
+  protected final PlainDto create() throws SQLException {
+      final PlainDto dto = new PlainDto();
+      dto.setMessage(get(table.message()));
+      dto.setMessage1(get(table.message1()));
+      return dto;
+  }
+}
+

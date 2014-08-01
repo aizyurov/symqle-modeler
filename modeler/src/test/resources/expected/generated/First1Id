@@ -1,0 +1,82 @@
+/* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
+package org.symqle.model;
+
+import org.symqle.common.InBox;
+import org.symqle.common.Mapper;
+import org.symqle.common.OutBox;
+
+import java.sql.SQLException;
+
+/**
+ * Unique key identifying First1.
+ */
+public final class First1Id {
+    private long id;
+    private First1Id(final long id) {
+        this.id = id;
+    }
+
+  /**
+   * Mapper for First1Id.
+   */
+    public static final Mapper<First1Id> MAPPER = new Mapper<First1Id>() {
+        @Override
+        public First1Id value(final InBox inBox) throws SQLException {
+            final Long longId = inBox.getLong();
+            return longId == null ? null : new First1Id(longId);
+        }
+
+        @Override
+        public void setValue(final OutBox param, final First1Id value) throws SQLException {
+            final Long longId = value == null ? null : value.id;
+            param.setLong(longId);
+        }
+    };
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final First1Id otherId = (First1Id) o;
+
+        if (id != otherId.id) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
+
+    private final static String prefix = First1Id.class.getName() + "#";
+
+    @Override
+    public final String toString() {
+        return prefix + id;
+    }
+
+  /**
+   * Creates First1Id from its string representation.
+   * It is guaranteed that for any non null {@code id}
+   * {@code First1Id.valueOf(id.toString()).equals(id)}
+   * @param s source string
+   * @return new instance of First1Id; null if s is null or contains only whitespace.
+   * @throws IllegalArgumentException id is not null or empty and has format different from that produced by {@link #toString()}.
+   */
+    public static First1Id valueOf(final String s) {
+        if (s == null  || s.trim().isEmpty()) {
+            return null;
+        }
+        if (!s.startsWith(prefix)) {
+            throw new IllegalArgumentException(s);
+        }
+        try {
+            return new First1Id(Long.parseLong(s.substring(prefix.length())));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(s);
+        }
+    }
+
+}

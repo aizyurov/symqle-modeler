@@ -1,0 +1,110 @@
+/* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
+
+package org.symqle.model;
+
+import org.symqle.sql.Table;
+import org.symqle.common.Mappers;
+import org.symqle.sql.Column;
+import org.symqle.common.OnDemand;
+
+/**
+ * TABLE PLAIN_
+ */
+public class Plain1 extends Table {
+
+   public String getTableDefinition() {
+       return "PLAIN_";
+   }
+
+    /**
+     * MESSAGE.
+     * VARCHAR(100)
+     * @return MESSAGE
+     */
+    public Column<String> message() {
+        return defineColumn(Mappers.STRING, "MESSAGE");
+    }
+
+    /**
+     * FK.
+     * INTEGER(10, 0)
+     * @return FK
+     */
+    public Column<Integer> fk() {
+        return defineColumn(Mappers.INTEGER, "FK");
+    }
+
+    /**
+     * EMPLOYEE_ID.
+     * INTEGER(10, 0)
+     * @return EMPLOYEE_ID
+     */
+    public Column<Integer> employeeId() {
+        return defineColumn(Mappers.INTEGER, "EMPLOYEE_ID");
+    }
+
+    /**
+     * EMPLOYEE_FK.
+     * INTEGER(10, 0)
+     * @return EMPLOYEE_FK
+     */
+    public Column<Integer> employeeFk() {
+        return defineColumn(Mappers.INTEGER, "EMPLOYEE_FK");
+    }
+
+
+    private OnDemand<Employee> employee = new OnDemand<Employee>() {
+        @Override
+        public Employee construct() {
+            Employee other = new Employee();
+            leftJoin(other, employeeFk().eq(other.empId()));
+            return other;
+        }
+    };
+
+    /**
+     * Auto-join to Employee by {@link #employeeFk()}
+     * FOREIGN KEY PLAIN_EMPLOYEE_FK3 (EMPLOYEE_FK) REFERENCES EMPLOYEE (EMP_ID)
+     * @return joined Employee.
+     */
+    public Employee employee() {
+        return employee.get();
+    }
+
+    private OnDemand<Employee> employee1 = new OnDemand<Employee>() {
+        @Override
+        public Employee construct() {
+            Employee other = new Employee();
+            leftJoin(other, employeeId().eq(other.empId()));
+            return other;
+        }
+    };
+
+    /**
+     * Auto-join to Employee by {@link #employeeId()}
+     * FOREIGN KEY PLAIN_EMPLOYEE_FK2 (EMPLOYEE_ID) REFERENCES EMPLOYEE (EMP_ID)
+     * @return joined Employee.
+     */
+    public Employee employee1() {
+        return employee1.get();
+    }
+
+    private OnDemand<Employee> fkRef = new OnDemand<Employee>() {
+        @Override
+        public Employee construct() {
+            Employee other = new Employee();
+            leftJoin(other, fk().eq(other.empId()));
+            return other;
+        }
+    };
+
+    /**
+     * Auto-join to Employee by {@link #fk()}
+     * FOREIGN KEY PLAIN_EMPLOYEE_FK (FK) REFERENCES EMPLOYEE (EMP_ID)
+     * @return joined Employee.
+     */
+    public Employee fkRef() {
+        return fkRef.get();
+    }
+}
+

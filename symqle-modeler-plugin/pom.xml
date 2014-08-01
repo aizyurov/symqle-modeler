@@ -9,8 +9,7 @@
 
   <name>symqle-modeler-plugin Maven Plugin</name>
 
-  <!-- FIXME change it to the project's website -->
-  <url>http://maven.apache.org</url>
+  <url>http://modeler.symqle.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -221,7 +220,7 @@
               <settingsFile>src/it/settings.xml</settingsFile>
               <goals>
                 <goal>clean</goal>
-                <goal>test-compile</goal>
+                <goal>package</goal>
               </goals>
             </configuration>
             <executions>

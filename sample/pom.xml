@@ -20,6 +20,46 @@
         <artifactId>symqle</artifactId>
         <version>0.1-SNAPSHOT</version>
       </dependency>
+      <dependency>
+          <groupId>org.apache.wicket</groupId>
+          <artifactId>wicket</artifactId>
+          <version>1.3.7</version>
+      </dependency>
+      <dependency>
+          <groupId>org.acegisecurity</groupId>
+          <artifactId>acegi-security</artifactId>
+          <version>1.0.2</version>
+          <exclusions>
+              <exclusion>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-remoting</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-support</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-jdbc</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-web</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-context</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>commons-logging</groupId>
+                  <artifactId>commons-logging</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>log4j</groupId>
+                  <artifactId>log4j</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
 
     <dependency>
       <groupId>junit</groupId>
@@ -154,13 +194,13 @@
                 <version>0.1-SNAPSHOT</version>
                 <configuration>
                     <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver>
-                    <jdbcUrl>jdbc:mysql://localhost:3306/simqle</jdbcUrl>
-                    <jdbcUser>simqle</jdbcUser>
-                    <jdbcPassword>simqle</jdbcPassword>
+                    <jdbcUrl>jdbc:mysql://localhost:3306/modeler</jdbcUrl>
+                    <jdbcUser>modeler</jdbcUser>
+                    <jdbcPassword>modeler</jdbcPassword>
                     <dataPackage>org.symqle.sample.data</dataPackage>
                     <dataAccessPackage>org.symqle.sample.dao</dataAccessPackage>
                     <symqleModelPackage>org.symqle.sample.model</symqleModelPackage>
-                    <samplesDirectory>${project.build.directory}/generated-sources/main/</samplesDirectory>
+                    <samplesDirectory>${project.build.directory}/generated-sources/main</samplesDirectory>
                     <naturalKeys>true</naturalKeys>
                 </configuration>
                 <executions>

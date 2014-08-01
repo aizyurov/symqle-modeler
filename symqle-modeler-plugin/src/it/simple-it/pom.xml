@@ -15,17 +15,23 @@
 
   <build>
     <plugins>
-      <plugin>
+        <plugin>
         <groupId>@project.groupId@</groupId>
         <artifactId>@project.artifactId@</artifactId>
         <version>@project.version@</version>
         <executions>
           <execution>
-            <id>touch</id>
-            <phase>validate</phase>
+            <id>generate</id>
+            <phase>generate-sources</phase>
             <goals>
-              <goal>touch</goal>
+              <goal>generate</goal>
             </goals>
+          <configuration>
+              <jdbcUrl></jdbcUrl>
+              <jdbcUser></jdbcUser>
+              <jdbcPassword></jdbcPassword>
+              <jdbcDriver></jdbcDriver>
+          </configuration>
           </execution>
         </executions>
       </plugin>

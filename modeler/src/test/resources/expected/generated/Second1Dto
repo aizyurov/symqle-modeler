@@ -1,0 +1,26 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.model.First1Id;
+
+public class Second1Dto {
+    private final First1Id firstId;
+    private String text;
+
+   public Second1Dto(final First1Id firstId) {
+            this.firstId = firstId;
+   }
+
+  public First1Id getFirstId() {
+    return firstId;
+  }
+  public String getText() {
+    return text;
+  }
+  public void setText(final String text) {
+    this.text = text;
+  }
+
+}
+

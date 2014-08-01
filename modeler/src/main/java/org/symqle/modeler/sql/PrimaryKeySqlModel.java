@@ -5,15 +5,12 @@ import java.util.List;
 /**
  * @author lvovich
  */
-public interface PrimaryKeySqlModel extends DatabaseObjectModel {
+public interface PrimaryKeySqlModel {
 
     /**
-     * Mapping foreign key column -referenced table PK column
-     * all FK columns belong to the same table;
-     * all PK columns belong to the same table.
-     * @return
+     * Primary key columns in KEY_SEQ order
+     * @return pk columns
      */
-    List<DatabaseObjectModel> getColumnProperties();
     List<ColumnSqlModel> getColumns();
 
 }

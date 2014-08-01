@@ -1,0 +1,36 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.sql.Selector;
+import org.symqle.common.RowMapper;
+import org.symqle.common.Row;
+import org.symqle.model.Second1Dto;
+import org.symqle.model.Second1;
+import org.symqle.model.First1Id;
+import java.sql.SQLException;
+
+/**
+ * Selects {@link org.symqle.model.Second1Dto} from {@link org.symqle.model.Second1}.
+ */
+public class Second1Selector extends Selector<Second1Dto> {
+
+  private final RowMapper<First1Id> firstIdMapper;
+  private final RowMapper<String> textMapper;
+
+  /**
+   * Constructs Second1Selector for given table.
+   * @param table instance of Second1 to select from.
+   */
+  public Second1Selector(final Second1 table) {
+      firstIdMapper = map(table.firstId());
+      textMapper = map(table.text());
+  }
+
+  protected final Second1Dto create(final Row row) throws SQLException {
+      final Second1Dto dto = new Second1Dto(firstIdMapper.extract(row));
+      dto.setText(textMapper.extract(row));
+      return dto;
+  }
+}
+

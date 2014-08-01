@@ -1,0 +1,28 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+
+public class PlainDto {
+    private String message;
+    private String message1;
+
+   public PlainDto() {
+   }
+
+  public String getMessage() {
+    return message;
+  }
+  public void setMessage(final String message) {
+    this.message = message;
+  }
+
+  public String getMessage1() {
+    return message1;
+  }
+  public void setMessage1(final String message1) {
+    this.message1 = message1;
+  }
+
+}
+

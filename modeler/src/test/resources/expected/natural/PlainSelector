@@ -1,0 +1,36 @@
+/* THIS IS SAMPLE CODE. SAVE AND EDIT AS NECESSARY */
+
+package org.symqle.model;
+
+import org.symqle.sql.Selector;
+import org.symqle.common.RowMapper;
+import org.symqle.common.Row;
+import org.symqle.model.PlainDto;
+import org.symqle.model.Plain;
+import java.sql.SQLException;
+
+/**
+ * Selects {@link org.symqle.model.PlainDto} from {@link org.symqle.model.Plain}.
+ */
+public class PlainSelector extends Selector<PlainDto> {
+
+  private final RowMapper<String> messageMapper;
+  private final RowMapper<String> message1Mapper;
+
+  /**
+   * Constructs PlainSelector for given table.
+   * @param table instance of Plain to select from.
+   */
+  public PlainSelector(final Plain table) {
+      messageMapper = map(table.message());
+      message1Mapper = map(table.message1());
+  }
+
+  protected final PlainDto create(final Row row) throws SQLException {
+      final PlainDto dto = new PlainDto();
+      dto.setMessage(messageMapper.extract(row));
+      dto.setMessage1(message1Mapper.extract(row));
+      return dto;
+  }
+}
+

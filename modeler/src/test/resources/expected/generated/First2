@@ -1,0 +1,57 @@
+/* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
+
+package org.symqle.model;
+
+import org.symqle.sql.Table;
+import org.symqle.common.Mappers;
+import org.symqle.sql.Column;
+import org.symqle.common.OnDemand;
+import org.symqle.model.Third2Id;
+
+/**
+ * TABLE FIRST2
+ */
+public class First2 extends Table {
+
+   public String getTableDefinition() {
+       return "FIRST2";
+   }
+
+    /**
+     * SECOND_ID.
+     * INTEGER(10, 0) NOT NULL
+     * @return SECOND_ID
+     */
+    public Column<Third2Id> secondId() {
+        return defineColumn(Third2Id.MAPPER, "SECOND_ID");
+    }
+
+    /**
+     * TEXT.
+     * VARCHAR(255)
+     * @return TEXT
+     */
+    public Column<String> text() {
+        return defineColumn(Mappers.STRING, "TEXT");
+    }
+
+
+    private OnDemand<Second2> second = new OnDemand<Second2>() {
+        @Override
+        public Second2 construct() {
+            Second2 other = new Second2();
+            leftJoin(other, secondId().eq(other.thirdId()));
+            return other;
+        }
+    };
+
+    /**
+     * Auto-join to Second2 by {@link #secondId()}
+     * FOREIGN KEY SECOND2FK (SECOND_ID) REFERENCES SECOND2 (THIRD_ID)
+     * @return joined Second2.
+     */
+    public Second2 second() {
+        return second.get();
+    }
+}
+

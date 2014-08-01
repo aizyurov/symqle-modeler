@@ -63,7 +63,7 @@ public class Launcher {
 
         final GenericApplicationContext appContext = new GenericApplicationContext();
         final XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(appContext);
-        xmlReader.loadBeanDefinitions(appContext.getResource("config.xml"));
+        xmlReader.loadBeanDefinitions(appContext.getResource("classpath:config.xml"));
         BeanDefinition configurer = appContext.getBeanDefinition("propertyPlaceholderConfigurer");
         final MutablePropertyValues propertyValues = configurer.getPropertyValues();
         propertyValues.addPropertyValue("properties", localProperties);

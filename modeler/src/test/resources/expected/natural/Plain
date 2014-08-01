@@ -1,0 +1,38 @@
+/* THIS IS GENERATED CODE - ALL CHANGES WILL BE LOST */
+
+package org.symqle.model;
+
+import org.symqle.sql.Table;
+import org.symqle.common.Mappers;
+import org.symqle.sql.Column;
+import org.symqle.common.OnDemand;
+
+/**
+ * TABLE PLAIN
+ */
+public class Plain extends Table {
+
+   public String getTableDefinition() {
+       return "PLAIN";
+   }
+
+    /**
+     * MESSAGE.
+     * VARCHAR(100)
+     * @return MESSAGE
+     */
+    public Column<String> message() {
+        return defineColumn(Mappers.STRING, "MESSAGE");
+    }
+
+    /**
+     * MESSAGE_.
+     * VARCHAR(50)
+     * @return MESSAGE_
+     */
+    public Column<String> message1() {
+        return defineColumn(Mappers.STRING, "MESSAGE_");
+    }
+
+}
+

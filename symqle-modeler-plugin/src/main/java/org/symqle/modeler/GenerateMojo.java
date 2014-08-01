@@ -130,24 +130,6 @@ public class GenerateMojo
     private String excludeTableNamePattern;
 
     /**
-     * Regexp pattern to include tables by name to model. Example: ".*". Case-insensitive.
-     * @parameter expression="symqle.includeTableNamePattern"
-     */
-    private String includeTableNamePattern;
-
-    /**
-     * Regexp pattern to exclude columns by name from model. Example: ".*_create_ts". Case-insensitive.
-     * @parameter expression="symqle.excludeColumnNamePattern"
-     */
-    private String excludeColumnNamePattern;
-
-    /**
-     * Regexp pattern to include columns by name from model. Example: ".*". Case-insensitive.
-     * @parameter expression="symqle.includeColumnNamePattern"
-     */
-    private String includeColumnNamePattern;
-
-    /**
      * Do not generate primary key classes; use java.lang and java.sql classes for keys. Default: false.
      * @parameter expression="symqle.naturalKeys"
      */
@@ -173,11 +155,7 @@ public class GenerateMojo
         localProperties.setProperty("dataAccessPackage", dataAccessPackage);
         localProperties.setProperty("symqleModelPackage", symqleModelPackage);
         setOptionalProperty(localProperties, "excludeTableTypePattern", excludeTableTypePattern);
-        setOptionalProperty(localProperties, "includeTableTypePattern", includeTableTypePattern);
         setOptionalProperty(localProperties, "excludeTableNamePattern", excludeTableNamePattern);
-        setOptionalProperty(localProperties, "includeTableNamePattern", includeTableNamePattern);
-        setOptionalProperty(localProperties, "excludeColumnNamePattern", excludeColumnNamePattern);
-        setOptionalProperty(localProperties, "includeColumnNamePattern", includeColumnNamePattern);
         setOptionalProperty(localProperties, "naturalKeys", String.valueOf(naturalKeys));
         SimpleLogger.setLogger(new MojoLogger());
         try {
@@ -212,11 +190,6 @@ public class GenerateMojo
         @Override
         protected void logError(final String format, final Object... args) {
             getLog().error(String.format(format, args));
-        }
-
-        @Override
-        protected void logError(final Throwable t, final String format, final Object... args) {
-            getLog().error(String.format(format, args), t);
         }
 
         @Override
