@@ -47,18 +47,20 @@ public class Launcher {
             }
         }
 
+        SimpleLogger.debug("Properties: %s", localProperties);
+
         final String classPathValue = localProperties.getProperty("classpath");
         if (classPathValue != null) {
-            SimpleLogger.info("Setting classpath: %s", classPathValue);
-            final String[] classPathElements = classPathValue.split(":");
+            SimpleLogger.info("Setting extra classpath: %s", classPathValue);
+            final String[] classPathElements = classPathValue.split(System.getProperty("path.separator"));
             final URL[] classPath = new URL[classPathElements.length];
             for (int i = 0; i < classPathElements.length; i++) {
                 classPath[i] = new URL("file://"+classPathElements[i]);
             }
-            final URLClassLoader urlClassLoader = new URLClassLoader(classPath);
+            final URLClassLoader urlClassLoader = new URLClassLoader(classPath, this.getClass().getClassLoader());
             Thread.currentThread().setContextClassLoader(urlClassLoader);
         } else {
-            SimpleLogger.warn("No classpath property in config file; jdbc drivers may be unavailable");
+            SimpleLogger.warn("No extra classpath");
         }
 
         final GenericApplicationContext appContext = new GenericApplicationContext();

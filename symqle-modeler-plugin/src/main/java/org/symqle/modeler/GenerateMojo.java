@@ -135,6 +135,12 @@ public class GenerateMojo
      */
     private boolean naturalKeys;
 
+    /**
+     * Extra classpath
+     * @parameter expression="symqle.classpath"
+     */
+    private String classpath;
+
 
     public void execute()
         throws MojoExecutionException
@@ -157,6 +163,7 @@ public class GenerateMojo
         setOptionalProperty(localProperties, "excludeTableTypePattern", excludeTableTypePattern);
         setOptionalProperty(localProperties, "excludeTableNamePattern", excludeTableNamePattern);
         setOptionalProperty(localProperties, "naturalKeys", String.valueOf(naturalKeys));
+        setOptionalProperty(localProperties, "classpath", classpath);
         SimpleLogger.setLogger(new MojoLogger());
         try {
             new Launcher().run(localProperties);
