@@ -22,6 +22,7 @@ import java.util.TreeMap;
  */
 public class TransformerTest extends DatabaseTestBase {
 
+
     private final List<Transformer> transformers = Arrays.<Transformer>asList(createTableSieve(), new TableTransformer(),
             new ColumnTransformer(), new GeneratedFkTransformer(), new ForeignKeyTransformer());
 

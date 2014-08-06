@@ -52,6 +52,7 @@ public class AllTypesSmartSelector extends SmartSelector<AllTypesDto> {
       dto.setTNvarchar(get(table.tNvarchar()));
       dto.setTLongnvarchar(get(table.tLongnvarchar()));
       dto.setTNclob(get(table.tNclob()));
+      dto.setTXml(get(table.tXml()));
       return dto;
   }
 }

@@ -8,9 +8,6 @@ import org.symqle.sql.${tableTypeMapping["${model.properties.TABLE_TYPE}"]};
 import org.symqle.common.Mappers;
 import org.symqle.sql.Column;
 import org.symqle.common.OnDemand;
-<#list model.externalClassFqn as requiredImport>
-import ${requiredImport};
-</#list>
 <#list model.generatedKeys as key>
 import ${packages.dto}.${key};
 </#list>

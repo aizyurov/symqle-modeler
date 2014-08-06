@@ -4,9 +4,6 @@
 
 package ${package};
 
-<#list model.externalClassFqn as requiredImport>
-import ${requiredImport};
-</#list>
 <#list model.generatedKeys as key>
 import ${packages.dto}.${key};
 </#list>

@@ -2,10 +2,6 @@
 
 package org.symqle.model;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 
 public class AllTypesDto {
     private final Long tBit;
@@ -17,15 +13,15 @@ public class AllTypesDto {
     private Float tFloat;
     private Float tReal;
     private Double tDouble;
-    private BigDecimal tNumeric;
-    private BigDecimal tDecimal;
+    private java.math.BigDecimal tNumeric;
+    private java.math.BigDecimal tDecimal;
     private String tChar;
     private String tVarchar;
     private String tLongvarchar;
-    private Date tDate;
-    private Time tTime;
-    private Timestamp tTimestamp;
-    private Timestamp tDatetime;
+    private java.sql.Date tDate;
+    private java.sql.Time tTime;
+    private java.sql.Timestamp tTimestamp;
+    private java.sql.Timestamp tDatetime;
     private byte[] tBinary;
     private byte[] tVarbinary;
     private byte[] tLongvarbinary;
@@ -36,6 +32,7 @@ public class AllTypesDto {
     private String tNvarchar;
     private String tLongnvarchar;
     private String tNclob;
+    private Void tXml;
 
    public AllTypesDto(final Long tBit) {
             this.tBit = tBit;
@@ -100,17 +97,17 @@ public class AllTypesDto {
     this.tDouble = tDouble;
   }
 
-  public BigDecimal getTNumeric() {
+  public java.math.BigDecimal getTNumeric() {
     return tNumeric;
   }
-  public void setTNumeric(final BigDecimal tNumeric) {
+  public void setTNumeric(final java.math.BigDecimal tNumeric) {
     this.tNumeric = tNumeric;
   }
 
-  public BigDecimal getTDecimal() {
+  public java.math.BigDecimal getTDecimal() {
     return tDecimal;
   }
-  public void setTDecimal(final BigDecimal tDecimal) {
+  public void setTDecimal(final java.math.BigDecimal tDecimal) {
     this.tDecimal = tDecimal;
   }
 
@@ -135,31 +132,31 @@ public class AllTypesDto {
     this.tLongvarchar = tLongvarchar;
   }
 
-  public Date getTDate() {
+  public java.sql.Date getTDate() {
     return tDate;
   }
-  public void setTDate(final Date tDate) {
+  public void setTDate(final java.sql.Date tDate) {
     this.tDate = tDate;
   }
 
-  public Time getTTime() {
+  public java.sql.Time getTTime() {
     return tTime;
   }
-  public void setTTime(final Time tTime) {
+  public void setTTime(final java.sql.Time tTime) {
     this.tTime = tTime;
   }
 
-  public Timestamp getTTimestamp() {
+  public java.sql.Timestamp getTTimestamp() {
     return tTimestamp;
   }
-  public void setTTimestamp(final Timestamp tTimestamp) {
+  public void setTTimestamp(final java.sql.Timestamp tTimestamp) {
     this.tTimestamp = tTimestamp;
   }
 
-  public Timestamp getTDatetime() {
+  public java.sql.Timestamp getTDatetime() {
     return tDatetime;
   }
-  public void setTDatetime(final Timestamp tDatetime) {
+  public void setTDatetime(final java.sql.Timestamp tDatetime) {
     this.tDatetime = tDatetime;
   }
 
@@ -231,6 +228,13 @@ public class AllTypesDto {
   }
   public void setTNclob(final String tNclob) {
     this.tNclob = tNclob;
+  }
+
+  public Void getTXml() {
+    return tXml;
+  }
+  public void setTXml(final Void tXml) {
+    this.tXml = tXml;
   }
 
 }

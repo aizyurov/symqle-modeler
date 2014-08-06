@@ -29,9 +29,6 @@ import org.symqle.jdbc.Option;
 import org.symqle.sql.SetClauseList;
 import ${packages.dto}.${model.properties.JAVA_NAME}Dto;
 import ${packages.model}.${model.properties.JAVA_NAME};
-<#list model.externalClassFqn as requiredImport>
-import ${requiredImport};
-</#list>
 <#list model.generatedKeys as key>
 import ${packages.dto}.${key};
 </#list>

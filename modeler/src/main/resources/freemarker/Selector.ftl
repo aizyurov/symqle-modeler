@@ -13,9 +13,6 @@ import ${packages.model}.${model.properties.JAVA_NAME};
 import ${packages.dto}.${key};
 </#list>
 import java.sql.SQLException;
-<#list model.externalClassFqn as requiredImport>
-import ${requiredImport};
-</#list>
 
 /**
  * Selects {@link ${packages.dto}.${model.properties.JAVA_NAME}Dto} from {@link ${packages.model}.${model.properties.JAVA_NAME}}.

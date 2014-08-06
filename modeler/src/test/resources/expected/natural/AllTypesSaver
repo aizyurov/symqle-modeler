@@ -12,10 +12,6 @@ import org.symqle.jdbc.Option;
 import org.symqle.sql.SetClauseList;
 import org.symqle.model.AllTypesDto;
 import org.symqle.model.AllTypes;
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -59,7 +55,8 @@ public class AllTypesSaver {
                                 .also(table.tNchar().set(dto.getTNchar()))
                                 .also(table.tNvarchar().set(dto.getTNvarchar()))
                                 .also(table.tLongnvarchar().set(dto.getTLongnvarchar()))
-                                .also(table.tNclob().set(dto.getTNclob()));
+                                .also(table.tNclob().set(dto.getTNclob()))
+                                .also(table.tXml().set(dto.getTXml()));
       final Long id = dto.getTBit();
       if (id == null) {
           final Long newId = generateId();

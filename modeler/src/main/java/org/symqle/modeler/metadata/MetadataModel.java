@@ -63,21 +63,6 @@ public class MetadataModel implements SchemaSqlModel {
         }
 
         @Override
-        public Set<String> getExternalClassFqn() {
-            final Set<String> fqns = new TreeSet<>();
-            for (ColumnSqlModel column: getColumns()) {
-                if (column.getProperties().get("GENERATED_KEY") == null) {
-                    final String shortName = column.getProperties().get("JAVA_CLASS");
-                    final String fqn = NaturalTypeMapping.getInstance().getFqnForImport(shortName);
-                    if (fqn != null) {
-                        fqns.add(fqn);
-                    }
-                }
-            }
-            return fqns;
-        }
-
-        @Override
         public Set<String> getGeneratedKeys() {
             final Set<String> keys = new TreeSet<>();
             for (ColumnSqlModel column: getColumns()) {

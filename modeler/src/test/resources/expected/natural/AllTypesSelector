@@ -8,10 +8,6 @@ import org.symqle.common.Row;
 import org.symqle.model.AllTypesDto;
 import org.symqle.model.AllTypes;
 import java.sql.SQLException;
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 
 /**
  * Selects {@link org.symqle.model.AllTypesDto} from {@link org.symqle.model.AllTypes}.
@@ -27,15 +23,15 @@ public class AllTypesSelector extends Selector<AllTypesDto> {
   private final RowMapper<Float> tFloatMapper;
   private final RowMapper<Float> tRealMapper;
   private final RowMapper<Double> tDoubleMapper;
-  private final RowMapper<BigDecimal> tNumericMapper;
-  private final RowMapper<BigDecimal> tDecimalMapper;
+  private final RowMapper<java.math.BigDecimal> tNumericMapper;
+  private final RowMapper<java.math.BigDecimal> tDecimalMapper;
   private final RowMapper<String> tCharMapper;
   private final RowMapper<String> tVarcharMapper;
   private final RowMapper<String> tLongvarcharMapper;
-  private final RowMapper<Date> tDateMapper;
-  private final RowMapper<Time> tTimeMapper;
-  private final RowMapper<Timestamp> tTimestampMapper;
-  private final RowMapper<Timestamp> tDatetimeMapper;
+  private final RowMapper<java.sql.Date> tDateMapper;
+  private final RowMapper<java.sql.Time> tTimeMapper;
+  private final RowMapper<java.sql.Timestamp> tTimestampMapper;
+  private final RowMapper<java.sql.Timestamp> tDatetimeMapper;
   private final RowMapper<byte[]> tBinaryMapper;
   private final RowMapper<byte[]> tVarbinaryMapper;
   private final RowMapper<byte[]> tLongvarbinaryMapper;
@@ -46,6 +42,7 @@ public class AllTypesSelector extends Selector<AllTypesDto> {
   private final RowMapper<String> tNvarcharMapper;
   private final RowMapper<String> tLongnvarcharMapper;
   private final RowMapper<String> tNclobMapper;
+  private final RowMapper<Void> tXmlMapper;
 
   /**
    * Constructs AllTypesSelector for given table.
@@ -80,6 +77,7 @@ public class AllTypesSelector extends Selector<AllTypesDto> {
       tNvarcharMapper = map(table.tNvarchar());
       tLongnvarcharMapper = map(table.tLongnvarchar());
       tNclobMapper = map(table.tNclob());
+      tXmlMapper = map(table.tXml());
   }
 
   protected final AllTypesDto create(final Row row) throws SQLException {
@@ -111,6 +109,7 @@ public class AllTypesSelector extends Selector<AllTypesDto> {
       dto.setTNvarchar(tNvarcharMapper.extract(row));
       dto.setTLongnvarchar(tLongnvarcharMapper.extract(row));
       dto.setTNclob(tNclobMapper.extract(row));
+      dto.setTXml(tXmlMapper.extract(row));
       return dto;
   }
 }

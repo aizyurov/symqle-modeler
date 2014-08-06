@@ -79,7 +79,7 @@
                      <archive>
                          <manifest>
                              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                             <mainClass>org.symqle.modeler.CommandLineRunner</mainClass>
+                             <mainClass>org.symqle.modeler.Main</mainClass>
                              <addClasspath>true</addClasspath>
                              <classpathPrefix>lib/</classpathPrefix>
                          </manifest>
@@ -163,6 +163,7 @@
                     <instrumentation>
                       <excludes>
                         <exclude>org/symqle/modeler/Main.class</exclude>
+                        <exclude>org/symqle/modeler/metadata/TypesConstants.class</exclude>
                       </excludes>
                     </instrumentation>
                 </configuration>
@@ -231,7 +232,11 @@
             <artifactId>commons-cli</artifactId>
             <version>1.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-jexl</artifactId>
+            <version>2.1.1</version>
+        </dependency>
 
      <dependency>
       <groupId>junit</groupId>

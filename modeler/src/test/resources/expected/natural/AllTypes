@@ -6,10 +6,6 @@ import org.symqle.sql.Table;
 import org.symqle.common.Mappers;
 import org.symqle.sql.Column;
 import org.symqle.common.OnDemand;
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
 
 /**
  * TABLE ALL_TYPES
@@ -106,7 +102,7 @@ public class AllTypes extends Table {
      * NUMERIC(10, 3)
      * @return T_NUMERIC
      */
-    public Column<BigDecimal> tNumeric() {
+    public Column<java.math.BigDecimal> tNumeric() {
         return defineColumn(Mappers.DECIMAL, "T_NUMERIC");
     }
 
@@ -115,7 +111,7 @@ public class AllTypes extends Table {
      * DECIMAL(10, 3)
      * @return T_DECIMAL
      */
-    public Column<BigDecimal> tDecimal() {
+    public Column<java.math.BigDecimal> tDecimal() {
         return defineColumn(Mappers.DECIMAL, "T_DECIMAL");
     }
 
@@ -151,7 +147,7 @@ public class AllTypes extends Table {
      * DATE(10, 0)
      * @return T_DATE
      */
-    public Column<Date> tDate() {
+    public Column<java.sql.Date> tDate() {
         return defineColumn(Mappers.DATE, "T_DATE");
     }
 
@@ -160,7 +156,7 @@ public class AllTypes extends Table {
      * TIME(8, 0)
      * @return T_TIME
      */
-    public Column<Time> tTime() {
+    public Column<java.sql.Time> tTime() {
         return defineColumn(Mappers.TIME, "T_TIME");
     }
 
@@ -169,7 +165,7 @@ public class AllTypes extends Table {
      * TIMESTAMP(29, 9)
      * @return T_TIMESTAMP
      */
-    public Column<Timestamp> tTimestamp() {
+    public Column<java.sql.Timestamp> tTimestamp() {
         return defineColumn(Mappers.TIMESTAMP, "T_TIMESTAMP");
     }
 
@@ -178,7 +174,7 @@ public class AllTypes extends Table {
      * TIMESTAMP(29, 9)
      * @return T_DATETIME
      */
-    public Column<Timestamp> tDatetime() {
+    public Column<java.sql.Timestamp> tDatetime() {
         return defineColumn(Mappers.TIMESTAMP, "T_DATETIME");
     }
 
@@ -270,6 +266,15 @@ public class AllTypes extends Table {
      */
     public Column<String> tNclob() {
         return defineColumn(Mappers.STRING, "T_NCLOB");
+    }
+
+    /**
+     * T_XML.
+     * XML(2147483647)
+     * @return T_XML
+     */
+    public Column<Void> tXml() {
+        return defineColumn(Mappers.VOID, "T_XML");
     }
 
 }
