@@ -18,7 +18,7 @@ public class RecordSelect extends Selector<RecordDto> {
   private final RowMapper<String> commentMapper;
   private final RowMapper<UsersDto> editorMapper;
   private final RowMapper<UsersDto> assigneeMapper;
-  private final RowMapper<Long> activeMapper;
+  private final RowMapper<Boolean> activeMapper;
 
   /**
    * Constructs RecordSelect for given table.

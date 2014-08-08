@@ -110,15 +110,6 @@ public class SymqleDao {
         final SetClauseList setList = table.name().set(dto.getName())
                                 .also(table.description().set(dto.getDescription()));
         table.update(setList).where(table.projectId().eq(dto.getId())).execute(engine);
-        final Record record = new Record();
-        final List<Long> keys = new ArrayList<>();
-        final GeneratedKeys<Long> generatedKeys = GeneratedKeys.collect(table.id(), keys);
-        record.insert(record.active().set(1L)
-                .also(record.assigneeId().set(dto.getAssignee().getId()))
-                .also(record.editorId().set(editorId))
-                .also(record.ticketId().set(dto.getId()))
-                .also(record.comment().set("Ticket updated")));
-        table.update(table.lastRecordId().set(keys.get(0)));
     }
 
     public TicketDto getTicketById(final Long ticketId) throws SQLException {
@@ -132,13 +123,14 @@ public class SymqleDao {
         return new RecordSelect(record).where(record.ticketId().eq(ticketId)).list(engine);
     }
 
-    public void commentTicket(final Long ticketId, final String comment, final Long assigneeId, final Long editorId) throws SQLException {
+    public void insertRecord(final Long ticketId, final String comment, final Long assigneeId, final Long editorId) throws SQLException {
         final Record record = new Record();
+        final List<Long> keys = new ArrayList<>();
+        final GeneratedKeys<Long> generatedKeys = GeneratedKeys.collect(record.id(), keys);
         record.insert(record.ticketId().set(ticketId).also(record.comment().set(comment)).also(record.assigneeId().set(assigneeId)).also(record.editorId().set(editorId)))
-        .execute(engine);
+        .execute(generatedKeys, engine);
         final Ticket ticket = new Ticket();
-
+        ticket.update(ticket.lastRecordId().set(keys.get(0)));
     }
-
 
 }

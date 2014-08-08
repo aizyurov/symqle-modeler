@@ -3,15 +3,13 @@
 package org.symqle.sample.data;
 
 
-import org.symqle.sample.data.UsersDto;
-
 public class RecordDto {
     private final String comment;
     private final UsersDto editor;
     private final UsersDto assignee;
-    private final Long active;
+    private final Boolean active;
 
-    public RecordDto(final String comment, final UsersDto editor, final UsersDto assignee, final Long active) {
+    public RecordDto(final String comment, final UsersDto editor, final UsersDto assignee, final Boolean active) {
         this.comment = comment;
         this.editor = editor;
         this.assignee = assignee;
@@ -30,7 +28,7 @@ public class RecordDto {
         return assignee;
     }
 
-    public Long getActive() {
+    public Boolean isActive() {
         return active;
     }
 }

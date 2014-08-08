@@ -3,21 +3,16 @@
 package org.symqle.sample.data;
 
 public class NewTicketDto {
-    private final Long id;
     private final String name;
     private final String description;
     private final Long projectId;
 
-    public NewTicketDto(final Long id, final String name, final String description, final Long projectId) {
-        this.id = id;
+    public NewTicketDto(final String name, final String description, final Long projectId) {
         this.name = name;
         this.description = description;
         this.projectId = projectId;
     }
 
-    public Long getId() {
-    return id;
-  }
     public String getName() {
     return name;
   }

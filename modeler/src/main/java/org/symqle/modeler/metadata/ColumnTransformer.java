@@ -8,6 +8,7 @@ import org.symqle.modeler.sql.ColumnSqlModel;
 import org.symqle.modeler.sql.PrimaryKeySqlModel;
 import org.symqle.modeler.sql.SchemaSqlModel;
 import org.symqle.modeler.sql.TableSqlModel;
+import org.symqle.modeler.utils.SimpleLogger;
 import org.symqle.modeler.utils.StringUtils;
 
 import java.util.ArrayList;
@@ -45,6 +46,7 @@ public class ColumnTransformer extends AbstractTransformer {
             rule("DATA_TYPE_NAME == 'SMALLINT'", "Short", "Mappers.SHORT"),
             rule("DATA_TYPE_NAME == 'INTEGER'", "Integer", "Mappers.INTEGER"),
             rule("DATA_TYPE_NAME == 'BIGINT'", "Long", "Mappers.LONG"),
+            rule("DATA_TYPE_NAME == 'BIT' && (COLUMN_SIZE == 1 || COLUMN_SIZE == null)", "Boolean", "Mappers.BOOLEAN"),
             rule("DATA_TYPE_NAME == 'BIT'", "Long", "Mappers.LONG"),
             rule("DATA_TYPE_NAME == 'FLOAT'", "Float", "Mappers.FLOAT"),
             rule("DATA_TYPE_NAME == 'REAL'", "Float", "Mappers.FLOAT"),
@@ -128,6 +130,7 @@ public class ColumnTransformer extends AbstractTransformer {
                 final Expression expression = jexl.createExpression(rule.getExpression());
                 final boolean accept = (Boolean) expression.evaluate(jc);
                 if (accept) {
+                    SimpleLogger.debug("%s.%s %s(%s) -> %s", properties.get("TABLE_NAME"), properties.get("COLUMN_NAME"), properties.get("DATA_TYPE_NAME"), properties.get("COLUMN_SIZE"), rule.getJavaType() );
                     properties.put("JAVA_CLASS", rule.getJavaType());
                     properties.put("COLUMN_MAPPER", rule.getMapper());
                     return;

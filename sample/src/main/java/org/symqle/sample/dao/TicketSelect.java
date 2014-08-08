@@ -25,7 +25,7 @@ public class TicketSelect extends Selector<TicketDto> {
   private final RowMapper<UsersDto> authorMapper;
   private final RowMapper<ProjectDto> projectMapper;
   private final RowMapper<UsersDto> assigneeMapper;
-    private final RowMapper<Long> activeMapper;
+  private final RowMapper<Boolean> activeMapper;
 
   /**
    * Constructs TicketSelect for given table.
@@ -48,7 +48,7 @@ public class TicketSelect extends Selector<TicketDto> {
               authorMapper.extract(row),
               projectMapper.extract(row),
               assigneeMapper.extract(row),
-              Long.valueOf(1).equals(activeMapper.extract(row)));
+              activeMapper.extract(row));
       dto.setName(nameMapper.extract(row));
       dto.setDescription(descriptionMapper.extract(row));
       return dto;

@@ -12,9 +12,9 @@ public class TicketDto {
     private final UsersDto author;
     private final ProjectDto project;
     private final UsersDto assignee;
-    private final boolean active;
+    private final Boolean active;
 
-    public TicketDto(final Long id, final Timestamp creationdate, final UsersDto author, final ProjectDto project, final UsersDto assignee, final boolean active) {
+    public TicketDto(final Long id, final Timestamp creationdate, final UsersDto author, final ProjectDto project, final UsersDto assignee, final Boolean active) {
         this.id = id;
         this.creationdate = creationdate;
         this.author = author;
