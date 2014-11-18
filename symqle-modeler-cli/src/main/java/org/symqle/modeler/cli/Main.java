@@ -1,4 +1,4 @@
-package org.symqle.modeler;
+package org.symqle.modeler.cli;
 
 import java.util.Properties;
 

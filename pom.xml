@@ -6,11 +6,12 @@
   <packaging>pom</packaging>
   <version>0.1-SNAPSHOT</version>
   <name>symqle-modeler-parent</name>
-  <url>http://symqle.org</url>
+  <url>http://modeler.symqle.org</url>
 
 
   <modules>
     <module>modeler</module>
     <module>symqle-modeler-plugin</module>
+    <module>symqle-modeler-cli</module>
   </modules>
 </project>
